@@ -19,6 +19,27 @@ const gravity = 0.5;
 // c.fillStyle = 'red';
 // c.fillRect(200, 100, 100, 100);
 
+// создаем клас изоброжения
+class Sprite {
+  // построение спрайта
+  constructor({ position, imageSrc }) {
+    this.position = position;
+    this.image = new Image();
+    this.image.src = imageSrc;
+  }
+
+  // метод рисования
+  draw() {
+    if (!this.image) return;
+    c.drawImage(this.image, this.position.x, this.position.y);
+  }
+
+  // метод обновления
+  update() {
+    this.draw();
+  }
+}
+
 // конструктор для создания играков
 class Player {
   constructor(position) {
@@ -45,6 +66,9 @@ class Player {
     // создание игрока прям тут
     this.draw();
 
+    // добавим скорость по оси х
+    this.position.x += this.velocity.x;
+
     // добавим сюда скорость при падении
     this.position.y += this.velocity.y;
     // добовляем логику стоп при дохождении до края
@@ -61,6 +85,30 @@ const player = new Player({
 // создаем еременную для изменяющтхся координат квадрата
 let y = 100;
 let y2 = 100;
+
+// создаем ключи упровления
+
+const keys = {
+  KeyD: {
+    pressed: false,
+  },
+  KeyA: {
+    pressed: false,
+  },
+  Space: {
+    pressed: false,
+  },
+};
+
+// Добавим фон
+const background = new Sprite({
+  position: {
+    x: 0,
+    y: 0,
+  },
+  imageSrc: './img/background.png',
+});
+
 // создаем функции анимации
 function animate() {
   window.requestAnimationFrame(animate);
@@ -69,6 +117,9 @@ function animate() {
   // добовляем поле на canvas чтобы при каждом тики обновлять поле канвас
   c.fillStyle = 'white';
   c.fillRect(0, 0, canvas.width, canvas.height);
+
+  // рисуем фон до создания игроков
+  background.update();
 
   // запуск игрока
   // player.draw();
@@ -82,6 +133,59 @@ function animate() {
   // c.fillStyle = 'red';
   // c.fillRect(400, y, 100, 100);
   // // y2++;
+
+  // перемещение на кнопку (можем скорость поставить)
+  player.velocity.x = 0;
+  if (keys.KeyD.pressed) player.velocity.x = 5;
+  else if (keys.KeyA.pressed) player.velocity.x = -5;
 }
 
 animate();
+
+// это я добавиль чтобы отжать клавишу
+let isJumping = false;
+// нажатие клавиш
+window.addEventListener('keydown', (event) => {
+  // смотрим ключи клавиш
+
+  switch (event.code) {
+    // нужно проработать вопрос с переключением языка
+    case 'KeyD':
+      // console.log('на право');
+      // player.velocity.x = 1;
+
+      keys.KeyD.pressed = true;
+      break;
+    case 'KeyA':
+      // player.velocity.x = -1;
+      keys.KeyA.pressed = true;
+      break;
+    case 'Space':
+    case 'KeyW':
+      if (!isJumping) {
+        player.velocity.y = -20;
+        isJumping = true;
+      }
+      break;
+  }
+});
+
+// при отжатии клавиш
+window.addEventListener('keyup', (event) => {
+  // смотрим ключи клавиш
+
+  switch (event.code) {
+    case 'KeyD':
+      keys.KeyD.pressed = false;
+      break;
+    case 'KeyA':
+      keys.KeyA.pressed = false;
+      break;
+    case 'Space':
+    case 'KeyW':
+      if (isJumping) {
+        isJumping = false;
+      }
+      break;
+  }
+});
