@@ -22,21 +22,53 @@ for (let i = 0; i < floor.length; i += 176) {
 // console.log(floor2D);
 
 // тут будут столкновения
-const collisions = [];
+const collisionBlocks = [];
 // определились с точками столкновения теперь их нужно извлечь (  каждую строку! - row)
-floor2D.forEach((row) => {
-  row.forEach((symbol) => {
+//  (y -ссылка на наш индекс . где находиться припядствие)
+floor2D.forEach((row, y) => {
+  row.forEach((symbol, x) => {
     // console.log(symbol);
     if (symbol === 3773) {
       // мы нашли эти блоки теперь нужно написать что делаем с ними
       // console.log('блоки тута');
 
       // вот столкновение создаем
-      collisions.push(
-        new Collisions({
+      collisionBlocks.push(
+        new CollisionsBlock({
           position: {
-            x: 0,
-            y: 0,
+            x: x * 16,
+            y: y * 16,
+          },
+        })
+      );
+    }
+  });
+});
+// console.log(collisionBlocks);
+
+// Столкновение с gkjoflrfvb
+const platform2D = [];
+for (let i = 0; i < platformCollisions.length; i += 176) {
+  platform2D.push(platformCollisions.slice(i, i + 176));
+}
+// console.log(platform2D);
+
+const platformCollisionsBlocks = [];
+// определились с точками столкновения теперь их нужно извлечь (  каждую строку! - row)
+//  (y -ссылка на наш индекс . где находиться припядствие)
+platform2D.forEach((row, y) => {
+  row.forEach((symbol, x) => {
+    // console.log(symbol);
+    if (symbol === 3666) {
+      // мы нашли эти блоки теперь нужно написать что делаем с ними
+      // console.log('блоки тута');
+
+      // вот столкновение создаем
+      platformCollisionsBlocks.push(
+        new CollisionsBlock({
+          position: {
+            x: x * 16,
+            y: y * 16,
           },
         })
       );
@@ -58,9 +90,14 @@ const gravity = 0.5;
 // c.fillStyle = 'red';
 // c.fillRect(200, 100, 100, 100);
 
+// начальная точко появления игрока
 const player = new Player({
-  x: 0,
-  y: 0,
+  position: {
+    x: 110,
+    y: 0,
+  },
+
+  collisionBlocks: collisionBlocks,
 });
 
 // создаем еременную для изменяющтхся координат квадрата
@@ -109,6 +146,15 @@ function animate() {
 
   // рисуем фон до создания игроков
   background.update();
+  // вывод сталкновения
+  collisionBlocks.forEach((collisionBlock) => {
+    collisionBlock.update();
+  });
+  //  сталкновение платформы
+  platformCollisionsBlocks.forEach((block) => {
+    block.update();
+  });
+
   // нужно массштабировать только бэк граун (продолжение)
   c.restore();
 
