@@ -12,6 +12,38 @@ const scaledCanvas = {
   height: canvas.height / 4,
 };
 
+// Столкновение с полом
+const floor2D = [];
+// перебераем наш масив в 2д. мы знаем что ширина нашей карты 176 плиток
+for (let i = 0; i < floor.length; i += 176) {
+  // создаем под масив  и вырезаем нужные блоки (каждый ряд и+1 и и+176)
+  floor2D.push(floor.slice(i, i + 176));
+}
+// console.log(floor2D);
+
+// тут будут столкновения
+const collisions = [];
+// определились с точками столкновения теперь их нужно извлечь (  каждую строку! - row)
+floor2D.forEach((row) => {
+  row.forEach((symbol) => {
+    // console.log(symbol);
+    if (symbol === 3773) {
+      // мы нашли эти блоки теперь нужно написать что делаем с ними
+      // console.log('блоки тута');
+
+      // вот столкновение создаем
+      collisions.push(
+        new Collisions({
+          position: {
+            x: 0,
+            y: 0,
+          },
+        })
+      );
+    }
+  });
+});
+
 const gravity = 0.5;
 
 // рисуем прямоугольник (цвет. размеры)
@@ -25,64 +57,6 @@ const gravity = 0.5;
 // рисуем красный квадрат для опытов
 // c.fillStyle = 'red';
 // c.fillRect(200, 100, 100, 100);
-
-// создаем клас изоброжения
-class Sprite {
-  // построение спрайта
-  constructor({ position, imageSrc }) {
-    this.position = position;
-    this.image = new Image();
-    this.image.src = imageSrc;
-  }
-
-  // метод рисования
-  draw() {
-    if (!this.image) return;
-    c.drawImage(this.image, this.position.x, this.position.y);
-  }
-
-  // метод обновления
-  update() {
-    this.draw();
-  }
-}
-
-// конструктор для создания играков
-class Player {
-  constructor(position) {
-    this.position = position;
-    // кординаты ускорение по оси [ х и у]
-    this.velocity = {
-      x: 0,
-      y: 1,
-    };
-    this.height = 100;
-
-    // this.position = {
-    //   x: 0,
-    //   y: 0,
-    // };
-  }
-  // создаем игрока
-  draw() {
-    c.fillStyle = 'red';
-    c.fillRect(this.position.x, this.position.y, 100, this.height);
-  }
-  // изменение координат методом
-  update() {
-    // создание игрока прям тут
-    this.draw();
-
-    // добавим скорость по оси х
-    this.position.x += this.velocity.x;
-
-    // добавим сюда скорость при падении
-    this.position.y += this.velocity.y;
-    // добовляем логику стоп при дохождении до края
-    if (this.position.y + this.height + this.velocity.y < canvas.height) this.velocity.y += gravity;
-    else this.velocity.y = 0;
-  }
-}
 
 const player = new Player({
   x: 0,
