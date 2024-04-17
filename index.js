@@ -5,6 +5,13 @@ const c = canvas.getContext('2d');
 // Размеры поля canvas
 canvas.width = 1024;
 canvas.height = 576;
+
+// нужно опустить изоброжение
+const scaledCanvas = {
+  width: canvas.width / 4,
+  height: canvas.height / 4,
+};
+
 const gravity = 0.5;
 
 // рисуем прямоугольник (цвет. размеры)
@@ -118,8 +125,18 @@ function animate() {
   c.fillStyle = 'white';
   c.fillRect(0, 0, canvas.width, canvas.height);
 
+  // нужно массштабировать только бэк граун
+  c.save();
+
+  // увеличиваем масштаб бэкграунда
+  c.scale(4, 4);
+  // опускаем камеру
+  c.translate(0, -background.image.height + scaledCanvas.height);
+
   // рисуем фон до создания игроков
   background.update();
+  // нужно массштабировать только бэк граун (продолжение)
+  c.restore();
 
   // запуск игрока
   // player.draw();
