@@ -98,6 +98,8 @@ const player = new Player({
   },
 
   collisionBlocks: collisionBlocks,
+  // вставляем картинку игрока
+  imageSrc: './img/Martial Hero 3/Sprite/Idle.png',
 });
 
 // создаем еременную для изменяющтхся координат квадрата
@@ -154,10 +156,6 @@ function animate() {
   platformCollisionsBlocks.forEach((block) => {
     block.update();
   });
-
-  // нужно массштабировать только бэк граун (продолжение)
-  c.restore();
-
   // запуск игрока
   // player.draw();
   player.update();
@@ -175,6 +173,8 @@ function animate() {
   player.velocity.x = 0;
   if (keys.KeyD.pressed) player.velocity.x = 5;
   else if (keys.KeyA.pressed) player.velocity.x = -5;
+  // нужно массштабировать только бэк граун (продолжение)
+  c.restore();
 }
 
 animate();
@@ -200,7 +200,8 @@ window.addEventListener('keydown', (event) => {
     case 'Space':
     case 'KeyW':
       if (!isJumping) {
-        player.velocity.y = -20;
+        // прыжок настраиваем
+        player.velocity.y = -8;
         isJumping = true;
       }
       break;

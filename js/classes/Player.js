@@ -1,14 +1,17 @@
 // конструктор для создания играков
-class Player {
-  constructor({ position, collisionBlocks }) {
+// расширяем клас. чтобы он брал днные из Sprite
+class Player extends Sprite {
+  constructor({ position, collisionBlocks, imageSrc }) {
+    // лезет в родительский класс
+    super({ imageSrc });
     this.position = position;
     // кординаты ускорение по оси [ х и у]
     this.velocity = {
       x: 0,
       y: 1,
     };
-    this.width = 100;
-    this.height = 100;
+    this.width = 25;
+    this.height = 25;
     this.collisionBlocks = collisionBlocks;
 
     // this.position = {
@@ -16,11 +19,11 @@ class Player {
     //   y: 0,
     // };
   }
-  // создаем игрока
-  draw() {
-    c.fillStyle = 'red';
-    c.fillRect(this.position.x, this.position.y, this.width, this.height);
-  }
+  // // создаем игрока Скрываем метод когда начинаем ссылаться на спрайт
+  // draw() {
+  //   c.fillStyle = 'red';
+  //   c.fillRect(this.position.x, this.position.y, this.width, this.height);
+  // }
   // изменение координат методом
   update() {
     // создание игрока прям тут
@@ -28,9 +31,38 @@ class Player {
 
     // добавим скорость по оси х
     this.position.x += this.velocity.x;
+    // стены проверяються перед гравитацией
+    this.checkForHorizontalCollisions();
     this.applyGravity();
     // проверка на сталкновение
     this.checkForVerticalCollisions();
+  }
+
+  // сталкновение стены
+
+  checkForHorizontalCollisions() {
+    for (let i = 0; i < this.collisionBlocks.length; i++) {
+      const collisionBlock = this.collisionBlocks[i];
+      // обноружение столкновения
+      if (
+        collision({
+          object1: this,
+          object2: collisionBlock,
+        })
+      ) {
+        // console.log('проверка косания');
+        if (this.velocity.x > 0) {
+          this.velocity.x = 0;
+          this.position.x = collisionBlock.position.x - this.width - 0.01;
+          break;
+        }
+        if (this.velocity.x < 0) {
+          this.velocity.x = 0;
+          this.position.x = collisionBlock.position.x + collisionBlock.width + 0.01;
+          break;
+        }
+      }
+    }
   }
 
   // метод гравитации
@@ -44,7 +76,8 @@ class Player {
   }
   // метод проверки сталкновение под воздействием гравитации
   checkForVerticalCollisions() {
-    for (let i = 0; i < this.collisionBlocks.lenght; i++) {
+    // for (let i = 0; i < this.collisionBlocks.lenght; i++) { БАЛБЕС
+    for (let i = 0; i < this.collisionBlocks.length; i++) {
       const collisionBlock = this.collisionBlocks[i];
       // обноружение столкновения
 
@@ -54,10 +87,19 @@ class Player {
           object2: collisionBlock,
         })
       ) {
-        console.log('fdgdgdfgdg');
-        // if (this.velocity.y > 0) {
-        //   this.velocity.y = 0;
-        // }
+        // console.log('проверка косания');
+        if (this.velocity.y > 0) {
+          this.velocity.y = 0;
+          // тормозим блок на верхней точке добовляем 0.01 для качественного сталкновения
+          this.position.y = collisionBlock.position.y - this.height - 0.01;
+          break;
+        }
+        // а это для верха
+        if (this.velocity.y < 0) {
+          this.velocity.y = 0;
+          this.position.y = collisionBlock.position.y + collisionBlock.height + 0.01;
+          break;
+        }
       }
     }
   }
