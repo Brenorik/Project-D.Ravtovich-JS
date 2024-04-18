@@ -1,17 +1,18 @@
 // конструктор для создания играков
 // расширяем клас. чтобы он брал днные из Sprite
 class Player extends Sprite {
-  constructor({ position, collisionBlocks, imageSrc }) {
+  constructor({ position, collisionBlocks, imageSrc, frameRate }) {
     // лезет в родительский класс
-    super({ imageSrc });
+    super({ imageSrc, frameRate });
     this.position = position;
     // кординаты ускорение по оси [ х и у]
     this.velocity = {
       x: 0,
       y: 1,
     };
-    this.width = 25;
-    this.height = 25;
+    // высота и ширина прямоугольника. которого нет
+    // this.width = 25;
+    // this.height = 25;
     this.collisionBlocks = collisionBlocks;
 
     // this.position = {
@@ -26,6 +27,10 @@ class Player extends Sprite {
   // }
   // изменение координат методом
   update() {
+    // создадим квадрат чтобы видить рамки изоброжения
+    c.fillStyle = 'rgba(0, 255, 0, 0.2)';
+    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+
     // создание игрока прям тут
     this.draw();
 

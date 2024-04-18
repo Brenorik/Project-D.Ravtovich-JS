@@ -100,6 +100,7 @@ const player = new Player({
   collisionBlocks: collisionBlocks,
   // вставляем картинку игрока
   imageSrc: './img/Martial Hero 3/Sprite/Idle.png',
+  frameRate: 10,
 });
 
 // создаем еременную для изменяющтхся координат квадрата
