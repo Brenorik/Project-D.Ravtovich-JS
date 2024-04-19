@@ -1,18 +1,27 @@
 // создаем клас изоброжения
 class Sprite {
   // построение спрайта
-  constructor({ position, imageSrc, frameRate = 1 }) {
+  constructor({ position, imageSrc, frameRate = 1, frameBuffer = 3, scale = 1 }) {
     this.position = position;
+    // настраиваем изоброжение спрайта игрока сами размеры
+    this.scale = scale;
+
     this.image = new Image();
 
     // Загружаем наш спрайт персонажа (нужно время)
     this.image.onload = () => {
-      this.width = this.image.width / this.frameRate;
-      this.height = this.image.height;
+      this.width = (this.image.width / this.frameRate) * this.scale;
+      this.height = this.image.height * this.scale;
     };
 
     this.image.src = imageSrc;
     this.frameRate = frameRate;
+    // Это первый кадр где мы находимся
+    this.currentFrame = 0;
+    // буфер кадров для снижения скорости анимации персонажа
+    this.frameBuffer = frameBuffer;
+    // прошедчие кадры
+    this.elapsedFrame = 0;
   }
 
   // метод рисования
@@ -21,7 +30,7 @@ class Sprite {
     // обрезаем спрайт персонажа
     const cropbox = {
       position: {
-        x: 0,
+        x: this.currentFrame * (this.image.width / this.frameRate),
         y: 0,
       },
       width: this.image.width / this.frameRate,
@@ -44,5 +53,15 @@ class Sprite {
   // метод обновления
   update() {
     this.draw();
+    this.updateFrames();
+  }
+
+  // метод обновления кадра
+  updateFrames() {
+    this.elapsedFrame++;
+    if (this.elapsedFrame % this.frameBuffer === 0) {
+      if (this.currentFrame < this.frameRate - 1) this.currentFrame++;
+      else this.currentFrame = 0;
+    }
   }
 }

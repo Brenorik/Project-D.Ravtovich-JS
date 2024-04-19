@@ -1,9 +1,9 @@
 // конструктор для создания играков
 // расширяем клас. чтобы он брал днные из Sprite
 class Player extends Sprite {
-  constructor({ position, collisionBlocks, imageSrc, frameRate }) {
+  constructor({ position, collisionBlocks, imageSrc, frameRate, scale = 0.5 }) {
     // лезет в родительский класс
-    super({ imageSrc, frameRate });
+    super({ imageSrc, frameRate, scale });
     this.position = position;
     // кординаты ускорение по оси [ х и у]
     this.velocity = {
@@ -27,6 +27,9 @@ class Player extends Sprite {
   // }
   // изменение координат методом
   update() {
+    // нам нужно анимация персонажа обновляем фрейм
+    this.updateFrames();
+
     // создадим квадрат чтобы видить рамки изоброжения
     c.fillStyle = 'rgba(0, 255, 0, 0.2)';
     c.fillRect(this.position.x, this.position.y, this.width, this.height);
