@@ -6,12 +6,16 @@ class Sprite {
     // настраиваем изоброжение спрайта игрока сами размеры
     this.scale = scale;
 
+    // намнужно удостовериться что слайд загружен
+    this.loaded = false;
+
     this.image = new Image();
 
     // Загружаем наш спрайт персонажа (нужно время)
     this.image.onload = () => {
       this.width = (this.image.width / this.frameRate) * this.scale;
       this.height = this.image.height * this.scale;
+      this.loaded = true;
     };
 
     this.image.src = imageSrc;

@@ -93,14 +93,37 @@ const gravity = 0.5;
 // начальная точко появления игрока
 const player = new Player({
   position: {
-    x: 110,
-    y: 0,
+    x: 30,
+    y: 450,
   },
 
   collisionBlocks: collisionBlocks,
   // вставляем картинку игрока
   imageSrc: './img/Martial Hero 3/Sprite/Idle.png',
   frameRate: 10,
+  // создаем различные анимации
+  animations: {
+    Idle: {
+      imageSrc: './img/Martial Hero 3/Sprite/Idle.png',
+      frameRate: 10,
+      frameBuffer: 3,
+    },
+    Run: {
+      imageSrc: './img/Martial Hero 3/Sprite/Run.png',
+      frameRate: 8,
+      frameBuffer: 4,
+    },
+    GoingUp: {
+      imageSrc: './img/Martial Hero 3/Sprite/Going Up.png',
+      frameRate: 3,
+      frameBuffer: 4,
+    },
+    GoingDown: {
+      imageSrc: './img/Martial Hero 3/Sprite/Going Down.png',
+      frameRate: 3,
+      frameBuffer: 4,
+    },
+  },
 });
 
 // создаем еременную для изменяющтхся координат квадрата
@@ -172,8 +195,19 @@ function animate() {
 
   // перемещение на кнопку (можем скорость поставить)
   player.velocity.x = 0;
-  if (keys.KeyD.pressed) player.velocity.x = 5;
-  else if (keys.KeyA.pressed) player.velocity.x = -5;
+  if (keys.KeyD.pressed) {
+    // метод переключения спрайта
+    player.switchSprite('Run');
+    player.velocity.x = 2;
+  } else if (keys.KeyA.pressed) player.velocity.x = -2;
+  else if (player.velocity.y === 0) {
+    player.switchSprite('Idle');
+  }
+
+  // прыжок
+  if (player.velocity.y < 0) player.switchSprite('GoingUp');
+  else if (player.velocity.y > 0) player.switchSprite('GoingDown');
+
   // нужно массштабировать только бэк граун (продолжение)
   c.restore();
 }
