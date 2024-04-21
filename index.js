@@ -34,7 +34,7 @@ floor2D.forEach((row, y) => {
 
       // вот столкновение создаем
       collisionBlocks.push(
-        new CollisionsBlock({
+        new CollisionBlock({
           position: {
             x: x * 16,
             y: y * 16,
@@ -53,7 +53,7 @@ for (let i = 0; i < platformCollisions.length; i += 176) {
 }
 // console.log(platform2D);
 
-const platformCollisionsBlocks = [];
+const platformCollisionBlocks = [];
 // определились с точками столкновения теперь их нужно извлечь (  каждую строку! - row)
 //  (y -ссылка на наш индекс . где находиться припядствие)
 platform2D.forEach((row, y) => {
@@ -64,19 +64,20 @@ platform2D.forEach((row, y) => {
       // console.log('блоки тута');
 
       // вот столкновение создаем
-      platformCollisionsBlocks.push(
-        new CollisionsBlock({
+      platformCollisionBlocks.push(
+        new CollisionBlock({
           position: {
             x: x * 16,
             y: y * 16,
           },
+          height: 11,
         })
       );
     }
   });
 });
 
-const gravity = 0.5;
+const gravity = 0.1;
 
 // рисуем прямоугольник (цвет. размеры)
 // c.fillStyle = 'white';
@@ -98,6 +99,7 @@ const player = new Player({
   },
 
   collisionBlocks: collisionBlocks,
+  platformCollisionBlocks: platformCollisionBlocks,
   // вставляем картинку игрока
   imageSrc: './img/Martial Hero 3/Sprite/Idle.png',
   frameRate: 10,
@@ -120,6 +122,26 @@ const player = new Player({
     },
     GoingDown: {
       imageSrc: './img/Martial Hero 3/Sprite/Going Down.png',
+      frameRate: 3,
+      frameBuffer: 4,
+    },
+    LeftIdle: {
+      imageSrc: './img/Martial Hero 3/Sprite/Left_Idle.png',
+      frameRate: 10,
+      frameBuffer: 3,
+    },
+    LeftRun: {
+      imageSrc: './img/Martial Hero 3/Sprite/Left_Run.png',
+      frameRate: 8,
+      frameBuffer: 4,
+    },
+    LeftGoingUp: {
+      imageSrc: './img/Martial Hero 3/Sprite/Left_Going Up.png',
+      frameRate: 3,
+      frameBuffer: 4,
+    },
+    LeftGoingDown: {
+      imageSrc: './img/Martial Hero 3/Sprite/Left_Going Down.png',
       frameRate: 3,
       frameBuffer: 4,
     },
@@ -177,7 +199,7 @@ function animate() {
     collisionBlock.update();
   });
   //  сталкновение платформы
-  platformCollisionsBlocks.forEach((block) => {
+  platformCollisionBlocks.forEach((block) => {
     block.update();
   });
   // запуск игрока
@@ -199,15 +221,24 @@ function animate() {
     // метод переключения спрайта
     player.switchSprite('Run');
     player.velocity.x = 2;
-  } else if (keys.KeyA.pressed) player.velocity.x = -2;
-  else if (player.velocity.y === 0) {
-    player.switchSprite('Idle');
+    player.lastDirection = 'right';
+  } else if (keys.KeyA.pressed) {
+    player.switchSprite('LeftRun');
+    player.velocity.x = -2;
+    player.lastDirection = 'Left';
+  } else if (player.velocity.y === 0) {
+    if (player.lastDirection === 'right') player.switchSprite('Idle');
+    else player.switchSprite('LeftIdle');
   }
 
   // прыжок
-  if (player.velocity.y < 0) player.switchSprite('GoingUp');
-  else if (player.velocity.y > 0) player.switchSprite('GoingDown');
-
+  if (player.velocity.y < 0) {
+    if (player.lastDirection === 'right') player.switchSprite('GoingUp');
+    else player.switchSprite('LeftGoingUp');
+  } else if (player.velocity.y > 0) {
+    if (player.lastDirection === 'right') player.switchSprite('GoingDown');
+    else player.switchSprite('LeftGoingDown');
+  }
   // нужно массштабировать только бэк граун (продолжение)
   c.restore();
 }
@@ -236,7 +267,7 @@ window.addEventListener('keydown', (event) => {
     case 'KeyW':
       if (!isJumping) {
         // прыжок настраиваем
-        player.velocity.y = -8;
+        player.velocity.y = -4;
         isJumping = true;
       }
       break;

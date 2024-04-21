@@ -1,11 +1,11 @@
 // создаем клас столкновений
-class CollisionsBlock {
+class CollisionBlock {
   // построение спрайта
-  constructor({ position }) {
+  constructor({ position, width = 16, height = 16 }) {
     this.position = position;
     // создаем размер плиток касания
-    this.width = 16;
-    this.height = 16;
+    this.width = width;
+    this.height = height;
   }
 
   // метод рисования

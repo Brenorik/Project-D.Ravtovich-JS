@@ -1,7 +1,7 @@
 // конструктор для создания играков
 // расширяем клас. чтобы он брал днные из Sprite
 class Player extends Sprite {
-  constructor({ position, collisionBlocks, imageSrc, frameRate, scale = 0.5, animations }) {
+  constructor({ position, collisionBlocks, platformCollisionBlocks, imageSrc, frameRate, scale = 0.5, animations }) {
     // лезет в родительский класс
     super({ imageSrc, frameRate, scale });
     this.position = position;
@@ -14,7 +14,7 @@ class Player extends Sprite {
     // this.width = 25;
     // this.height = 25;
     this.collisionBlocks = collisionBlocks;
-
+    this.platformCollisionBlocks = platformCollisionBlocks;
     // нужно обрезать хитбокс чтобы был только персонаж
     this.hitbox = {
       // цифрами коректируем чтоб обвелся наш спрайт
@@ -28,6 +28,8 @@ class Player extends Sprite {
 
     // разные анимации
     this.animations = animations;
+    // по умолчанию герой смотрит на право
+    this.lastDirection = 'right';
 
     // анимации разные нужно зациклить с помощью ключей
     for (let key in this.animations) {
@@ -46,10 +48,13 @@ class Player extends Sprite {
   // метод обновления(другого слайда)dd
 
   switchSprite(key) {
-    if (this.image === this.animations[key] || !this.loaded) return;
+    if (this.image === this.animations[key].image || !this.loaded) return;
+
+    this.currentFrame = 0;
     this.image = this.animations[key].image;
     this.frameBuffer = this.animations[key].frameBuffer;
     this.frameRate = this.animations[key].frameRate;
+    // console.log(this.image);
   }
 
   // // создаем игрока Скрываем метод когда начинаем ссылаться на спрайт
@@ -97,6 +102,9 @@ class Player extends Sprite {
       },
       width: 22,
       height: 21,
+
+      // width: 22, правильно
+      // height: 21, правильно
     };
   }
 
@@ -167,6 +175,31 @@ class Player extends Sprite {
           this.velocity.y = 0;
           const offset = this.hitbox.position.y - this.position.y;
           this.position.y = collisionBlock.position.y + collisionBlock.height - offset + 0.01;
+          break;
+        }
+      }
+    }
+
+    // платформы
+    for (let i = 0; i < this.platformCollisionBlocks.length; i++) {
+      const platformCollisionBlocks = this.platformCollisionBlocks[i];
+      // обноружение столкновения
+
+      if (
+        platformCollision({
+          object1: this.hitbox,
+          object2: platformCollisionBlocks,
+        })
+      ) {
+        // console.log('проверка косания');
+        if (this.velocity.y > 0) {
+          this.velocity.y = 0;
+
+          // считаем правильное размещение хитбокса
+          const offset = this.hitbox.position.y - this.position.y + this.hitbox.height;
+
+          // тормозим блок на верхней точке добовляем 0.01 для качественного сталкновения
+          this.position.y = platformCollisionBlocks.position.y - offset - 0.01;
           break;
         }
       }
