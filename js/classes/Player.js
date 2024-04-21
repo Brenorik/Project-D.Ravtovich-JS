@@ -38,11 +38,6 @@ class Player extends Sprite {
 
       this.animations[key].image = image;
     }
-
-    // this.position = {
-    //   x: 0,
-    //   y: 0,
-    // };
   }
 
   // метод обновления(другого слайда)dd
@@ -57,6 +52,69 @@ class Player extends Sprite {
     // console.log(this.image);
   }
 
+  // метод апдейт камеры
+  updateCamerabox() {
+    //  создаем камера бокс для камеры (можно подрегулировать)
+    this.camerabox = {
+      position: {
+        x: this.position.x - 50,
+        y: this.position.y,
+      },
+      width: 200,
+      height: 80,
+    };
+  }
+
+  // не убегай за рамки канвас=)
+  checkForHorizontalCanvasCollision() {
+    if (
+      this.hitbox.position.x + this.hitbox.width + this.velocity.x >= 2816 ||
+      this.hitbox.position.x + this.velocity.x <= 0
+    ) {
+      this.velocity.x = 0;
+    }
+  }
+
+  // метод двежения камеры в лево
+  shouldPanCameraToTheLeft({ canvas, camera }) {
+    const cameraboxRightSide = this.camerabox.position.x + this.camerabox.width;
+    const scaledDownCanvasWidth = canvas.width / 4;
+
+    if (cameraboxRightSide >= 2816) return;
+
+    if (cameraboxRightSide >= scaledDownCanvasWidth + Math.abs(camera.position.x)) {
+      // console.log('камера влево');
+      camera.position.x -= this.velocity.x;
+    }
+  }
+
+  // метод двежения камеры в право
+  shouldPanCameraToTheRight({ canvas, camera }) {
+    if (this.camerabox.position.x <= 0) return;
+
+    if (this.camerabox.position.x <= Math.abs(camera.position.x)) {
+      camera.position.x -= this.velocity.x;
+    }
+  }
+
+  shouldPanCameraDown({ canvas, camera }) {
+    if (this.camerabox.position.y + this.velocity.y <= 0) return;
+
+    if (this.camerabox.position.y <= Math.abs(camera.position.y)) {
+      camera.position.y -= this.velocity.y;
+    }
+  }
+
+  shouldPanCameraUp({ canvas, camera }) {
+    if (this.camerabox.position.y + this.camerabox.height + this.velocity.y >= 576) return;
+
+    const scaledCanvasHeight = canvas.height / 4;
+
+    if (this.camerabox.position.y + this.camerabox.height >= Math.abs(camera.position.y) + scaledCanvasHeight) {
+      camera.position.y -= this.velocity.y;
+    }
+  }
+
   // // создаем игрока Скрываем метод когда начинаем ссылаться на спрайт
   // draw() {
   //   c.fillStyle = 'red';
@@ -68,14 +126,18 @@ class Player extends Sprite {
     this.updateFrames();
 
     this.updateHitbox();
+    this.updateCamerabox();
+    // создадим квадрат чтобы видить камеры
+    // c.fillStyle = 'rgba(0, 0, 255, 0.2)';
+    // c.fillRect(this.camerabox.position.x, this.camerabox.position.y, this.camerabox.width, this.camerabox.height);
 
-    // создадим квадрат чтобы видить рамки изоброжения
-    c.fillStyle = 'rgba(0, 255, 0, 0.2)';
-    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+    // // создадим квадрат чтобы видить рамки изоброжения
+    // c.fillStyle = 'rgba(0, 255, 0, 0.2)';
+    // c.fillRect(this.position.x, this.position.y, this.width, this.height);
 
-    // создадим квадрат чтобы видить ХИТБОКСА
-    c.fillStyle = 'rgba(255, 0, 0, 0.2)';
-    c.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
+    // // создадим квадрат чтобы видить ХИТБОКСА
+    // c.fillStyle = 'rgba(255, 0, 0, 0.2)';
+    // c.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
 
     // создание игрока прям тут
     this.draw();

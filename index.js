@@ -175,6 +175,15 @@ const background = new Sprite({
   imageSrc: './img/background.png',
 });
 
+const backgroundImageHeight = 576;
+
+const camera = {
+  position: {
+    x: 0,
+    y: -backgroundImageHeight + scaledCanvas.height,
+  },
+};
+
 // создаем функции анимации
 function animate() {
   window.requestAnimationFrame(animate);
@@ -190,10 +199,12 @@ function animate() {
   // увеличиваем масштаб бэкграунда
   c.scale(4, 4);
   // опускаем камеру
-  c.translate(0, -background.image.height + scaledCanvas.height);
+  c.translate(camera.position.x, camera.position.y);
 
   // рисуем фон до создания игроков
   background.update();
+
+  // выделение платформ
   // вывод сталкновения
   collisionBlocks.forEach((collisionBlock) => {
     collisionBlock.update();
@@ -202,6 +213,10 @@ function animate() {
   platformCollisionBlocks.forEach((block) => {
     block.update();
   });
+
+  // проверка на рамки канвас
+  player.checkForHorizontalCanvasCollision();
+
   // запуск игрока
   // player.draw();
   player.update();
@@ -222,10 +237,14 @@ function animate() {
     player.switchSprite('Run');
     player.velocity.x = 2;
     player.lastDirection = 'right';
+    // камера
+    player.shouldPanCameraToTheLeft({ canvas, camera });
   } else if (keys.KeyA.pressed) {
     player.switchSprite('LeftRun');
     player.velocity.x = -2;
     player.lastDirection = 'Left';
+    // камера на лево
+    player.shouldPanCameraToTheRight({ canvas, camera });
   } else if (player.velocity.y === 0) {
     if (player.lastDirection === 'right') player.switchSprite('Idle');
     else player.switchSprite('LeftIdle');
@@ -233,9 +252,11 @@ function animate() {
 
   // прыжок
   if (player.velocity.y < 0) {
+    player.shouldPanCameraDown({ canvas, camera });
     if (player.lastDirection === 'right') player.switchSprite('GoingUp');
     else player.switchSprite('LeftGoingUp');
   } else if (player.velocity.y > 0) {
+    player.shouldPanCameraUp({ canvas, camera });
     if (player.lastDirection === 'right') player.switchSprite('GoingDown');
     else player.switchSprite('LeftGoingDown');
   }
