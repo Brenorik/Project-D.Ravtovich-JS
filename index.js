@@ -206,13 +206,13 @@ function animate() {
 
   // выделение платформ
   // вывод сталкновения
-  collisionBlocks.forEach((collisionBlock) => {
-    collisionBlock.update();
-  });
-  //  сталкновение платформы
-  platformCollisionBlocks.forEach((block) => {
-    block.update();
-  });
+  // collisionBlocks.forEach((collisionBlock) => {
+  //   collisionBlock.update();
+  // });
+  // //  сталкновение платформы
+  // platformCollisionBlocks.forEach((block) => {
+  //   block.update();
+  // });
 
   // проверка на рамки канвас
   player.checkForHorizontalCanvasCollision();
