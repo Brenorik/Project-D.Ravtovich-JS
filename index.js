@@ -206,13 +206,13 @@ function animate() {
 
   // выделение платформ
   // вывод сталкновения
-  // collisionBlocks.forEach((collisionBlock) => {
-  //   collisionBlock.update();
-  // });
-  // //  сталкновение платформы
-  // platformCollisionBlocks.forEach((block) => {
-  //   block.update();
-  // });
+  collisionBlocks.forEach((collisionBlock) => {
+    collisionBlock.update();
+  });
+  //  сталкновение платформы
+  platformCollisionBlocks.forEach((block) => {
+    block.update();
+  });
 
   // проверка на рамки канвас
   player.checkForHorizontalCanvasCollision();
@@ -268,37 +268,26 @@ animate();
 
 // это я добавиль чтобы отжать клавишу
 let isJumping = false;
-// нажатие клавиш
+
+// Нажатие клавиш
 window.addEventListener('keydown', (event) => {
-  // смотрим ключи клавиш
-
   switch (event.code) {
-    // нужно проработать вопрос с переключением языка
     case 'KeyD':
-      // console.log('на право');
-      // player.velocity.x = 1;
-
       keys.KeyD.pressed = true;
       break;
     case 'KeyA':
-      // player.velocity.x = -1;
       keys.KeyA.pressed = true;
       break;
     case 'Space':
     case 'KeyW':
-      if (!isJumping) {
-        // прыжок настраиваем
-        player.velocity.y = -4;
-        isJumping = true;
-      }
+      // Вызываем метод прыжка у игрока
+      player.jump();
       break;
   }
 });
 
-// при отжатии клавиш
+// При отжатии клавиш
 window.addEventListener('keyup', (event) => {
-  // смотрим ключи клавиш
-
   switch (event.code) {
     case 'KeyD':
       keys.KeyD.pressed = false;
@@ -308,6 +297,7 @@ window.addEventListener('keyup', (event) => {
       break;
     case 'Space':
     case 'KeyW':
+      // Проверяем, был ли прыжок и необходимо ли прекратить его
       if (isJumping) {
         isJumping = false;
       }

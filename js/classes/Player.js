@@ -31,12 +31,24 @@ class Player extends Sprite {
     // по умолчанию герой смотрит на право
     this.lastDirection = 'right';
 
+    // Добавим флаг для отслеживания прыжка
+    this.isJumping = false;
+
     // анимации разные нужно зациклить с помощью ключей
     for (let key in this.animations) {
       const image = new Image();
       image.src = this.animations[key].imageSrc;
 
       this.animations[key].image = image;
+    }
+  }
+
+  // Метод для выполнения прыжка
+  jump() {
+    if (!this.isJumping) {
+      // Проверяем, не прыгает ли персонаж уже
+      this.velocity.y = -4; // Устанавливаем начальную вертикальную скорость вверх
+      this.isJumping = true; // Указываем, что персонаж начал прыжок
     }
   }
 
@@ -64,7 +76,6 @@ class Player extends Sprite {
       height: 100,
     };
   }
-  ц;
   // не убегай за рамки канвас=)
   checkForHorizontalCanvasCollision() {
     if (
@@ -127,17 +138,17 @@ class Player extends Sprite {
 
     this.updateHitbox();
     this.updateCamerabox();
-    // // создадим квадрат чтобы видить камеры
-    // c.fillStyle = 'rgba(0, 0, 255, 0.2)';
-    // c.fillRect(this.camerabox.position.x, this.camerabox.position.y, this.camerabox.width, this.camerabox.height);
+    // создадим квадрат чтобы видить камеры
+    c.fillStyle = 'rgba(0, 0, 255, 0.2)';
+    c.fillRect(this.camerabox.position.x, this.camerabox.position.y, this.camerabox.width, this.camerabox.height);
 
-    // // создадим квадрат чтобы видить рамки изоброжения
-    // c.fillStyle = 'rgba(0, 255, 0, 0.2)';
-    // c.fillRect(this.position.x, this.position.y, this.width, this.height);
+    // создадим квадрат чтобы видить рамки изоброжения
+    c.fillStyle = 'rgba(0, 255, 0, 0.2)';
+    c.fillRect(this.position.x, this.position.y, this.width, this.height);
 
-    // // создадим квадрат чтобы видить ХИТБОКСА
-    // c.fillStyle = 'rgba(255, 0, 0, 0.2)';
-    // c.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
+    // создадим квадрат чтобы видить ХИТБОКСА
+    c.fillStyle = 'rgba(255, 0, 0, 0.2)';
+    c.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
 
     // создание игрока прям тут
     this.draw();
@@ -151,6 +162,26 @@ class Player extends Sprite {
     this.updateHitbox();
     // проверка на сталкновение
     this.checkForVerticalCollisions();
+
+    // Если персонаж касается земли, сбрасываем флаг прыжка
+    if (this.isOnGround()) {
+      this.isJumping = false;
+    }
+  }
+
+  isOnGround() {
+    for (let i = 0; i < this.collisionBlocks.length; i++) {
+      const collisionBlock = this.collisionBlocks[i];
+      if (
+        collision({
+          object1: this.hitbox,
+          object2: collisionBlock,
+        })
+      ) {
+        return true; // Если есть столкновение с блоком, значит персонаж на земле
+      }
+    }
+    return false; // В противном случае персонаж не на земле
   }
 
   // метод для хитбокса персонажа
@@ -214,6 +245,7 @@ class Player extends Sprite {
   }
   // метод проверки сталкновение под воздействием гравитации
   checkForVerticalCollisions() {
+    // прыжок 1 раз
     // for (let i = 0; i < this.collisionBlocks.lenght; i++) { БАЛБЕС
     for (let i = 0; i < this.collisionBlocks.length; i++) {
       const collisionBlock = this.collisionBlocks[i];
@@ -260,7 +292,7 @@ class Player extends Sprite {
         // console.log('проверка косания');
         if (this.velocity.y > 0) {
           this.velocity.y = 0;
-
+          this.isJumping = false; // Сбросить флаг прыжка
           // считаем правильное размещение хитбокса
           const offset = this.hitbox.position.y - this.position.y + this.hitbox.height;
 
