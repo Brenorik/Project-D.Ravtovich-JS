@@ -77,6 +77,42 @@ platform2D.forEach((row, y) => {
   });
 });
 
+// шипы
+
+// Столкновение с полом
+const thorns2D = [];
+// перебераем наш масив в 2д. мы знаем что ширина нашей карты 176 плиток
+for (let i = 0; i < thorns.length; i += 176) {
+  // создаем под масив  и вырезаем нужные блоки (каждый ряд и+1 и и+176)
+  thorns2D.push(thorns.slice(i, i + 176));
+}
+// console.log(Thorns2D);
+
+// тут будут столкновения
+const thornsBlocks = [];
+// определились с точками столкновения теперь их нужно извлечь (  каждую строку! - row)
+//  (y -ссылка на наш индекс . где находиться припядствие)
+thorns2D.forEach((row, y) => {
+  row.forEach((symbol, x) => {
+    // console.log(symbol);
+    if (symbol === 453) {
+      // мы нашли эти блоки теперь нужно написать что делаем с ними
+      // console.log('блоки тута');
+
+      // вот столкновение создаем
+      thornsBlocks.push(
+        new CollisionBlock({
+          position: {
+            x: x * 16,
+            y: y * 16,
+          },
+        })
+      );
+    }
+  });
+});
+// console.log(thornsBlocks);
+
 const gravity = 0.1;
 
 // рисуем прямоугольник (цвет. размеры)
@@ -100,6 +136,8 @@ const player = new Player({
 
   collisionBlocks: collisionBlocks,
   platformCollisionBlocks: platformCollisionBlocks,
+  thornsBlocks: thornsBlocks,
+
   // вставляем картинку игрока
   imageSrc: './img/Martial Hero 3/Sprite/Idle.png',
   frameRate: 10,
@@ -143,6 +181,11 @@ const player = new Player({
     LeftGoingDown: {
       imageSrc: './img/Martial Hero 3/Sprite/Left_Going Down.png',
       frameRate: 3,
+      frameBuffer: 4,
+    },
+    Death: {
+      imageSrc: './img/Martial Hero 3/Sprite/Death.png',
+      frameRate: 11,
       frameBuffer: 4,
     },
   },

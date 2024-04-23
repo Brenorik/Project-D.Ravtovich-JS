@@ -1,7 +1,16 @@
 // конструктор для создания играков
 // расширяем клас. чтобы он брал днные из Sprite
 class Player extends Sprite {
-  constructor({ position, collisionBlocks, platformCollisionBlocks, imageSrc, frameRate, scale = 0.5, animations }) {
+  constructor({
+    position,
+    collisionBlocks,
+    platformCollisionBlocks,
+    thornsBlocks,
+    imageSrc,
+    frameRate,
+    scale = 0.5,
+    animations,
+  }) {
     // лезет в родительский класс
     super({ imageSrc, frameRate, scale });
     this.position = position;
@@ -15,6 +24,7 @@ class Player extends Sprite {
     // this.height = 25;
     this.collisionBlocks = collisionBlocks;
     this.platformCollisionBlocks = platformCollisionBlocks;
+    this.thornsBlocks = thornsBlocks;
     // нужно обрезать хитбокс чтобы был только персонаж
     this.hitbox = {
       // цифрами коректируем чтоб обвелся наш спрайт
@@ -41,6 +51,8 @@ class Player extends Sprite {
 
       this.animations[key].image = image;
     }
+    this.isDead = false;
+    this.deathAnimationPlayed = false;
   }
 
   // Метод для выполнения прыжка
@@ -62,6 +74,16 @@ class Player extends Sprite {
     this.frameBuffer = this.animations[key].frameBuffer;
     this.frameRate = this.animations[key].frameRate;
     // console.log(this.image);
+  }
+
+  // Метод для сброса игры
+  resetGame() {
+    this.position = { x: 30, y: 450 };
+    this.velocity = { x: 0, y: 1 };
+    // Сброс других параметров игрока
+    this.isDead = false; // Сброс флага смерти
+
+    camera.position = { x: 0, y: -backgroundImageHeight + scaledCanvas.height };
   }
 
   // метод апдейт камеры
@@ -138,6 +160,8 @@ class Player extends Sprite {
 
     this.updateHitbox();
     this.updateCamerabox();
+
+    if (this.isDead) return;
     // создадим квадрат чтобы видить камеры
     c.fillStyle = 'rgba(0, 0, 255, 0.2)';
     c.fillRect(this.camerabox.position.x, this.camerabox.position.y, this.camerabox.width, this.camerabox.height);
@@ -166,6 +190,13 @@ class Player extends Sprite {
     // Если персонаж касается земли, сбрасываем флаг прыжка
     if (this.isOnGround()) {
       this.isJumping = false;
+    }
+
+    // Проверка на падение за нижнюю рамку канваса
+    if (this.position.y > canvas.height) {
+      // Вызов метода resetGame() при падении за нижнюю рамку канваса
+      this.resetGame();
+      return; // Прерываем выполнение метода, чтобы избежать дальнейших операций
     }
   }
 
@@ -245,7 +276,6 @@ class Player extends Sprite {
   }
   // метод проверки сталкновение под воздействием гравитации
   checkForVerticalCollisions() {
-    // прыжок 1 раз
     // for (let i = 0; i < this.collisionBlocks.lenght; i++) { БАЛБЕС
     for (let i = 0; i < this.collisionBlocks.length; i++) {
       const collisionBlock = this.collisionBlocks[i];
@@ -280,13 +310,13 @@ class Player extends Sprite {
 
     // платформы
     for (let i = 0; i < this.platformCollisionBlocks.length; i++) {
-      const platformCollisionBlocks = this.platformCollisionBlocks[i];
+      const platformCollisionBlock = this.platformCollisionBlocks[i];
       // обноружение столкновения
 
       if (
         platformCollision({
           object1: this.hitbox,
-          object2: platformCollisionBlocks,
+          object2: platformCollisionBlock,
         })
       ) {
         // console.log('проверка косания');
@@ -297,9 +327,22 @@ class Player extends Sprite {
           const offset = this.hitbox.position.y - this.position.y + this.hitbox.height;
 
           // тормозим блок на верхней точке добовляем 0.01 для качественного сталкновения
-          this.position.y = platformCollisionBlocks.position.y - offset - 0.01;
+          this.position.y = platformCollisionBlock.position.y - offset - 0.01;
           break;
         }
+      }
+    }
+
+    // шипы
+    for (let i = 0; i < this.thornsBlocks.length; i++) {
+      const thornsBlock = this.thornsBlocks[i];
+      // обноружение столкновения
+      if (
+        collision({
+          object1: this.hitbox,
+          object2: thornsBlock,
+        })
+      ) {
       }
     }
   }

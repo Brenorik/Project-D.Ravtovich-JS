@@ -1,0 +1,36 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.menu {
+  text-align: center;
+}
+
+.menu-image {
+  max-width: 200px; /* adjust as needed */
+  margin-bottom: 20px;
+}
+
+.menu-items {
+  list-style-type: none;
+  padding: 0;
+}
+
+.menu-item {
+  cursor: pointer;
+  margin-bottom: 10px;
+  color: white;
+  font-size: 20px;
+  transition: color 0.3s;
+}
+
+.menu-item:hover {
+  color: yellow; /* adjust hover color as needed */
+}
