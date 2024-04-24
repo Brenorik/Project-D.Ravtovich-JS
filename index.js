@@ -115,18 +115,6 @@ thorns2D.forEach((row, y) => {
 
 const gravity = 0.1;
 
-// рисуем прямоугольник (цвет. размеры)
-// c.fillStyle = 'white';
-// c.fillRect(10, 10, 50, 50);
-
-// рисуем поле на размер canvas
-// c.fillStyle = 'white';
-// c.fillRect(0, 0, canvas.width, canvas.height);
-
-// рисуем красный квадрат для опытов
-// c.fillStyle = 'red';
-// c.fillRect(200, 100, 100, 100);
-
 // начальная точко появления игрока
 const player = new Player({
   position: {
@@ -190,6 +178,8 @@ const player = new Player({
     },
   },
 });
+
+const gameUI = new GameUI();
 
 // создаем еременную для изменяющтхся координат квадрата
 let y = 100;
@@ -263,15 +253,6 @@ function animate() {
   // запуск игрока
   // player.draw();
   player.update();
-  // пихаем квадрат для анимации
-  // c.fillStyle = 'red';
-  // c.fillRect(200, y, 100, 100);
-  // // y++;
-
-  // добовляем второго игрока к  примеру
-  // c.fillStyle = 'red';
-  // c.fillRect(400, y, 100, 100);
-  // // y2++;
 
   // перемещение на кнопку (можем скорость поставить)
   player.velocity.x = 0;
@@ -318,41 +299,39 @@ let isJumping = false;
 // При нажатии клавиш
 window.addEventListener('keydown', (event) => {
   // Проверяем, проигрывается ли анимация смерти
-  if (!player.deathAnimationPlayed) {
-    switch (event.code) {
-      case 'KeyD':
-        keys.KeyD.pressed = true;
-        break;
-      case 'KeyA':
-        keys.KeyA.pressed = true;
-        break;
-      case 'Space':
-      case 'KeyW':
-        // Вызываем метод прыжка у игрока
-        player.jump();
-        break;
-    }
+
+  switch (event.code) {
+    case 'KeyD':
+      keys.KeyD.pressed = true;
+      break;
+    case 'KeyA':
+      keys.KeyA.pressed = true;
+      break;
+    case 'Space':
+    case 'KeyW':
+      // Вызываем метод прыжка у игрока
+      player.jump();
+      break;
   }
 });
 
 // При отжатии клавиш
 window.addEventListener('keyup', (event) => {
   // Проверяем, проигрывается ли анимация смерти
-  if (!player.deathAnimationPlayed) {
-    switch (event.code) {
-      case 'KeyD':
-        keys.KeyD.pressed = false;
-        break;
-      case 'KeyA':
-        keys.KeyA.pressed = false;
-        break;
-      case 'Space':
-      case 'KeyW':
-        // Проверяем, был ли прыжок и необходимо ли прекратить его
-        if (isJumping) {
-          isJumping = false;
-        }
-        break;
-    }
+
+  switch (event.code) {
+    case 'KeyD':
+      keys.KeyD.pressed = false;
+      break;
+    case 'KeyA':
+      keys.KeyA.pressed = false;
+      break;
+    case 'Space':
+    case 'KeyW':
+      // Проверяем, был ли прыжок и необходимо ли прекратить его
+      if (isJumping) {
+        isJumping = false;
+      }
+      break;
   }
 });

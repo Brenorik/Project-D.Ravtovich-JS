@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <!-- <link rel="stylesheet" href="styles.css" /> -->
+    <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body>
     <!-- <div id="menu" class="menu">
@@ -15,6 +15,14 @@
         <li id="historyMenuItem" class="menu-item">История</li>
       </ul>
     </div> -->
+    <!-- Модальное окно для сброса игры -->
+    <div id="gameOverModal" class="modal">
+      <div class="modal-content">
+        <h2>Game Over</h2>
+        <p>Прадул</p>
+        <button id="restartButton">Перезапуск игры</button>
+      </div>
+    </div>
 
     <canvas></canvas>
 
@@ -22,8 +30,10 @@
     <script src="./js/classes/CollisionBlock.js"></script>
     <script src="./js/classes/Sprite.js"></script>
     <script src="./js/classes/Player.js"></script>
+    <script src="./js/classes/GameUI.js"></script>
     <script src="./js/data/Collisions.js"></script>
     <script src="index.js"></script>
-    <!-- <script src="./js/data/menu.js" type="module"></script> -->
+
+    <!-- <script src="./js/menu.js" type="module"></script> -->
   </body>
 </html>

@@ -69,7 +69,7 @@ class Player extends Sprite {
     if (this.image === this.animations.Death.image) {
       if (this.currentFrame === this.animations.Death.frameRate - 1) {
         this.deathAnimationPlayed = true; // Устанавливаем флаг, указывающий, что анимация смерти была воспроизведена
-        this.resetGame(); // Вызываем метод resetGame() после завершения анимации смерти
+        gameUI.showGameOverModal(); // Показываем модальное окно при смерти персонажа; // Вызываем метод resetGame() после завершения анимации смерти
       }
       return;
     }
@@ -156,11 +156,6 @@ class Player extends Sprite {
     }
   }
 
-  // // создаем игрока Скрываем метод когда начинаем ссылаться на спрайт
-  // draw() {
-  //   c.fillStyle = 'red';
-  //   c.fillRect(this.position.x, this.position.y, this.width, this.height);
-  // }
   // изменение координат методом
   update() {
     // нам нужно анимация персонажа обновляем фрейм
@@ -205,7 +200,7 @@ class Player extends Sprite {
     // Проверка на падение за нижнюю рамку канваса
     if (this.position.y > canvas.height) {
       // Вызов метода resetGame() при падении за нижнюю рамку канваса
-      this.resetGame();
+      gameUI.showGameOverModal();
       return; // Прерываем выполнение метода, чтобы избежать дальнейших операций
     }
   }
@@ -236,9 +231,6 @@ class Player extends Sprite {
       },
       width: 22,
       height: 21,
-
-      // width: 22, правильно
-      // height: 21, правильно
     };
   }
 

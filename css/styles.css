@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.menu {
+  text-align: center;
+}
+
+.menu-image {
+  max-width: 200px; /* adjust as needed */
+  margin-bottom: 20px;
+}
+
+.menu-items {
+  list-style-type: none;
+  padding: 0;
+}
+
+.menu-item {
+  cursor: pointer;
+  margin-bottom: 10px;
+  color: white;
+  font-size: 20px;
+  transition: color 0.3s;
+}
+
+.menu-item:hover {
+  color: yellow; /* adjust hover color as needed */
+}
+
+/* Стили для модального окна */
+/* Стили для модального окна */
+.modal {
+  display: none; /* Скрыто по умолчанию */
+  position: fixed; /* Фиксированное позиционирование */
+  z-index: 1; /* Отображается поверх всего */
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+}
+
+/* Стили для содержимого модального окна */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* Отступ сверху и снизу, автоматические боковые отступы */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Ширина контента */
+}
+
+/* Стили для кнопки */
+#restartButton {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Стили для кнопки при наведении */
+#restartButton:hover {
+  background-color: #45a049;
+}
