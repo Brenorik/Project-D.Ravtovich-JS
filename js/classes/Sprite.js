@@ -26,6 +26,7 @@ class Sprite {
     this.frameBuffer = frameBuffer;
     // прошедчие кадры
     this.elapsedFrame = 0;
+    this.dead = false;
   }
 
   // метод рисования
@@ -64,8 +65,11 @@ class Sprite {
   updateFrames() {
     this.elapsedFrame++;
     if (this.elapsedFrame % this.frameBuffer === 0) {
-      if (this.currentFrame < this.frameRate - 1) this.currentFrame++;
-      else this.currentFrame = 0;
+      if (this.currentFrame < this.frameRate - 1) {
+        this.currentFrame++;
+      } else {
+        this.currentFrame = 0;
+      }
     }
   }
 }

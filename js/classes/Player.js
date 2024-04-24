@@ -51,7 +51,6 @@ class Player extends Sprite {
 
       this.animations[key].image = image;
     }
-    this.isDead = false;
     this.deathAnimationPlayed = false;
   }
 
@@ -67,23 +66,32 @@ class Player extends Sprite {
   // метод обновления(другого слайда)dd
 
   switchSprite(key) {
+    if (this.image === this.animations.Death.image) {
+      if (this.currentFrame === this.animations.Death.frameRate - 1) {
+        this.deathAnimationPlayed = true; // Устанавливаем флаг, указывающий, что анимация смерти была воспроизведена
+        this.resetGame(); // Вызываем метод resetGame() после завершения анимации смерти
+      }
+      return;
+    }
     if (this.image === this.animations[key].image || !this.loaded) return;
 
     this.currentFrame = 0;
     this.image = this.animations[key].image;
     this.frameBuffer = this.animations[key].frameBuffer;
     this.frameRate = this.animations[key].frameRate;
-    // console.log(this.image);
   }
 
   // Метод для сброса игры
   resetGame() {
+    // Сброс позиции и скорости игрока
     this.position = { x: 30, y: 450 };
     this.velocity = { x: 0, y: 1 };
-    // Сброс других параметров игрока
-    this.isDead = false; // Сброс флага смерти
-
+    // Сброс флага проигрывания анимации смерти
+    this.deathAnimationPlayed = false;
+    // Сброс позиции камеры
     camera.position = { x: 0, y: -backgroundImageHeight + scaledCanvas.height };
+    // Очистка текущего изображения
+    this.image = null;
   }
 
   // метод апдейт камеры
@@ -161,7 +169,9 @@ class Player extends Sprite {
     this.updateHitbox();
     this.updateCamerabox();
 
-    if (this.isDead) return;
+    if (this.deathAnimationPlayed) {
+      return;
+    }
     // создадим квадрат чтобы видить камеры
     c.fillStyle = 'rgba(0, 0, 255, 0.2)';
     c.fillRect(this.camerabox.position.x, this.camerabox.position.y, this.camerabox.width, this.camerabox.height);
@@ -333,16 +343,26 @@ class Player extends Sprite {
       }
     }
 
-    // шипы
     for (let i = 0; i < this.thornsBlocks.length; i++) {
       const thornsBlock = this.thornsBlocks[i];
-      // обноружение столкновения
+      // обнаружение столкновения со шпиками
       if (
         collision({
           object1: this.hitbox,
           object2: thornsBlock,
         })
       ) {
+        this.switchSprite('Death'); // Проигрываем анимацию смерти
+        if (this.velocity.y > 0) {
+          this.velocity.y = 0;
+
+          // считаем правильное размещение хитбокса
+          const offset = this.hitbox.position.y - this.position.y + this.hitbox.height;
+
+          // тормозим блок на верхней точке добовляем 0.01 для качественного сталкновения
+          this.position.y = thornsBlock.position.y - offset - 0.01;
+          break;
+        }
       }
     }
   }

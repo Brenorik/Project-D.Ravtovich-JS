@@ -186,7 +186,7 @@ const player = new Player({
     Death: {
       imageSrc: './img/Martial Hero 3/Sprite/Death.png',
       frameRate: 11,
-      frameBuffer: 4,
+      frameBuffer: 6,
     },
   },
 });
@@ -275,22 +275,25 @@ function animate() {
 
   // перемещение на кнопку (можем скорость поставить)
   player.velocity.x = 0;
-  if (keys.KeyD.pressed) {
-    // метод переключения спрайта
-    player.switchSprite('Run');
-    player.velocity.x = 2;
-    player.lastDirection = 'right';
-    // камера
-    player.shouldPanCameraToTheLeft({ canvas, camera });
-  } else if (keys.KeyA.pressed) {
-    player.switchSprite('LeftRun');
-    player.velocity.x = -2;
-    player.lastDirection = 'Left';
-    // камера на лево
-    player.shouldPanCameraToTheRight({ canvas, camera });
-  } else if (player.velocity.y === 0) {
-    if (player.lastDirection === 'right') player.switchSprite('Idle');
-    else player.switchSprite('LeftIdle');
+  if (!player.deathAnimationPlayed) {
+    // Добавляем проверку здесь
+    if (keys.KeyD.pressed) {
+      // метод переключения спрайта
+      player.switchSprite('Run');
+      player.velocity.x = 2;
+      player.lastDirection = 'right';
+      // камера
+      player.shouldPanCameraToTheLeft({ canvas, camera });
+    } else if (keys.KeyA.pressed) {
+      player.switchSprite('LeftRun');
+      player.velocity.x = -2;
+      player.lastDirection = 'Left';
+      // камера на лево
+      player.shouldPanCameraToTheRight({ canvas, camera });
+    } else if (player.velocity.y === 0) {
+      if (player.lastDirection === 'right') player.switchSprite('Idle');
+      else player.switchSprite('LeftIdle');
+    }
   }
 
   // прыжок
@@ -311,39 +314,45 @@ animate();
 
 // это я добавиль чтобы отжать клавишу
 let isJumping = false;
-
 // Нажатие клавиш
+// При нажатии клавиш
 window.addEventListener('keydown', (event) => {
-  switch (event.code) {
-    case 'KeyD':
-      keys.KeyD.pressed = true;
-      break;
-    case 'KeyA':
-      keys.KeyA.pressed = true;
-      break;
-    case 'Space':
-    case 'KeyW':
-      // Вызываем метод прыжка у игрока
-      player.jump();
-      break;
+  // Проверяем, проигрывается ли анимация смерти
+  if (!player.deathAnimationPlayed) {
+    switch (event.code) {
+      case 'KeyD':
+        keys.KeyD.pressed = true;
+        break;
+      case 'KeyA':
+        keys.KeyA.pressed = true;
+        break;
+      case 'Space':
+      case 'KeyW':
+        // Вызываем метод прыжка у игрока
+        player.jump();
+        break;
+    }
   }
 });
 
 // При отжатии клавиш
 window.addEventListener('keyup', (event) => {
-  switch (event.code) {
-    case 'KeyD':
-      keys.KeyD.pressed = false;
-      break;
-    case 'KeyA':
-      keys.KeyA.pressed = false;
-      break;
-    case 'Space':
-    case 'KeyW':
-      // Проверяем, был ли прыжок и необходимо ли прекратить его
-      if (isJumping) {
-        isJumping = false;
-      }
-      break;
+  // Проверяем, проигрывается ли анимация смерти
+  if (!player.deathAnimationPlayed) {
+    switch (event.code) {
+      case 'KeyD':
+        keys.KeyD.pressed = false;
+        break;
+      case 'KeyA':
+        keys.KeyA.pressed = false;
+        break;
+      case 'Space':
+      case 'KeyW':
+        // Проверяем, был ли прыжок и необходимо ли прекратить его
+        if (isJumping) {
+          isJumping = false;
+        }
+        break;
+    }
   }
 });
