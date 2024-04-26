@@ -263,7 +263,10 @@ function animate() {
   // player.draw();
   player.update();
 
-  enemyBee.update();
+  enemyBeeOne.update();
+  enemyBeeTwo.update();
+  enemyBeeThree.update();
+  enemyBoarOne.update();
   appleManager.update();
   appleManager.draw();
 

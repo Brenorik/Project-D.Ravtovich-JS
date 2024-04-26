@@ -1,65 +1,96 @@
 class Enemy extends Sprite {
   constructor({ x, y, imageSrcRight, imageSrcLeft, frameRate, frameBuffer, scale = 0.5, targetX, speed }) {
-    // Вызываем конструктор родительского класса Sprite
     super({
       position: { x, y },
-      imageSrc: imageSrcRight, // Устанавливаем начальное изображение вправо
+      imageSrc: imageSrcRight,
       frameRate,
       frameBuffer,
       scale,
     });
 
-    // Дополнительные свойства для управления врагом
     this.targetX = targetX;
     this.speed = speed;
-    this.direction = 1; // Направление движения (1 - вправо, -1 - влево)
-    this.imageSrcRight = imageSrcRight; // Путь к изображению вправо
-    this.imageSrcLeft = imageSrcLeft; // Путь к изображению влево
+    this.direction = 1;
+    this.imageSrcRight = imageSrcRight;
+    this.imageSrcLeft = imageSrcLeft;
+    this.startX = x; // Начальная позиция врага
   }
 
-  // Метод для установки нового пути к изображению
   setImageSrc(src) {
-    this.imageSrc = src; // Обновляем путь к изображению
-    // Загружаем новое изображение
+    this.imageSrc = src;
     this.image.onload = () => {
-      // При загрузке изображения обновляем его размеры
       this.width = (this.image.width / this.frameRate) * this.scale;
       this.height = this.image.height * this.scale;
       this.loaded = true;
     };
-    this.image.src = src; // Устанавливаем путь к изображению для загрузки
+    this.image.src = src;
   }
 
-  // Метод для обновления состояния врага
   update() {
-    // Вызываем метод update родительского класса Sprite
     super.update();
 
-    // Двигаем врага вправо или влево в зависимости от текущего направления
     this.position.x += this.speed * this.direction;
 
-    // Если враг достигает границы, меняем направление и изображение
-    if (this.position.x >= this.targetX || this.position.x <= this.targetX - 100) {
-      this.direction *= -1; // Изменяем направление движения
-      // Меняем изображение в зависимости от направления
+    // Проверяем, достиг ли враг точки, чтобы изменить направление
+    if (
+      (this.direction === 1 && this.position.x >= this.targetX) ||
+      (this.direction === -1 && this.position.x <= this.startX)
+    ) {
+      this.direction *= -1;
       if (this.direction === 1) {
-        this.setImageSrc(this.imageSrcRight); // Изменяем на изображение вправо
+        this.setImageSrc(this.imageSrcRight);
       } else {
-        this.setImageSrc(this.imageSrcLeft); // Изменяем на изображение влево
+        this.setImageSrc(this.imageSrcLeft);
       }
     }
   }
 }
 
 // Создаем экземпляр врага с использованием нового класса Enemy
-const enemyBee = new Enemy({
-  x: 30,
-  y: 450,
-  imageSrcRight: './img/Small Bee/Fly/FlyRight.png', // Путь к изображению вправо
-  imageSrcLeft: './img/Small Bee/Fly/FlyLeft.png', // Путь к изображению влево
+const enemyBeeOne = new Enemy({
+  x: 144,
+  y: 448,
+  imageSrcRight: './img/Small Bee/Fly/FlyRight.png',
+  imageSrcLeft: './img/Small Bee/Fly/FlyLeft.png',
   frameRate: 4,
   frameBuffer: 4,
   scale: 0.5,
-  targetX: 100, // Целевая координата X, к которой враг будет двигаться
-  speed: 1, // Скорость движения врага
+  targetX: 352,
+  speed: 1,
+});
+
+const enemyBeeTwo = new Enemy({
+  x: 1008,
+  y: 96,
+  imageSrcRight: './img/Small Bee/Fly/FlyRight.png',
+  imageSrcLeft: './img/Small Bee/Fly/FlyLeft.png',
+  frameRate: 4,
+  frameBuffer: 4,
+  scale: 0.5,
+  targetX: 1152,
+  speed: 1,
+});
+
+const enemyBeeThree = new Enemy({
+  x: 2304,
+  y: 336,
+  imageSrcRight: './img/Small Bee/Fly/FlyRight.png',
+  imageSrcLeft: './img/Small Bee/Fly/FlyLeft.png',
+  frameRate: 4,
+  frameBuffer: 4,
+  scale: 0.5,
+  targetX: 2448,
+  speed: 1,
+});
+
+const enemyBoarOne = new Enemy({
+  x: 1232,
+  y: 496,
+  imageSrcRight: './img/Boar/Run/RunBlackRight.png',
+  imageSrcLeft: './img/Boar/Run/RunBlackLeft.png',
+  frameRate: 6,
+  frameBuffer: 4,
+  scale: 1,
+  targetX: 1360,
+  speed: 0.8,
 });
