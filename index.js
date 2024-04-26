@@ -79,27 +79,18 @@ platform2D.forEach((row, y) => {
 
 // шипы
 
-// Столкновение с полом
 const thorns2D = [];
-// перебераем наш масив в 2д. мы знаем что ширина нашей карты 176 плиток
 for (let i = 0; i < thorns.length; i += 176) {
-  // создаем под масив  и вырезаем нужные блоки (каждый ряд и+1 и и+176)
   thorns2D.push(thorns.slice(i, i + 176));
 }
 // console.log(Thorns2D);
-
-// тут будут столкновения
 const thornsBlocks = [];
-// определились с точками столкновения теперь их нужно извлечь (  каждую строку! - row)
-//  (y -ссылка на наш индекс . где находиться припядствие)
 thorns2D.forEach((row, y) => {
   row.forEach((symbol, x) => {
     // console.log(symbol);
     if (symbol === 453) {
-      // мы нашли эти блоки теперь нужно написать что делаем с ними
       // console.log('блоки тута');
 
-      // вот столкновение создаем
       thornsBlocks.push(
         new CollisionBlock({
           position: {
@@ -113,6 +104,11 @@ thorns2D.forEach((row, y) => {
 });
 // console.log(thornsBlocks);
 
+const apple2D = [];
+for (let i = 0; i < apple.length; i += 176) {
+  apple2D.push(apple.slice(i, i + 176));
+}
+// console.log(apple2D);
 const gravity = 0.1;
 
 // начальная точко появления игрока
@@ -180,6 +176,8 @@ const player = new Player({
 });
 
 const gameUI = new GameUI();
+
+const appleManager = new AppleManager(apple2D);
 
 // создаем еременную для изменяющтхся координат квадрата
 let y = 100;
@@ -253,6 +251,14 @@ function animate() {
   // запуск игрока
   // player.draw();
   player.update();
+  appleManager.update();
+  appleManager.draw();
+
+  if (appleManager.checkApple(player)) {
+    console.log('яблочко');
+    // Действия, которые нужно выполнить после столкновения с яблоком
+    // Например, увеличить счетчик яблок или выполнить другие действия
+  }
 
   // перемещение на кнопку (можем скорость поставить)
   player.velocity.x = 0;

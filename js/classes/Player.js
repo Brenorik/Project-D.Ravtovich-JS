@@ -92,6 +92,7 @@ class Player extends Sprite {
     camera.position = { x: 0, y: -backgroundImageHeight + scaledCanvas.height };
     // Очистка текущего изображения
     this.image = null;
+    appleManager.createApples(apple2D);
   }
 
   // метод апдейт камеры
