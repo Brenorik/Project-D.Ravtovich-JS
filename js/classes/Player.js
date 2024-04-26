@@ -92,6 +92,11 @@ class Player extends Sprite {
     camera.position = { x: 0, y: -backgroundImageHeight + scaledCanvas.height };
     // Очистка текущего изображения
     this.image = null;
+
+    // Очистка массива яблок
+    appleManager.apples = [];
+
+    // Пересоздаем яблоки
     appleManager.createApples(apple2D);
   }
 

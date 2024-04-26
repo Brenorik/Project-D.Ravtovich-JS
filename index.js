@@ -111,6 +111,17 @@ for (let i = 0; i < apple.length; i += 176) {
 // console.log(apple2D);
 const gravity = 0.1;
 
+// const enemyBee = new Sprite({
+//   position: {
+//     x: 30,
+//     y: 450,
+//   },
+//   imageSrc: './img/Small Bee/Fly/Fly-Sheet.png',
+//   frameRate: 4,
+//   frameBuffer: 4,
+//   scale: 0.5,
+// });
+
 // начальная точко появления игрока
 const player = new Player({
   position: {
@@ -251,6 +262,8 @@ function animate() {
   // запуск игрока
   // player.draw();
   player.update();
+
+  enemyBee.update();
   appleManager.update();
   appleManager.draw();
 
