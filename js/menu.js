@@ -25,3 +25,9 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('История');
   }
 });
+// function startGame() {
+//    начало игры
+
+//
+//   animate();
+// }
