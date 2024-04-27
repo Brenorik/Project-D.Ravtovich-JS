@@ -52,6 +52,21 @@ class Player extends Sprite {
       this.animations[key].image = image;
     }
     this.deathAnimationPlayed = false;
+    this.isAttacking = false;
+  }
+
+  // Метод для атаки
+  attack() {
+    if (!this.isAttacking) {
+      // Проверяем, не проигрывается ли уже атака
+      this.isAttacking = true; // Устанавливаем переменную состояния атаки
+      if (this.lastDirection === 'right') this.switchSprite('Attack3Right');
+      else this.switchSprite('Attack3Left');
+    }
+  }
+  // Метод для завершения атаки
+  finishAttack() {
+    this.isAttacking = false; // Сбрасываем переменную состояния атаки
   }
 
   // Метод для выполнения прыжка
@@ -66,6 +81,13 @@ class Player extends Sprite {
   // метод обновления(другого слайда)dd
 
   switchSprite(key) {
+    if (
+      (this.image === this.animations.Attack3Left.image &&
+        this.currentFrame < this.animations.Attack3Left.frameRate - 1) ||
+      (this.image === this.animations.Attack3Right.image &&
+        this.currentFrame < this.animations.Attack3Right.frameRate - 1)
+    )
+      return;
     if (this.image === this.animations.Death.image) {
       if (this.currentFrame === this.animations.Death.frameRate - 1) {
         this.deathAnimationPlayed = true; // Устанавливаем флаг, указывающий, что анимация смерти была воспроизведена

@@ -111,17 +111,6 @@ for (let i = 0; i < apple.length; i += 176) {
 // console.log(apple2D);
 const gravity = 0.1;
 
-// const enemyBee = new Sprite({
-//   position: {
-//     x: 30,
-//     y: 450,
-//   },
-//   imageSrc: './img/Small Bee/Fly/Fly-Sheet.png',
-//   frameRate: 4,
-//   frameBuffer: 4,
-//   scale: 0.5,
-// });
-
 // начальная точко появления игрока
 const player = new Player({
   position: {
@@ -183,6 +172,16 @@ const player = new Player({
       frameRate: 11,
       frameBuffer: 6,
     },
+    Attack3Left: {
+      imageSrc: './img/Martial Hero 3/Sprite/Attack3Left.png',
+      frameRate: 9,
+      frameBuffer: 4,
+    },
+    Attack3Right: {
+      imageSrc: './img/Martial Hero 3/Sprite/Attack1.png',
+      frameRate: 7,
+      frameBuffer: 4,
+    },
   },
 });
 
@@ -203,7 +202,13 @@ const keys = {
   KeyA: {
     pressed: false,
   },
+  KeyW: {
+    pressed: false,
+  },
   Space: {
+    pressed: false,
+  },
+  KeyO: {
     pressed: false,
   },
 };
@@ -319,6 +324,8 @@ animate();
 let isJumping = false;
 // Нажатие клавиш
 // При нажатии клавиш
+// Добавляем обработчики для клавиш
+// При нажатии клавиш
 window.addEventListener('keydown', (event) => {
   // Проверяем, проигрывается ли анимация смерти
 
@@ -331,8 +338,16 @@ window.addEventListener('keydown', (event) => {
       break;
     case 'Space':
     case 'KeyW':
-      // Вызываем метод прыжка у игрока
-      player.jump();
+      // Проверяем, был ли прыжок и необходимо ли начать его
+      if (!isJumping) {
+        isJumping = true;
+        // Вызываем метод прыжка у игрока
+        player.jump();
+      }
+      break;
+    case 'KeyO': // Добавляем обработку нажатия клавиши "O"
+      // Вызываем метод атаки у игрока
+      player.attack(); // Вызываем метод атаки у игрока
       break;
   }
 });
@@ -354,6 +369,10 @@ window.addEventListener('keyup', (event) => {
       if (isJumping) {
         isJumping = false;
       }
+      break;
+    case 'KeyO': // Добавляем обработку отпускания клавиши "O"
+      // Остановка атаки (если необходимо)
+      player.finishAttack(); // Вызываем метод завершения атаки у игрока
       break;
   }
 });
