@@ -274,6 +274,10 @@ function animate() {
   enemyBoarOne.update();
   appleManager.update();
   appleManager.draw();
+  // Рисуем элементы
+  gameUI.drawTimer(camera);
+  gameUI.drawScore(camera);
+  gameUI.drawHearts(camera);
 
   if (appleManager.checkApple(player)) {
     console.log('яблочко');

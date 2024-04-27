@@ -104,7 +104,7 @@ class Player extends Sprite {
       ) {
         // Обнаружено столкновение с врагом
         // console.log('Столкновение с вражеским хитбоксом!');
-        this.resetGame();
+        gameUI.showGameOverModal();
         // Здесь вызовите метод уничтожения врага, например:
       }
     }
