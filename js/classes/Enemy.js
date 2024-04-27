@@ -1,5 +1,17 @@
 class Enemy extends Sprite {
-  constructor({ x, y, imageSrcRight, imageSrcLeft, frameRate, frameBuffer, scale = 0.5, targetX, speed }) {
+  constructor({
+    x,
+    y,
+    imageSrcRight,
+    imageSrcLeft,
+    frameRate,
+    frameBuffer,
+    scale = 0.5,
+    targetX,
+    speed,
+    hitboxWidth,
+    hitboxHeight,
+  }) {
     super({
       position: { x, y },
       imageSrc: imageSrcRight,
@@ -14,6 +26,11 @@ class Enemy extends Sprite {
     this.imageSrcRight = imageSrcRight;
     this.imageSrcLeft = imageSrcLeft;
     this.startX = x; // Начальная позиция врага
+    this.hitbox = {
+      position: { x: this.position.x, y: this.position.y },
+      width: hitboxWidth,
+      height: hitboxHeight,
+    };
   }
 
   setImageSrc(src) {
@@ -28,8 +45,22 @@ class Enemy extends Sprite {
 
   update() {
     super.update();
+    // создадим квадрат чтобы видить рамки изоброжения
+    c.fillStyle = 'rgba(0, 255, 0, 0.2)';
+    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+    // создадим квадрат чтобы видить ХИТБОКСА
+    c.fillStyle = 'rgba(255, 0, 0, 0.2)';
+    c.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
 
     this.position.x += this.speed * this.direction;
+
+    // Центрируем хитбокс относительно позиции персонажа
+    const hitboxX = this.position.x + (this.width - this.hitbox.width) / 2;
+    const hitboxY = this.position.y + (this.height - this.hitbox.height) / 2;
+
+    // Обновляем позицию хитбокса
+    this.hitbox.position.x = hitboxX;
+    this.hitbox.position.y = hitboxY;
 
     // Проверяем, достиг ли враг точки, чтобы изменить направление
     if (
@@ -44,6 +75,10 @@ class Enemy extends Sprite {
       }
     }
   }
+  destroy() {
+    // Убрать врага из игры, например:
+    this.position.x = -1000; // Переместить врага за пределы экрана
+  }
 }
 
 // Создаем экземпляр врага с использованием нового класса Enemy
@@ -57,6 +92,8 @@ const enemyBeeOne = new Enemy({
   scale: 0.5,
   targetX: 352,
   speed: 1,
+  hitboxWidth: 20, // Ширина хитбокса
+  hitboxHeight: 20, // Высота хитбокса
 });
 
 const enemyBeeTwo = new Enemy({
@@ -69,6 +106,8 @@ const enemyBeeTwo = new Enemy({
   scale: 0.5,
   targetX: 1152,
   speed: 1,
+  hitboxWidth: 20,
+  hitboxHeight: 20,
 });
 
 const enemyBeeThree = new Enemy({
@@ -81,6 +120,8 @@ const enemyBeeThree = new Enemy({
   scale: 0.5,
   targetX: 2448,
   speed: 1,
+  hitboxWidth: 20,
+  hitboxHeight: 20,
 });
 
 const enemyBoarOne = new Enemy({
@@ -93,4 +134,8 @@ const enemyBoarOne = new Enemy({
   scale: 1,
   targetX: 1360,
   speed: 0.8,
+  hitboxWidth: 25,
+  hitboxHeight: 25,
 });
+
+const enemies = [enemyBeeOne, enemyBeeTwo, enemyBeeThree, enemyBoarOne];

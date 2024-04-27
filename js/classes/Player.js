@@ -62,11 +62,52 @@ class Player extends Sprite {
       this.isAttacking = true; // Устанавливаем переменную состояния атаки
       if (this.lastDirection === 'right') this.switchSprite('Attack3Right');
       else this.switchSprite('Attack3Left');
+
+      // Проверяем столкновение с врагами при атаке
+      for (let i = 0; i < enemies.length; i++) {
+        const enemy = enemies[i];
+        if (
+          collision({
+            object1: {
+              // Позиция и размеры спрайта персонажа
+              position: {
+                x: this.position.x,
+                y: this.position.y + 20,
+              },
+              width: this.width + 3,
+              height: 21,
+            },
+            object2: enemy.hitbox,
+          })
+        ) {
+          // Обнаружено столкновение с врагом
+          console.log('Столкновение при атаке!');
+          // Уничтожаем врага
+          enemy.destroy();
+        }
+      }
     }
   }
   // Метод для завершения атаки
   finishAttack() {
     this.isAttacking = false; // Сбрасываем переменную состояния атаки
+  }
+
+  checkForEnemyCollisions(enemies) {
+    for (let i = 0; i < enemies.length; i++) {
+      const enemy = enemies[i];
+      if (
+        collision({
+          object1: this.hitbox,
+          object2: enemy.hitbox,
+        })
+      ) {
+        // Обнаружено столкновение с врагом
+        // console.log('Столкновение с вражеским хитбоксом!');
+        this.resetGame();
+        // Здесь вызовите метод уничтожения врага, например:
+      }
+    }
   }
 
   // Метод для выполнения прыжка
@@ -120,6 +161,14 @@ class Player extends Sprite {
 
     // Пересоздаем яблоки
     appleManager.createApples(apple2D);
+
+    // Пересоздаем всех врагов
+    for (let i = 0; i < enemies.length; i++) {
+      const enemy = enemies[i];
+      enemy.position = { x: enemy.startX, y: enemy.position.y }; // Возвращаем врага на начальную позицию
+      enemy.direction = 1; // Устанавливаем начальное направление движения
+      enemy.setImageSrc(enemy.imageSrcRight); // Устанавливаем изображение врага в правильное направление
+    }
   }
 
   // метод апдейт камеры
@@ -196,9 +245,11 @@ class Player extends Sprite {
       return;
     }
     // создадим квадрат чтобы видить камеры
+    // c.fillStyle = 'rgba(0, 0, 255, 0.2)';
+    // c.fillRect(this.camerabox.position.x, this.camerabox.position.y, this.camerabox.width, this.camerabox.height);
+    // создадим квадрат чтобы видить удао
     c.fillStyle = 'rgba(0, 0, 255, 0.2)';
-    c.fillRect(this.camerabox.position.x, this.camerabox.position.y, this.camerabox.width, this.camerabox.height);
-
+    c.fillRect(this.position.x, this.position.y + 20, this.width + 3, 21);
     // создадим квадрат чтобы видить рамки изоброжения
     c.fillStyle = 'rgba(0, 255, 0, 0.2)';
     c.fillRect(this.position.x, this.position.y, this.width, this.height);
@@ -219,6 +270,8 @@ class Player extends Sprite {
     this.updateHitbox();
     // проверка на сталкновение
     this.checkForVerticalCollisions();
+
+    this.checkForEnemyCollisions(enemies);
 
     // Если персонаж касается земли, сбрасываем флаг прыжка
     if (this.isOnGround()) {
