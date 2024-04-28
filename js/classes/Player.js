@@ -53,6 +53,7 @@ class Player extends Sprite {
     }
     this.deathAnimationPlayed = false;
     this.isAttacking = false;
+    this.lastCollisionTime = 0;
   }
 
   // Метод для атаки
@@ -82,6 +83,7 @@ class Player extends Sprite {
         ) {
           // Обнаружено столкновение с врагом
           console.log('Столкновение при атаке!');
+          gameUI.updateScore(100);
           // Уничтожаем врага
           enemy.destroy();
         }
@@ -94,6 +96,9 @@ class Player extends Sprite {
   }
 
   checkForEnemyCollisions(enemies) {
+    const currentTime = Date.now(); // Получаем текущее время в миллисекундах
+    const collisionThreshold = 2000; // Порог времени для повторного столкновения (2 секунды)
+
     for (let i = 0; i < enemies.length; i++) {
       const enemy = enemies[i];
       if (
@@ -102,10 +107,24 @@ class Player extends Sprite {
           object2: enemy.hitbox,
         })
       ) {
-        // Обнаружено столкновение с врагом
-        // console.log('Столкновение с вражеским хитбоксом!');
-        gameUI.showGameOverModal();
-        // Здесь вызовите метод уничтожения врага, например:
+        if (currentTime - this.lastCollisionTime > collisionThreshold) {
+          // Если прошло больше collisionThreshold миллисекунд с последнего столкновения
+          // Уменьшаем количество сердец
+          gameUI.heartsCount--;
+
+          if (gameUI.heartsCount <= 0) {
+            // Если сердца закончились, перезапускаем игру
+            gameUI.showGameOverModal();
+            return;
+          }
+        } else {
+          // Если столкновение произошло слишком быстро после предыдущего, перезапускаем игру
+          // gameUI.showGameOverModal();
+          return;
+        }
+
+        // Обновляем время последнего столкновения
+        this.lastCollisionTime = currentTime;
       }
     }
   }
@@ -142,33 +161,6 @@ class Player extends Sprite {
     this.image = this.animations[key].image;
     this.frameBuffer = this.animations[key].frameBuffer;
     this.frameRate = this.animations[key].frameRate;
-  }
-
-  // Метод для сброса игры
-  resetGame() {
-    // Сброс позиции и скорости игрока
-    this.position = { x: 30, y: 450 };
-    this.velocity = { x: 0, y: 1 };
-    // Сброс флага проигрывания анимации смерти
-    this.deathAnimationPlayed = false;
-    // Сброс позиции камеры
-    camera.position = { x: 0, y: -backgroundImageHeight + scaledCanvas.height };
-    // Очистка текущего изображения
-    this.image = null;
-
-    // Очистка массива яблок
-    appleManager.apples = [];
-
-    // Пересоздаем яблоки
-    appleManager.createApples(apple2D);
-
-    // Пересоздаем всех врагов
-    for (let i = 0; i < enemies.length; i++) {
-      const enemy = enemies[i];
-      enemy.position = { x: enemy.startX, y: enemy.position.y }; // Возвращаем врага на начальную позицию
-      enemy.direction = 1; // Устанавливаем начальное направление движения
-      enemy.setImageSrc(enemy.imageSrcRight); // Устанавливаем изображение врага в правильное направление
-    }
   }
 
   // метод апдейт камеры

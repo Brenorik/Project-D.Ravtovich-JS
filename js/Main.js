@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
   // "Игра"
   function startGame() {
     animate();
+    gameUI.startTimer();
     console.log('Игра началась!');
     menu.style.display = 'none'; // Скрыть меню
   }
@@ -25,9 +26,3 @@ document.addEventListener('DOMContentLoaded', function () {
     console.log('История');
   }
 });
-// function startGame() {
-//    начало игры
-
-//
-//   animate();
-// }

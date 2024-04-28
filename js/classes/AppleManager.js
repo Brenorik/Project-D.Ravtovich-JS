@@ -51,6 +51,8 @@ class AppleManager {
       ) {
         // Если столкновение произошло, удаляем яблоко из массива
         this.apples.splice(i, 1);
+
+        gameUI.updateScore(50);
         // Вернуть true, чтобы указать, что столкновение произошло
         return true;
       }
