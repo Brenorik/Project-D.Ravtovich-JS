@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', function () {
     gameUI.startTimer();
     console.log('Игра началась!');
     menu.style.display = 'none'; // Скрыть меню
+    // Создаем новый аудио элемент
+    const audio = new Audio('../audio/Comix.mp3');
+    // Воспроизводим музыку
+    audio.play();
   }
 
   function showSettings() {

@@ -5,7 +5,7 @@ class GameUI {
     this.restartButton.addEventListener('click', () => this.handleRestartButtonClick());
     this.timerValue = 180;
     this.scoreValue = 0;
-    this.heartsCount = 2; // Начальное количество сердец
+    this.heartsCount = 3; // Начальное количество сердец
   }
 
   showGameOverModal() {
@@ -28,7 +28,7 @@ class GameUI {
     const heartSize = 3;
     // Расположение сердец (верхний левый угол)
     let heartsX = 15;
-    const heartsY = 10;
+    const heartsY = 8;
     // Расстояние между сердцами
     const heartSpacing = 5;
 
@@ -102,12 +102,6 @@ class GameUI {
   // Метод для отображения таймера
 
   drawTimer() {
-    // Проверяем, что timerValue определена
-    if (typeof this.timerValue === 'undefined') {
-      console.error('timerValue is not defined!');
-      return;
-    }
-
     // Получаем минуты и секунды из значения таймера
     const minutes = Math.floor(this.timerValue / 60);
     const seconds = this.timerValue % 60;
@@ -118,10 +112,10 @@ class GameUI {
 
     // Отображаем отформатированное время
     c.fillStyle = 'black';
-    c.font = '8px Arial';
+    c.font = '6px Arial';
     // Позиция текста относительно камеры
-    const timerX = 50 - camera.position.x;
-    const timerY = 16 - camera.position.y;
+    const timerX = 235 - camera.position.x;
+    const timerY = 12 - camera.position.y;
     c.fillText(formattedMinutes + ':' + formattedSeconds, timerX, timerY);
   }
 
@@ -145,14 +139,14 @@ class GameUI {
   // Метод для отображения очков
   drawScore(camera) {
     c.fillStyle = 'black';
-    c.font = '8px Arial';
+    c.font = '6px Arial';
     // Проверяем, существует ли камера, прежде чем использовать ее свойство
     const cameraX = camera ? camera.position.x : 0;
     const cameraY = camera ? camera.position.y : 0;
     // Отображаем очки в правом верхнем углу, учитывая положение камеры
-    const scoreX = 215 - cameraX;
-    const scoreY = 16 - cameraY;
-    c.fillText('Score: ' + this.scoreValue, scoreX, scoreY);
+    const scoreX = 210 - cameraX;
+    const scoreY = 12 - cameraY;
+    c.fillText(this.scoreValue, scoreX, scoreY);
   }
 
   // Метод для обновления счета (добавляет указанное количество очков)

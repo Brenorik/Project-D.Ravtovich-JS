@@ -417,6 +417,7 @@ class Player extends Sprite {
           object2: thornsBlock,
         })
       ) {
+        gameUI.heartsCount = gameUI.heartsCount - 2;
         this.switchSprite('Death'); // Проигрываем анимацию смерти
         if (this.velocity.y > 0) {
           this.velocity.y = 0;
