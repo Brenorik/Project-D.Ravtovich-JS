@@ -2,11 +2,11 @@ body {
   margin: 0;
   padding: 0;
   background-color: black;
-  font-family: Arial, sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  font-family: 'Open Sans', sans-serif;
 }
 
 .menu {
@@ -73,4 +73,46 @@ body {
 /* Стили для кнопки при наведении */
 #restartButton:hover {
   background-color: #45a049;
+}
+
+.logout {
+  float: right;
+}
+
+.error {
+  color: hsl(348, 100%, 61%);
+  text-align: center;
+  font-size: small;
+}
+
+.users-list a {
+  margin-left: 10px;
+  text-decoration: none;
+  color: blue;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.users-list a:hover {
+  text-decoration: none;
+  background-color: red;
+}
+
+.table thead th {
+  background-color: gray;
+  color: #fff;
+}
+
+.table td:last-child {
+  text-align: center;
+}
+
+#login,
+#userForm {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999; /* Устанавливаем z-index, чтобы форма логина отображалась поверх канваса */
+  background-color: white;
 }
