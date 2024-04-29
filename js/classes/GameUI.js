@@ -1,11 +1,25 @@
 class GameUI {
   constructor() {
-    this.modal = document.getElementById('gameOverModal');
-    this.restartButton = document.getElementById('restartButton');
-    this.restartButton.addEventListener('click', () => this.handleRestartButtonClick());
     this.timerValue = 180;
     this.scoreValue = 0;
     this.heartsCount = 3; // Начальное количество сердец
+
+    // Создаем модальное окно для сброса игры
+    this.modal = document.createElement('div');
+    this.modal.id = 'gameOverModal';
+    this.modal.classList.add('modal');
+    this.modal.innerHTML = `
+        <div class="modal-content">
+          <h2>Game Over</h2>
+          <p>Прадул</p>
+          <button id="restartButton">Перезапуск игры</button>
+        </div>
+      `;
+    document.body.appendChild(this.modal);
+
+    // Назначаем обработчик для кнопки перезапуска игры
+    this.restartButton = this.modal.querySelector('#restartButton');
+    this.restartButton.addEventListener('click', () => this.handleRestartButtonClick());
   }
 
   showGameOverModal() {
@@ -182,6 +196,6 @@ class GameUI {
     this.timerValue = 180;
     // Сброс очков на 0
     this.scoreValue = 0;
-    this.heartsCount = 2;
+    this.heartsCount = 3;
   }
 }

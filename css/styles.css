@@ -11,10 +11,14 @@ body {
 
 .menu {
   text-align: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .menu-image {
-  max-width: 200px; /* adjust as needed */
+  max-width: 200px;
   margin-bottom: 20px;
 }
 
@@ -32,29 +36,28 @@ body {
 }
 
 .menu-item:hover {
-  color: yellow; /* adjust hover color as needed */
+  color: yellow;
 }
 
 /* Стили для модального окна */
-/* Стили для модального окна */
 .modal {
-  display: none; /* Скрыто по умолчанию */
-  position: fixed; /* Фиксированное позиционирование */
-  z-index: 1; /* Отображается поверх всего */
+  display: none;
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* Стили для содержимого модального окна */
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* Отступ сверху и снизу, автоматические боковые отступы */
+  margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; /* Ширина контента */
+  width: 80%;
 }
 
 /* Стили для кнопки */
