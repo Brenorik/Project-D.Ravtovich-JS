@@ -3,6 +3,7 @@ class GameUI {
     this.timerValue = 180;
     this.scoreValue = 0;
     this.heartsCount = 3; // Начальное количество сердец
+    this.winPosition = { x: 2784, y: 336 }; // Координаты для победного местоположения
 
     // Создаем модальное окно для сброса игры
     this.modal = document.createElement('div');
@@ -36,6 +37,18 @@ class GameUI {
     this.resetGame();
     // Вызов метода для перезапуска игры или другой логики
   }
+  checkForWinCondition() {
+    // Проверяем, достиг ли игрок победного местоположения
+    if (player.hitbox.position.x >= this.winPosition.x && player.hitbox.position.y <= this.winPosition.y) {
+      // Изменяем заголовок и текст модального окна на сообщение о победе
+      this.modal.querySelector('.modal-content h2').innerText = 'Поздравляем!';
+      this.modal.querySelector('.modal-content p').innerText = 'Вы победили!';
+
+      // Открываем модальное окно для победы
+      this.showGameOverModal();
+    }
+  }
+
   // Метод для отображения двух сердец
   drawHearts(camera) {
     // Размер сердца
@@ -197,5 +210,9 @@ class GameUI {
     // Сброс очков на 0
     this.scoreValue = 0;
     this.heartsCount = 3;
+  }
+
+  update() {
+    this.checkForWinCondition();
   }
 }

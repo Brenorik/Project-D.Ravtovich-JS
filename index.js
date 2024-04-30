@@ -278,7 +278,7 @@ function animate() {
   gameUI.drawTimer(camera);
   gameUI.drawScore(camera);
   gameUI.drawHearts(camera);
-
+  gameUI.update();
   if (appleManager.checkApple(player)) {
     console.log('яблочко');
     // Действия, которые нужно выполнить после столкновения с яблоком
@@ -322,7 +322,7 @@ function animate() {
   c.restore();
 }
 
-// animate();
+animate();
 
 // это я добавиль чтобы отжать клавишу
 let isJumping = false;
