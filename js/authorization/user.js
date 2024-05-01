@@ -109,89 +109,6 @@ const userModule = (function () {
     if (container) container.innerHTML = '';
   }
 
-  function register(userEmail, userPass) {
-    if (userEmail && userPass) {
-      auth
-        .createUserWithEmailAndPassword(userEmail, userPass)
-        .then((userCredential) => {
-          const user = userCredential.user;
-          if (user) {
-            showForm(document.getElementById('app'));
-            printUsersList();
-            const userData = {
-              user: user,
-              page: document.location.hash || '#main',
-            };
-            sessionStorage.setItem('my_firebase_user', JSON.stringify(userData));
-          } else {
-            hideForm(document.getElementById('app'));
-            sessionStorage.removeItem('my_firebase_user');
-          }
-        })
-        .catch(function (error) {
-          console.log('Error: ' + error.message);
-          loginModule.loginError('Неверный email или пароль. Введите корректные данные.');
-        });
-    } else {
-      loginModule.loginError('Пустое поле Email или Password. Введите данные в указанные поля.');
-    }
-  }
-
-  function showRegistrationForm(appContainer) {
-    appContainer.innerHTML = `
-      <div id="register" class="section">
-        <div class="container">
-          <div class="columns">
-            <div class="column">
-              <h1 class="is-size-2 has-text-centered">Приветствую в моем приложении</h1>
-              <h2 class="is-size-4 has-text-centered">Зарегистрируйтесь, пожалуйста.</h2>
-            </div>
-          </div>
-          <div class="columns is-centered">
-            <div class="column is-half">
-              <div class="field">
-                <p class="control has-icons-left has-icons-right">
-                  <input id="registerEmail" class="input is-medium" type="email" placeholder="Email">
-                  <span class="icon is-small is-left">
-                    <i class="fas fa-envelope"></i>
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="columns is-centered">
-            <div class="column is-half">
-              <div class="field">
-                <p class="control has-icons-left">
-                  <input id="registerPassword" class="input is-medium" type="password" placeholder="Password">
-                  <span class="icon is-small is-left">
-                    <i class="fas fa-lock"></i>
-                  </span>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="columns is-centered">
-            <div class="column">
-              <div class="field is-grouped is-grouped-centered">
-                <p class="control">
-                  <button id="registerBtnForm" class="button is-primary is-medium">
-                    Зарегистрироваться
-                  </button>
-                </p>
-              </div>
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column">
-              <div id="error" class="error"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
   function addUser(username, useremail) {
     myAppDB
       .ref('users/' + `user_${username.replace(/\s/g, '').toLowerCase()}`)
@@ -266,7 +183,7 @@ const userModule = (function () {
         form.newUserName.value = '';
         form.newUserEmail.value = '';
         clearScreen(); // Очищаем экран
-        addMenuAfterClear(); // Добавляем меню после очистки экрана
+        menuModule.addMenuAfterClear(); // Добавляем меню после очистки экрана
       }
 
       if (event.target && event.target.classList.contains('delete')) {
@@ -277,13 +194,13 @@ const userModule = (function () {
       if (event.target && event.target.id === 'registerBtn') {
         event.preventDefault();
         event.stopPropagation();
-        showRegistrationForm(appContainer); // Показываем форму регистрации
+        registrationModule.showRegistrationForm(appContainer); // Показываем форму регистрации
       }
 
       if (event.target && event.target.id === 'registerBtnForm') {
         event.preventDefault();
         event.stopPropagation();
-        register(
+        registrationModule.register(
           appContainer.querySelector('#registerEmail').value,
           appContainer.querySelector('#registerPassword').value
         );
@@ -292,53 +209,6 @@ const userModule = (function () {
       function clearScreen() {
         const appContainer = document.getElementById('app');
         appContainer.innerHTML = ''; // Очищаем содержимое контейнера
-      }
-
-      function addMenuAfterClear() {
-        const menuContainer = document.createElement('div');
-        menuContainer.classList.add('menu-container');
-        menuContainer.innerHTML = `
-          <div id="menu" class="menu">
-            <img src="your_image_url" alt="Menu Image" class="menu-image" />
-            <ul class="menu-items">
-              <li id="gameMenuItem" class="menu-item">Игра</li>
-              <li id="settingsMenuItem" class="menu-item">Настройки</li>
-              <li id="historyMenuItem" class="menu-item">История</li>
-            </ul>
-          </div>
-        `;
-        document.body.appendChild(menuContainer);
-
-        const gameMenuItem = document.getElementById('gameMenuItem');
-        const settingsMenuItem = document.getElementById('settingsMenuItem');
-        const historyMenuItem = document.getElementById('historyMenuItem');
-        const menu = document.querySelector('.menu');
-
-        gameMenuItem.addEventListener('click', startGame);
-        settingsMenuItem.addEventListener('click', showSettings);
-        historyMenuItem.addEventListener('click', showHistory);
-
-        // "Игра"
-        function startGame() {
-          animate();
-          gameUI.startTimer();
-          console.log('Игра началась!');
-          menu.style.display = 'none'; // Скрыть меню
-          // Создаем новый аудио элемент
-          const audio = new Audio('../audio/Comix.mp3');
-          // Воспроизводим музыку
-          audio.play();
-        }
-
-        function showSettings() {
-          // Показать настройки
-          console.log('Настройки');
-        }
-
-        function showHistory() {
-          // Показать историю игры
-          console.log('История');
-        }
       }
     });
   }
@@ -350,8 +220,6 @@ const userModule = (function () {
     addUserForm,
     printUser,
     clearUserList,
-    register,
-    showRegistrationForm,
     addUser,
     deleteUser,
     getUsersList,

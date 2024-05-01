@@ -10,12 +10,13 @@ class GameUI {
     this.modal.id = 'gameOverModal';
     this.modal.classList.add('modal');
     this.modal.innerHTML = `
-        <div class="modal-content">
-          <h2>Game Over</h2>
-          <p>Прадул</p>
-          <button id="restartButton">Перезапуск игры</button>
-        </div>
-      `;
+<div class="modal-content">
+    <h2>Game Over</h2>
+    <p>Поздравляем! Вы набрали <span id="score">${this.scoreValue}</span> очков за <span id="time">${
+      180 - this.timerValue
+    }</span> секунд.</p>
+    <button id="restartButton">Перезапуск игры</button>
+</div>`;
     document.body.appendChild(this.modal);
 
     // Назначаем обработчик для кнопки перезапуска игры
@@ -42,7 +43,12 @@ class GameUI {
     if (player.hitbox.position.x >= this.winPosition.x && player.hitbox.position.y <= this.winPosition.y) {
       // Изменяем заголовок и текст модального окна на сообщение о победе
       this.modal.querySelector('.modal-content h2').innerText = 'Поздравляем!';
-      this.modal.querySelector('.modal-content p').innerText = 'Вы победили!';
+      this.modal.querySelector('.modal-content p').innerHTML =
+        'Вы победили! Вы набрали <span id="score">' +
+        this.scoreValue +
+        '</span> очков за <span id="time">' +
+        (180 - this.timerValue) +
+        '</span> секунд.';
 
       // Открываем модальное окно для победы
       this.showGameOverModal();
@@ -179,6 +185,15 @@ class GameUI {
   // Метод для обновления счета (добавляет указанное количество очков)
   updateScore(points) {
     this.scoreValue += points; // Добавляем указанное количество очков к текущему счету
+
+    // Проверяем, существует ли модальный элемент и элемент с id="score"
+    const scoreElement = this.modal.querySelector('#score');
+    if (scoreElement) {
+      // Обновляем текст элемента с новым значением счета
+      scoreElement.textContent = this.scoreValue;
+    } else {
+      console.error('Modal or score element not found.');
+    }
   }
   // Метод для сброса игры
   resetGame() {

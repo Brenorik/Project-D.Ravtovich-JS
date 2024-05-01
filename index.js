@@ -322,7 +322,7 @@ function animate() {
   c.restore();
 }
 
-// animate();
+animate();
 
 // это я добавиль чтобы отжать клавишу
 let isJumping = false;
