@@ -8,6 +8,19 @@ const firebaseConfig = {
 };
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
-
 const myAppDB = firebaseApp.database();
 const auth = firebaseApp.auth();
+
+const appModule = (function () {
+  function init() {
+    const appContainer = document.getElementById('app');
+    loginModule.showLoginForm(appContainer);
+    userModule.addEventListeners();
+  }
+
+  return {
+    init,
+  };
+})();
+
+appModule.init();
