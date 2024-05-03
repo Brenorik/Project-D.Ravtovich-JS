@@ -5,7 +5,7 @@ const menuModule = (function () {
     menuContainer.classList.add('menu-container');
     menuContainer.innerHTML = `
       <div id="menu" class="menu">
-        <img src="your_image_url" alt="Menu Image" class="menu-image" />
+
         <ul class="menu-items">
           <li id="gameMenuItem" class="menu-item">Игра</li>
           <li id="settingsMenuItem" class="menu-item">Настройки</li>
@@ -14,7 +14,7 @@ const menuModule = (function () {
       </div>
     `;
     document.body.appendChild(menuContainer);
-
+    // <img src="..//../img/wot.jpg alt="Menu Image" class="menu-image"  после ид меню />
     const gameMenuItem = document.getElementById('gameMenuItem');
     const settingsMenuItem = document.getElementById('settingsMenuItem');
     const historyMenuItem = document.getElementById('historyMenuItem');
@@ -31,9 +31,9 @@ const menuModule = (function () {
       console.log('Игра началась!');
       menu.style.display = 'none'; // Скрыть меню
       // Создаем новый аудио элемент
-      const audio = new Audio('../audio/Comix.mp3');
+      // const audio = new Audio('../audio/Comix.mp3');
       // Воспроизводим музыку
-      audio.play();
+      // audio.play();
     }
 
     function showSettings() {

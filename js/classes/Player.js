@@ -114,7 +114,7 @@ class Player extends Sprite {
 
           if (gameUI.heartsCount <= 0) {
             // Если сердца закончились, перезапускаем игру
-            gameUI.showGameOverModal();
+            gameUI.checkForGameOverCondition();
             return;
           }
         } else {
@@ -151,7 +151,7 @@ class Player extends Sprite {
     if (this.image === this.animations.Death.image) {
       if (this.currentFrame === this.animations.Death.frameRate - 1) {
         this.deathAnimationPlayed = true; // Устанавливаем флаг, указывающий, что анимация смерти была воспроизведена
-        gameUI.showGameOverModal(); // Показываем модальное окно при смерти персонажа; // Вызываем метод resetGame() после завершения анимации смерти
+        gameUI.checkForGameOverCondition(); // Показываем модальное окно при смерти персонажа; // Вызываем метод resetGame() после завершения анимации смерти
       }
       return;
     }
@@ -273,7 +273,7 @@ class Player extends Sprite {
     // Проверка на падение за нижнюю рамку канваса
     if (this.position.y > canvas.height) {
       // Вызов метода resetGame() при падении за нижнюю рамку канваса
-      gameUI.showGameOverModal();
+      gameUI.checkForGameOverCondition();
       return; // Прерываем выполнение метода, чтобы избежать дальнейших операций
     }
   }

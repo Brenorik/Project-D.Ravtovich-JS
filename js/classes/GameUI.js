@@ -4,17 +4,20 @@ class GameUI {
     this.scoreValue = 0;
     this.heartsCount = 3; // Начальное количество сердец
     this.winPosition = { x: 2784, y: 336 }; // Координаты для победного местоположения
+    this.modal = null; // Объявляем modal, но не создаем его в конструкторе
+    this.restartButton = null; // Также объявляем restartButton, чтобы избежать ошибок при обращении к нему
+    this.initModal();
+  }
 
+  initModal() {
     // Создаем модальное окно для сброса игры
     this.modal = document.createElement('div');
     this.modal.id = 'gameOverModal';
     this.modal.classList.add('modal');
     this.modal.innerHTML = `
 <div class="modal-content">
-    <h2>Game Over</h2>
-    <p>Поздравляем! Вы набрали <span id="score">${this.scoreValue}</span> очков за <span id="time">${
-      180 - this.timerValue
-    }</span> секунд.</p>
+    <h2></h2>
+    <p></p>
     <button id="restartButton">Перезапуск игры</button>
 </div>`;
     document.body.appendChild(this.modal);
@@ -25,6 +28,7 @@ class GameUI {
   }
 
   showGameOverModal() {
+    this.stopTimer();
     this.modal.style.display = 'block';
   }
 
@@ -38,6 +42,7 @@ class GameUI {
     this.resetGame();
     // Вызов метода для перезапуска игры или другой логики
   }
+
   checkForWinCondition() {
     // Проверяем, достиг ли игрок победного местоположения
     if (player.hitbox.position.x >= this.winPosition.x && player.hitbox.position.y <= this.winPosition.y) {
@@ -53,6 +58,17 @@ class GameUI {
       // Открываем модальное окно для победы
       this.showGameOverModal();
     }
+  }
+
+  checkForGameOverCondition() {
+    this.modal.querySelector('.modal-content h2').innerText = 'Game Over';
+    this.modal.querySelector('.modal-content p').innerHTML =
+      'Вы набрали <span id="score">' +
+      this.scoreValue +
+      '</span> очков за <span id="time">' +
+      (180 - this.timerValue) +
+      '</span> секунд.';
+    this.showGameOverModal();
   }
 
   // Метод для отображения двух сердец
@@ -153,13 +169,13 @@ class GameUI {
   }
 
   startTimer() {
-    const timerInterval = setInterval(() => {
+    this.timerInterval = setInterval(() => {
       // Уменьшаем значение таймера на 1
       this.timerValue--;
 
       // Если таймер достиг нуля, останавливаем его
       if (this.timerValue === 0) {
-        clearInterval(timerInterval);
+        clearInterval(this.timerInterval);
         console.log('Время вышло!');
         return;
       }
@@ -167,6 +183,9 @@ class GameUI {
       // Отображаем обновленное значение таймера
       this.drawTimer();
     }, 1000); // 1000 миллисекунд = 1 секунда
+  }
+  stopTimer() {
+    clearInterval(this.timerInterval); // Останавливаем интервал таймера
   }
 
   // Метод для отображения очков
@@ -185,15 +204,6 @@ class GameUI {
   // Метод для обновления счета (добавляет указанное количество очков)
   updateScore(points) {
     this.scoreValue += points; // Добавляем указанное количество очков к текущему счету
-
-    // Проверяем, существует ли модальный элемент и элемент с id="score"
-    const scoreElement = this.modal.querySelector('#score');
-    if (scoreElement) {
-      // Обновляем текст элемента с новым значением счета
-      scoreElement.textContent = this.scoreValue;
-    } else {
-      console.error('Modal or score element not found.');
-    }
   }
   // Метод для сброса игры
   resetGame() {
@@ -206,6 +216,7 @@ class GameUI {
     camera.position = { x: 0, y: -backgroundImageHeight + scaledCanvas.height };
     // Очистка текущего изображения
     player.image = null;
+    this.startTimer();
 
     // Очистка массива яблок
     appleManager.apples = [];
