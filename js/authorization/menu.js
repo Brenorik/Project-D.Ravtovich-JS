@@ -46,8 +46,78 @@ const menuModule = (function () {
       console.log('История');
     }
     function showReting() {
-      // Показать историю игры
-      console.log('Рейтинг');
+      // Получаем ссылку на базу данных
+      const dbRef = myAppDB.ref('users');
+
+      // Получаем данные о пользователях из базы данных
+      dbRef.once('value', function (snapshot) {
+        const users = snapshot.val();
+
+        // Преобразуем объект пользователей в массив
+        const usersArray = Object.values(users);
+
+        // Сортируем пользователей по количеству очков в обратном порядке
+        usersArray.sort((a, b) => b.score - a.score);
+
+        // Выбираем только первые 10 пользователей
+        const topUsers = usersArray.slice(0, 10);
+
+        // Создаем HTML-разметку для таблицы рейтинга
+        let tableHtml = `
+          <table>
+            <thead>
+              <tr>
+                <th>Имя пользователя</th>
+                <th>Рейтинг</th>
+                <th>Время</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        // Добавляем каждого пользователя в таблицу рейтинга
+        topUsers.forEach((user) => {
+          tableHtml += `
+            <tr>
+              <td>${user.username}</td>
+              <td>${user.score}</td>
+              <td>${user.timer}</td>
+            </tr>
+          `;
+        });
+
+        tableHtml += `
+            </tbody>
+          </table>
+        `;
+
+        // Отображаем таблицу рейтинга в модальном окне
+        showModal(tableHtml);
+      });
+    }
+
+    // Функция для отображения модального окна с содержимым
+    function showModal(content) {
+      const modalContainer = document.createElement('div');
+      modalContainer.classList.add('modal-container');
+      modalContainer.innerHTML = `
+        <div class="modal">
+            <div class="modal-content">
+                ${content}
+            </div>
+            <button id = restartButton >Закрыть</button>
+        </div>
+      `;
+
+      document.body.appendChild(modalContainer);
+
+      const closeBtn = modalContainer.querySelector('#restartButton');
+      closeBtn.addEventListener('click', function () {
+        modalContainer.remove();
+      });
+
+      // Делаем модальное окно видимым
+      modalContainer.querySelector('.modal').style.display = 'block';
     }
   }
 

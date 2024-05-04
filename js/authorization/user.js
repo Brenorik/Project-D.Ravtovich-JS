@@ -53,8 +53,8 @@ const userModule = (function () {
       .ref('users/' + `user_${username.replace(/\s/g, '').toLowerCase()}`)
       .set({
         username: `${username}`,
-        score: ``,
-        timer: ``,
+        score: 'score',
+        timer: 'timer',
       })
       .then(function () {
         console.log('Пользователь добавлен в коллецию users');

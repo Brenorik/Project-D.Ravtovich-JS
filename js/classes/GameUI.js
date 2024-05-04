@@ -44,8 +44,28 @@ class GameUI {
   }
 
   checkForWinCondition() {
-    // Проверяем, достиг ли игрок победного местоположения
-    if (player.hitbox.position.x >= this.winPosition.x && player.hitbox.position.y <= this.winPosition.y) {
+    const currentUser = firebase.auth().currentUser;
+    if (
+      currentUser &&
+      player.hitbox.position.x >= this.winPosition.x &&
+      player.hitbox.position.y <= this.winPosition.y
+    ) {
+      const currentUserId = currentUser.uid;
+      const userDataRef = myAppDB.ref('users/' + currentUserId);
+
+      // Отправляем данные о победе текущему пользователю
+      userDataRef
+        .update({
+          score: this.scoreValue,
+          timer: 180 - this.timerValue,
+        })
+        .then(function () {
+          console.log('Данные о победе отправлены на сервер');
+        })
+        .catch(function (error) {
+          console.error('Ошибка отправки данных о победе: ', error);
+        });
+
       // Изменяем заголовок и текст модального окна на сообщение о победе
       this.modal.querySelector('.modal-content h2').innerText = 'Поздравляем!';
       this.modal.querySelector('.modal-content p').innerHTML =
@@ -63,11 +83,7 @@ class GameUI {
   checkForGameOverCondition() {
     this.modal.querySelector('.modal-content h2').innerText = 'Game Over';
     this.modal.querySelector('.modal-content p').innerHTML =
-      'Вы набрали <span id="score">' +
-      this.scoreValue +
-      '</span> очков за <span id="time">' +
-      (180 - this.timerValue) +
-      '</span> секунд.';
+      'Для вашей смерти понадобилось <span id="time">' + (180 - this.timerValue) + '</span> секунд.';
     this.showGameOverModal();
   }
 
