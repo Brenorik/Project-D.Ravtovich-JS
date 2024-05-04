@@ -36,6 +36,14 @@ const userModule = (function () {
                   </span>
                 </div>
               </div>
+              <div class="field">
+                <div class="control has-icons-left has-icons-right">
+                  <input id="newUserEmail" class="input" type="email" placeholder="Email input" name="useremail" placeholder="Введите email" required>
+                  <span class="icon is-small is-left">
+                    <i class="fas fa-envelope"></i>
+                  </span>
+                </div>
+              </div>
               <div class="field is-horizontal">
                 <div class="control">
                   <button class="button is-link" id="addBtn">Добавить</button>
@@ -48,23 +56,106 @@ const userModule = (function () {
     `;
   }
 
-  function addUser(username) {
+  function printUser(userList) {
+    let userListContainer = document.getElementById('users-list__container');
+
+    if (!userListContainer) {
+      document.getElementById('users').innerHTML += `
+        <div class="columns">
+          <div class="column">
+            <div class="users-list">
+              <h4 class="title is-4">Рейтинг игроков:</h4>
+              <table id="users-list" class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                <thead>
+                  <tr>
+                    <th>Пользователь</th>
+                    <th>email</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="users-list__container"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+      userListContainer = document.getElementById('users-list__container');
+    } else {
+      userListContainer.innerHTML = '';
+    }
+
+    for (let user in userList) {
+      userListContainer.append(createRow(user, userList));
+    }
+
+    function createRow(user, userList) {
+      let row = document.createElement('tr'),
+        td1 = document.createElement('td'),
+        td2 = document.createElement('td'),
+        td3 = document.createElement('td');
+      td1.innerHTML = `<strong>${userList[user].username}</strong>`;
+      td2.innerHTML = `${userList[user].email}`;
+      td3.innerHTML = `<a href="#" data-id=${user} class="delete is-medium" title="удалить пользователя">Удалить</a>`;
+      row.append(td1);
+      row.append(td2);
+      row.append(td3);
+
+      return row;
+    }
+  }
+
+  function clearUserList() {
+    const container = document.getElementById('users-list__container');
+    if (container) container.innerHTML = '';
+  }
+
+  function addUser(username, useremail) {
     myAppDB
       .ref('users/' + `user_${username.replace(/\s/g, '').toLowerCase()}`)
       .set({
         username: `${username}`,
-        score: ``,
-        timer: ``,
+        email: `${useremail}`,
       })
       .then(function () {
         console.log('Пользователь добавлен в коллецию users');
-        menuModule.addMenuAfterClear(username);
       })
       .catch(function (error) {
         console.error('Ошибка добавления пользователя: ', error);
       });
   }
 
+  function deleteUser(userid) {
+    myAppDB
+      .ref('users/' + userid)
+      .remove()
+      .then(function () {
+        console.info('Пользователь удален из коллеции users');
+      })
+      .catch(function (error) {
+        console.error('Ошибка удаления пользователя: ', error);
+      });
+  }
+
+  function getUsersList() {
+    myAppDB
+      .ref('users/')
+      .once('value')
+      .then(function (snapshot) {
+        console.log('Users list:');
+        console.log(snapshot.val());
+      })
+      .catch(function (error) {
+        console.log('Error: ' + error.code);
+      });
+  }
+
+  function printUsersList() {
+    myAppDB.ref('users/').on(
+      'value',
+      (snapshot) => printUser(snapshot.val()),
+      (error) => console.log('Error: ' + error.code)
+    );
+  }
   function addEventListeners() {
     const appContainer = document.getElementById('app');
     appContainer.addEventListener('click', function (event) {
@@ -88,10 +179,11 @@ const userModule = (function () {
       if (event.target && event.target.id === 'addBtn') {
         event.preventDefault();
         event.stopPropagation();
-        addUser(form.newUserName.value);
+        addUser(form.newUserName.value, form.newUserEmail.value);
         form.newUserName.value = '';
+        form.newUserEmail.value = '';
         clearScreen(); // Очищаем экран
-        // menuModule.addMenuAfterClear(); // Добавляем меню после очистки экрана
+        menuModule.addMenuAfterClear(); // Добавляем меню после очистки экрана
       }
 
       if (event.target && event.target.classList.contains('delete')) {
@@ -126,7 +218,12 @@ const userModule = (function () {
     hideForm,
     printTestData,
     addUserForm,
+    printUser,
+    clearUserList,
     addUser,
+    deleteUser,
+    getUsersList,
+    printUsersList,
     addEventListeners,
   };
 })();

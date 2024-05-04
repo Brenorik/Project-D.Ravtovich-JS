@@ -78,7 +78,7 @@ const loginModule = (function () {
           const user = userCredential.user;
           if (user) {
             userModule.showForm(document.getElementById('app'));
-            userModule.printUsersList();
+            // userModule.printUsersList();
             const userData = {
               user: user,
               page: document.location.hash || '#main',
