@@ -84,7 +84,9 @@ body {
 }
 
 /* Стили для кнопки */
-#restartButton {
+#restartButton,
+#menuButton,
+#retingButton {
   padding: 10px 20px;
   background-color: #4caf50;
   color: white;

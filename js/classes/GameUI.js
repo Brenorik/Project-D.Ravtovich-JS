@@ -9,6 +9,77 @@ class GameUI {
     this.initModal();
     this.hasWon = false;
     this.username = '';
+    this.menu = new Menu();
+  }
+  stopGame() {
+    window.cancelAnimationFrame(menu.animationFrameId);
+    c.clearRect(0, 0, canvas.width, canvas.height);
+    this.modal.style.display = 'none';
+    isGameRunning = false;
+  }
+
+  showReting() {
+    const dbRef = myAppDB.ref('users');
+    dbRef.once('value', (snapshot) => {
+      const users = snapshot.val();
+      const usersArray = Object.values(users);
+      usersArray.sort((a, b) => b.score - a.score);
+      const topUsers = usersArray.filter((user) => user.score !== 0 && user.timer !== 0).slice(0, 10);
+
+      let tableHtml = `
+        <table>
+          <thead>
+            <tr>
+              <th>Имя пользователя</th>
+              <th>Рейтинг</th>
+              <th>Время</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      topUsers.forEach((user) => {
+        tableHtml += `
+          <tr>
+            <td>${user.username}</td>
+            <td>${user.score}</td>
+            <td>${user.timer}</td>
+          </tr>
+        `;
+      });
+
+      tableHtml += `
+          </tbody>
+        </table>
+      `;
+
+      this.showModal(tableHtml);
+    });
+  }
+
+  showModal(content) {
+    const modalContainer = document.createElement('div');
+    modalContainer.classList.add('modal-container');
+    modalContainer.innerHTML = `
+      <div class="modal">
+          <div class="modal-content">
+              ${content}
+          </div>
+          <button id="restartButton">Закрыть</button>
+      </div>
+    `;
+
+    document.body.appendChild(modalContainer);
+
+    const closeBtn = modalContainer.querySelector('#restartButton');
+    closeBtn.addEventListener('click', () => {
+      modalContainer.remove();
+    });
+
+    modalContainer.querySelector('.modal').style.display = 'block';
+  }
+  handleMenuButtonClick() {
+    this.menu.addMenuAfterClear(this.username); // вызываем метод addMenuAfterClear из Menu
   }
 
   initModal() {
@@ -21,12 +92,21 @@ class GameUI {
     <h2></h2>
     <p></p>
     <button id="restartButton">Перезапуск игры</button>
+    <button id="retingButton">Рейтинг</button>
+    <button id="menuButton">Меню</button>
 </div>`;
     document.body.appendChild(this.modal);
 
     // Назначаем обработчик для кнопки перезапуска игры
     this.restartButton = this.modal.querySelector('#restartButton');
+    this.retingButton = this.modal.querySelector('#retingButton');
+    this.menuButton = this.modal.querySelector('#menuButton');
     this.restartButton.addEventListener('click', () => this.handleRestartButtonClick());
+    this.retingButton.addEventListener('click', () => this.showReting());
+    this.menuButton.addEventListener('click', () => {
+      this.stopGame();
+      this.handleMenuButtonClick(); // вызываем метод handleMenuButtonClick при клике на кнопку меню
+    });
   }
 
   showGameOverModal() {

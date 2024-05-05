@@ -58,7 +58,7 @@ const userModule = (function () {
       })
       .then(function () {
         console.log('Пользователь добавлен в коллецию users');
-        menuModule.addMenuAfterClear(username);
+        menu.addMenuAfterClear(username);
       })
       .catch(function (error) {
         console.error('Ошибка добавления пользователя: ', error);
