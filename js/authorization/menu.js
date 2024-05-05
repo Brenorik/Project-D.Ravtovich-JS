@@ -32,6 +32,7 @@ const menuModule = (function () {
     function startGame() {
       animate();
       gameUI.startTimer();
+      gameUI.username = playerName;
       console.log('Игра началась!');
       menu.style.display = 'none'; // Скрыть меню
     }
@@ -59,8 +60,8 @@ const menuModule = (function () {
         // Сортируем пользователей по количеству очков в обратном порядке
         usersArray.sort((a, b) => b.score - a.score);
 
-        // Выбираем только первые 10 пользователей
-        const topUsers = usersArray.slice(0, 10);
+        // Выбираем только первые 10 пользователей, у которых score и timer не равны 0
+        const topUsers = usersArray.filter((user) => user.score !== 0 && user.timer !== 0).slice(0, 10);
 
         // Создаем HTML-разметку для таблицы рейтинга
         let tableHtml = `

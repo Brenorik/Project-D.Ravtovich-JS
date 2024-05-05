@@ -7,6 +7,8 @@ class GameUI {
     this.modal = null; // Объявляем modal, но не создаем его в конструкторе
     this.restartButton = null; // Также объявляем restartButton, чтобы избежать ошибок при обращении к нему
     this.initModal();
+    this.hasWon = false;
+    this.username = '';
   }
 
   initModal() {
@@ -42,31 +44,31 @@ class GameUI {
     this.resetGame();
     // Вызов метода для перезапуска игры или другой логики
   }
+  updateUser(username, newScore, newTimer) {
+    // Формируем ссылку на пользователя в базе данных
+    const userRef = myAppDB.ref('users/' + `user_${username.replace(/\s/g, '').toLowerCase()}`);
+
+    // Обновляем данные пользователя
+    userRef
+      .update({
+        score: newScore,
+        timer: newTimer,
+      })
+      .then(() => {
+        console.log('Данные пользователя успешно обновлены');
+      })
+      .catch((error) => {
+        console.error('Ошибка при обновлении данных пользователя: ', error);
+      });
+  }
 
   checkForWinCondition() {
-    const currentUser = firebase.auth().currentUser;
-    if (
-      currentUser &&
-      player.hitbox.position.x >= this.winPosition.x &&
-      player.hitbox.position.y <= this.winPosition.y
-    ) {
-      const currentUserId = currentUser.uid;
-      const userDataRef = myAppDB.ref('users/' + currentUserId);
-
-      // Отправляем данные о победе текущему пользователю
-      userDataRef
-        .update({
-          score: this.scoreValue,
-          timer: 180 - this.timerValue,
-        })
-        .then(function () {
-          console.log('Данные о победе отправлены на сервер');
-        })
-        .catch(function (error) {
-          console.error('Ошибка отправки данных о победе: ', error);
-        });
-
-      // Изменяем заголовок и текст модального окна на сообщение о победе
+    if (this.hasWon) {
+      return false; // Если уже победили, выходим из метода
+    }
+    // используем this.username вместо просто username
+    if (player.hitbox.position.x >= this.winPosition.x && player.hitbox.position.y <= this.winPosition.y) {
+      this.hasWon = true;
       this.modal.querySelector('.modal-content h2').innerText = 'Поздравляем!';
       this.modal.querySelector('.modal-content p').innerHTML =
         'Вы победили! Вы набрали <span id="score">' +
@@ -74,9 +76,10 @@ class GameUI {
         '</span> очков за <span id="time">' +
         (180 - this.timerValue) +
         '</span> секунд.';
-
-      // Открываем модальное окно для победы
       this.showGameOverModal();
+
+      // После победы обновляем данные пользователя
+      this.updateUser(this.username, this.scoreValue, 180 - this.timerValue);
     }
   }
 
@@ -255,6 +258,8 @@ class GameUI {
   }
 
   update() {
-    this.checkForWinCondition();
+    if (!this.hasWon) {
+      this.checkForWinCondition();
+    }
   }
 }
