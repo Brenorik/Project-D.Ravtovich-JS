@@ -9,7 +9,7 @@ class GameUI {
     this.initModal();
     this.hasWon = false;
     this.username = '';
-    this.menu = new Menu();
+    this.menu = null; // добавляем свойство для хранения экземпляра Menu
   }
   stopGame() {
     window.cancelAnimationFrame(menu.animationFrameId);
@@ -82,6 +82,18 @@ class GameUI {
     this.menu.addMenuAfterClear(this.username); // вызываем метод addMenuAfterClear из Menu
   }
 
+  resetMenu() {
+    // Проверяем, существует ли уже экземпляр меню
+    if (this.menu) {
+      // Удаляем старый экземпляр меню
+      this.menu.menuContainer.remove();
+    }
+    // Создаем новый экземпляр меню
+    this.menu = new Menu();
+    // Добавляем меню на страницу
+    this.menu.addMenuAfterClear(this.username);
+  }
+
   initModal() {
     // Создаем модальное окно для сброса игры
     this.modal = document.createElement('div');
@@ -105,7 +117,7 @@ class GameUI {
     this.retingButton.addEventListener('click', () => this.showReting());
     this.menuButton.addEventListener('click', () => {
       this.stopGame();
-      this.handleMenuButtonClick(); // вызываем метод handleMenuButtonClick при клике на кнопку меню
+      this.resetMenu(); // вызываем метод resetMenu при нажатии кнопки меню
     });
   }
 
@@ -149,7 +161,7 @@ class GameUI {
     // используем this.username вместо просто username
     if (player.hitbox.position.x >= this.winPosition.x && player.hitbox.position.y <= this.winPosition.y) {
       this.hasWon = true;
-      this.modal.querySelector('.modal-content h2').innerText = 'Поздравляем!';
+      this.modal.querySelector('.modal-content h2').innerText = 'Поздравляем!' + this.username;
       this.modal.querySelector('.modal-content p').innerHTML =
         'Вы победили! Вы набрали <span id="score">' +
         this.scoreValue +

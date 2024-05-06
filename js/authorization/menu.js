@@ -24,8 +24,6 @@ class Menu {
     this.settingsMenuItem.addEventListener('click', this.showSettings.bind(this));
     this.helpMenuItem.addEventListener('click', this.showHelp.bind(this));
     this.retingMenuItem.addEventListener('click', this.showReting.bind(this));
-
-    // this.animationFrameId = null;
   }
 
   addMenuAfterClear(playerName) {
@@ -37,7 +35,6 @@ class Menu {
   startGame() {
     gameUI.resetGame();
     this.animationFrameId = window.requestAnimationFrame(animate);
-    gameUI.startTimer();
     gameUI.username = this.playerName;
     console.log('Игра началась!');
     this.menu.style.display = 'none';

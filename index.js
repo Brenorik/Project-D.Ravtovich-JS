@@ -13,6 +13,7 @@ const scaledCanvas = {
   width: canvas.width / 4,
   height: canvas.height / 4,
 };
+
 // Столкновение с полом
 const floor2D = [];
 // перебераем наш масив в 2д. мы знаем что ширина нашей карты 176 плиток
@@ -234,8 +235,9 @@ const camera = {
 let isGameRunning = true;
 // создаем функции анимации
 function animate() {
-  window.requestAnimationFrame(animate);
   if (!isGameRunning) return;
+  window.requestAnimationFrame(animate);
+
   // console.log('Go');
   // добовляем поле на canvas чтобы при каждом тики обновлять поле канвас
   c.fillStyle = 'white';
