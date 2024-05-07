@@ -33,6 +33,7 @@ body {
   color: white;
   font-size: 20px;
   transition: color 0.3s;
+  position: relative;
 }
 
 .menu-item:hover {
@@ -141,4 +142,25 @@ body {
   transform: translate(-50%, -50%);
   z-index: 999; /* Устанавливаем z-index, чтобы форма логина отображалась поверх канваса */
   background-color: white;
+}
+
+#gameMenuI {
+  position: fixed;
+  top: 60px;
+  left: 60px;
+  padding: 10px;
+  color: rgb(249, 3, 3); /* Цвет текста */
+  font-size: 16px;
+}
+.logout-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  background-color: #45a049;
 }

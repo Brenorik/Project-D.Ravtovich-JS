@@ -4,10 +4,6 @@ const userModule = (function () {
     addUserForm(appContainer);
   }
 
-  function hideForm(appContainer) {
-    loginModule.showLoginForm(appContainer);
-  }
-
   function printTestData(appContainer) {
     appContainer.innerHTML = `
       <section id="userForm" class="section">
@@ -123,7 +119,7 @@ const userModule = (function () {
 
   return {
     showForm,
-    hideForm,
+
     printTestData,
     addUserForm,
     addUser,

@@ -85,7 +85,7 @@ const loginModule = (function () {
             };
             sessionStorage.setItem('my_firebase_user', JSON.stringify(userData));
           } else {
-            userModule.hideForm(document.getElementById('app'));
+            this.hideForm(document.getElementById('app'));
             sessionStorage.removeItem('my_firebase_user');
           }
         })
@@ -100,10 +100,13 @@ const loginModule = (function () {
 
   function logout() {
     auth.signOut().then(() => {
-      userModule.hideForm(document.getElementById('app'));
+      this.hideForm(document.getElementById('app'));
       sessionStorage.removeItem('my_firebase_user');
       console.log('Пшёл вон! =)');
     });
+  }
+  function hideForm(appContainer) {
+    loginModule.showLoginForm(appContainer);
   }
 
   return {
@@ -111,5 +114,6 @@ const loginModule = (function () {
     loginError,
     login,
     logout,
+    hideForm,
   };
 })();
