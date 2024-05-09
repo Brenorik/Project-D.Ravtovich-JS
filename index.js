@@ -1,5 +1,5 @@
 const menu = new Menu();
-
+const audioManager = new AudioManager();
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 // console.log(c);
@@ -329,7 +329,7 @@ function animate() {
   c.restore();
 }
 
-animate();
+// animate();
 
 // это я добавиль чтобы отжать клавишу
 let isJumping = false;
@@ -352,6 +352,7 @@ window.addEventListener('keydown', (event) => {
       // Проверяем, был ли прыжок и необходимо ли начать его
       if (!isJumping) {
         isJumping = true;
+        // audioManager.playSoundEffect('jump');
         // Вызываем метод прыжка у игрока
         player.jump();
       }
@@ -384,6 +385,7 @@ window.addEventListener('keyup', (event) => {
     case 'KeyO': // Добавляем обработку отпускания клавиши "O"
       // Остановка атаки (если необходимо)
       player.finishAttack(); // Вызываем метод завершения атаки у игрока
+      audioManager.playSoundEffect('attack');
       break;
   }
 });

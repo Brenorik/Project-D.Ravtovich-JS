@@ -123,6 +123,8 @@ class GameUI {
 
   showGameOverModal() {
     this.stopTimer();
+    player.position = { x: 30, y: 450 };
+    player.velocity = { x: 0, y: 1 };
     this.modal.style.display = 'block';
   }
 

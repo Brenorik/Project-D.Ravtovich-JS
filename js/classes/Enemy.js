@@ -76,6 +76,8 @@ class Enemy extends Sprite {
     }
   }
   destroy() {
+    audioManager.setVolume('destruction', 0.3);
+    audioManager.playSoundEffect('destruction');
     // Убрать врага из игры, например:
     this.position.x = -3000; // Переместить врага за пределы экрана
   }

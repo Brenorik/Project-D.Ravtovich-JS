@@ -85,6 +85,7 @@ class Player extends Sprite {
           console.log('Столкновение при атаке!');
           gameUI.updateScore(100);
           // Уничтожаем врага
+          audioManager.playSoundEffect('attack');
           enemy.destroy();
         }
       }
@@ -110,10 +111,12 @@ class Player extends Sprite {
         if (currentTime - this.lastCollisionTime > collisionThreshold) {
           // Если прошло больше collisionThreshold миллисекунд с последнего столкновения
           // Уменьшаем количество сердец
+          audioManager.playSoundEffect('damage');
           gameUI.heartsCount--;
 
           if (gameUI.heartsCount <= 0) {
             // Если сердца закончились, перезапускаем игру
+            audioManager.playSoundEffect('gameOver');
             gameUI.checkForGameOverCondition();
             return;
           }
@@ -131,10 +134,11 @@ class Player extends Sprite {
 
   // Метод для выполнения прыжка
   jump() {
+    // Проверяем, не прыгает ли персонаж уже
     if (!this.isJumping) {
-      // Проверяем, не прыгает ли персонаж уже
-      this.velocity.y = -4; // Устанавливаем начальную вертикальную скорость вверх было -4
+      this.velocity.y = -4; // Устанавливаем начальную вертикальную скорость вверх
       this.isJumping = true; // Указываем, что персонаж начал прыжок
+      audioManager.playSoundEffect('jump');
     }
   }
 
@@ -274,6 +278,7 @@ class Player extends Sprite {
     if (this.position.y > canvas.height) {
       // Вызов метода resetGame() при падении за нижнюю рамку канваса
       gameUI.checkForGameOverCondition();
+      audioManager.playSoundEffect('drowning');
       return; // Прерываем выполнение метода, чтобы избежать дальнейших операций
     }
   }
@@ -418,7 +423,9 @@ class Player extends Sprite {
         })
       ) {
         gameUI.heartsCount = gameUI.heartsCount - 2;
+
         this.switchSprite('Death'); // Проигрываем анимацию смерти
+        audioManager.playSoundEffect('gameOver');
         if (this.velocity.y > 0) {
           this.velocity.y = 0;
 

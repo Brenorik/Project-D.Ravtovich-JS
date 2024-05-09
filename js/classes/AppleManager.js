@@ -53,6 +53,7 @@ class AppleManager {
         this.apples.splice(i, 1);
 
         gameUI.updateScore(50);
+        audioManager.playSoundEffect('apple');
         // Вернуть true, чтобы указать, что столкновение произошло
         return true;
       }

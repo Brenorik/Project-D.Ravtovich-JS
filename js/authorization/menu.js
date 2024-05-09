@@ -62,6 +62,7 @@ class Menu {
 
   startGame() {
     gameUI.resetGame();
+    audioManager.playBackgroundMusic();
     this.animationFrameId = window.requestAnimationFrame(animate);
     gameUI.username = this.playerName;
     console.log('Игра началась!');
