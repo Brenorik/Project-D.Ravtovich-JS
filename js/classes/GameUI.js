@@ -118,6 +118,8 @@ class GameUI {
     this.menuButton.addEventListener('click', () => {
       this.stopGame();
       this.resetMenu(); // вызываем метод resetMenu при нажатии кнопки меню
+      audioManager.stopBackgroundMusic();
+      audioManager.playMenuMusic();
     });
   }
 

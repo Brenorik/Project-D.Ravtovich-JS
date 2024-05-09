@@ -337,9 +337,7 @@ let isJumping = false;
 // При нажатии клавиш
 // Добавляем обработчики для клавиш
 // При нажатии клавиш
-window.addEventListener('keydown', (event) => {
-  // Проверяем, проигрывается ли анимация смерти
-
+function keyDownHandler(event) {
   switch (event.code) {
     case 'KeyD':
       keys.KeyD.pressed = true;
@@ -349,25 +347,18 @@ window.addEventListener('keydown', (event) => {
       break;
     case 'Space':
     case 'KeyW':
-      // Проверяем, был ли прыжок и необходимо ли начать его
       if (!isJumping) {
         isJumping = true;
-        // audioManager.playSoundEffect('jump');
-        // Вызываем метод прыжка у игрока
         player.jump();
       }
       break;
-    case 'KeyO': // Добавляем обработку нажатия клавиши "O"
-      // Вызываем метод атаки у игрока
-      player.attack(); // Вызываем метод атаки у игрока
+    case 'KeyO':
+      player.attack();
       break;
   }
-});
+}
 
-// При отжатии клавиш
-window.addEventListener('keyup', (event) => {
-  // Проверяем, проигрывается ли анимация смерти
-
+function keyUpHandler(event) {
   switch (event.code) {
     case 'KeyD':
       keys.KeyD.pressed = false;
@@ -377,15 +368,13 @@ window.addEventListener('keyup', (event) => {
       break;
     case 'Space':
     case 'KeyW':
-      // Проверяем, был ли прыжок и необходимо ли прекратить его
       if (isJumping) {
         isJumping = false;
       }
       break;
-    case 'KeyO': // Добавляем обработку отпускания клавиши "O"
-      // Остановка атаки (если необходимо)
-      player.finishAttack(); // Вызываем метод завершения атаки у игрока
+    case 'KeyO':
+      player.finishAttack();
       audioManager.playSoundEffect('attack');
       break;
   }
-});
+}

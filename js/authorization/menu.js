@@ -6,7 +6,6 @@ class Menu {
     this.menuContainer.innerHTML = `
     <div id="menu" class="menu">
       <ul class="menu-items">
-
         <li id="gameMenuItem" class="menu-item">Игра</li>
         <li id="settingsMenuItem" class="menu-item">Настройки</li>
         <li id="helpMenuItem" class="menu-item">Помощь</li>
@@ -14,7 +13,6 @@ class Menu {
       </ul>
     </div>
     <div id="gameMenuI" class="menu-item">
-  <button id="logoutBtn" class="logout-button">Выйти</button>
 </div>
     
   `;
@@ -62,12 +60,17 @@ class Menu {
 
   startGame() {
     gameUI.resetGame();
+    audioManager.stopMenuMusic();
     audioManager.playBackgroundMusic();
     this.animationFrameId = window.requestAnimationFrame(animate);
     gameUI.username = this.playerName;
     console.log('Игра началась!');
     this.menu.style.display = 'none';
     isGameRunning = true;
+
+    // Добавляем слушатели событий только после запуска игры
+    window.addEventListener('keydown', keyDownHandler);
+    window.addEventListener('keyup', keyUpHandler);
   }
 
   showSettings() {

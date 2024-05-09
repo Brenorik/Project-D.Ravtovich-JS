@@ -1,18 +1,21 @@
 class AudioManager {
   constructor() {
-    this.backgroundMusic = new Audio('../../audio/games.mp3');
+    this.backgroundMusic = new Audio('./audio/games.mp3');
     this.backgroundMusic.loop = true; // Позволяет фоновой музыке зацикливаться
     this.backgroundMusic.volume = 0.1; // Начальная громкость фоновой музыки
+
+    this.menuMusic = new Audio('./audio/menu.mp3');
+    this.menuMusic.loop = true;
+    this.menuMusic.volume = 0.1;
+
     this.soundEffects = {
-      // Здесь можно объявить и хранить объекты звуковых эффектов
-      // Например:
-      jump: new Audio('../../audio/Jump.mp3'),
-      attack: new Audio('../../audio/attack.mp3'),
-      apple: new Audio('../../audio/Apple.mp3'),
-      gameOver: new Audio('../../audio/GameOver.mp3'),
-      damage: new Audio('../../audio/damage.mp3'),
-      destruction: new Audio('../../audio/destruction.mp3'),
-      drowning: new Audio('../../audio/drowning.mp3'),
+      jump: new Audio('./audio/Jump.mp3'),
+      attack: new Audio('./audio/attack.mp3'),
+      apple: new Audio('./audio/Apple.mp3'),
+      gameOver: new Audio('./audio/GameOver.mp3'),
+      damage: new Audio('./audio/damage.mp3'),
+      destruction: new Audio('./audio/destruction.mp3'),
+      drowning: new Audio('./audio/drowning.mp3'),
     };
     Object.values(this.soundEffects).forEach((sound) => {
       sound.volume = 0.4; // Например, устанавливаем громкость на 50%
@@ -25,8 +28,9 @@ class AudioManager {
     this.backgroundMusic.play();
   }
 
-  pauseBackgroundMusic() {
+  stopBackgroundMusic() {
     this.backgroundMusic.pause();
+    this.backgroundMusic.currentTime = 0; // Сбрасываем позицию воспроизведения в начало трека
   }
 
   setBackgroundMusicVolume(volume) {
@@ -50,5 +54,21 @@ class AudioManager {
         this.lastPlayedTimes[effectName] = currentTime;
       }
     }
+  }
+
+  // Воспроизведение музыки для меню
+  playMenuMusic() {
+    this.menuMusic.play();
+  }
+
+  // Пауза музыки для меню
+  stopMenuMusic() {
+    this.menuMusic.pause();
+    this.menuMusic.currentTime = 0; // Сбрасываем позицию воспроизведения в начало трека
+  }
+
+  // Установка громкости для музыки меню
+  setMenuMusicVolume(volume) {
+    this.menuMusic.volume = volume;
   }
 }

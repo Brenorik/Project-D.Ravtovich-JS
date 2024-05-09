@@ -55,6 +55,7 @@ const userModule = (function () {
       .then(function () {
         console.log('Пользователь добавлен в коллецию users');
         menu.addMenuAfterClear(username);
+        audioManager.playMenuMusic();
       })
       .catch(function (error) {
         console.error('Ошибка добавления пользователя: ', error);

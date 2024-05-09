@@ -17,11 +17,6 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.menu-image {
-  max-width: 200px;
-  margin-bottom: 20px;
-}
-
 .menu-items {
   list-style-type: none;
   padding: 0;
@@ -151,16 +146,4 @@ body {
   padding: 10px;
   color: rgb(249, 3, 3); /* Цвет текста */
   font-size: 16px;
-}
-.logout-button {
-  background-color: #4caf50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.logout-button:hover {
-  background-color: #45a049;
 }
