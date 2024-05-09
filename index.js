@@ -275,6 +275,10 @@ function animate() {
   enemyBeeTwo.update();
   enemyBeeThree.update();
   enemyBoarOne.update();
+  enemyBoarTwo.update();
+  enemyFlyingEye.update();
+  enemyGoblin.update();
+  enemySnail.update();
   appleManager.update();
   appleManager.draw();
   // Рисуем элементы
@@ -325,7 +329,7 @@ function animate() {
   c.restore();
 }
 
-// animate();
+animate();
 
 // это я добавиль чтобы отжать клавишу
 let isJumping = false;

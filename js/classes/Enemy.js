@@ -138,4 +138,69 @@ const enemyBoarOne = new Enemy({
   hitboxHeight: 25,
 });
 
-const enemies = [enemyBeeOne, enemyBeeTwo, enemyBeeThree, enemyBoarOne];
+const enemyBoarTwo = new Enemy({
+  x: 800,
+  y: 320,
+  imageSrcRight: './img/Boar/Run/RunSheetRight.png',
+  imageSrcLeft: './img/Boar/Run/RunSheetLeft.png',
+  frameRate: 6,
+  frameBuffer: 4,
+  scale: 1,
+  targetX: 1072,
+  speed: 0.8,
+  hitboxWidth: 25,
+  hitboxHeight: 25,
+});
+
+const enemyFlyingEye = new Enemy({
+  x: 864,
+  y: 368,
+  imageSrcRight: './img/Flyingeye/FlightRight.png',
+  imageSrcLeft: './img/Flyingeye/FlightLeft.png',
+  frameRate: 8,
+  frameBuffer: 4,
+  scale: 1,
+  targetX: 1120,
+  speed: 0.8,
+  hitboxWidth: 25,
+  hitboxHeight: 25,
+});
+
+const enemyGoblin = new Enemy({
+  x: 976,
+  y: 458,
+  imageSrcRight: './img/Goblin/RunRight.png',
+  imageSrcLeft: './img/Goblin/LeftRun.png',
+  frameRate: 8,
+  frameBuffer: 4,
+  scale: 0.7,
+  targetX: 1200,
+  speed: 0.8,
+  hitboxWidth: 25,
+  hitboxHeight: 25,
+});
+
+const enemySnail = new Enemy({
+  x: 1616,
+  y: 208,
+  imageSrcRight: './img/Snail/RightSheet.png',
+  imageSrcLeft: './img/Snail/LeftSheet.png',
+  frameRate: 8,
+  frameBuffer: 4,
+  scale: 0.5,
+  targetX: 1824,
+  speed: 0.2,
+  hitboxWidth: 20,
+  hitboxHeight: 20,
+});
+
+const enemies = [
+  enemyBeeOne,
+  enemyBeeTwo,
+  enemyBeeThree,
+  enemyBoarOne,
+  enemyBoarTwo,
+  enemyFlyingEye,
+  enemyGoblin,
+  enemySnail,
+];
