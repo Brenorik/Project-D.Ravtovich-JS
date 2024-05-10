@@ -138,12 +138,3 @@ body {
   z-index: 999; /* Устанавливаем z-index, чтобы форма логина отображалась поверх канваса */
   background-color: white;
 }
-
-#gameMenuI {
-  position: fixed;
-  top: 60px;
-  left: 60px;
-  padding: 10px;
-  color: rgb(249, 3, 3); /* Цвет текста */
-  font-size: 16px;
-}

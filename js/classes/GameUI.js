@@ -92,6 +92,7 @@ class GameUI {
     this.menu = new Menu();
     // Добавляем меню на страницу
     this.menu.addMenuAfterClear(this.username);
+    // Скрываем текстовое содержимое gameMenuI
   }
 
   initModal() {
@@ -125,6 +126,7 @@ class GameUI {
 
   showGameOverModal() {
     this.stopTimer();
+    audioManager.stopBackgroundMusic();
     player.position = { x: 30, y: 450 };
     player.velocity = { x: 0, y: 1 };
     this.modal.style.display = 'block';
@@ -172,6 +174,7 @@ class GameUI {
         '</span> очков за <span id="time">' +
         (180 - this.timerValue) +
         '</span> секунд.';
+      audioManager.playSoundEffect('victory');
       this.showGameOverModal();
 
       // После победы обновляем данные пользователя
@@ -338,6 +341,7 @@ class GameUI {
 
     // Пересоздаем яблоки
     appleManager.createApples(apple2D);
+    audioManager.playBackgroundMusic();
 
     // Пересоздаем всех врагов
     for (let i = 0; i < enemies.length; i++) {

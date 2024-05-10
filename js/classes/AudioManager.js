@@ -2,11 +2,11 @@ class AudioManager {
   constructor() {
     this.backgroundMusic = new Audio('./audio/games.mp3');
     this.backgroundMusic.loop = true; // Позволяет фоновой музыке зацикливаться
-    this.backgroundMusic.volume = 0.1; // Начальная громкость фоновой музыки
+    this.backgroundMusic.volume = 0.2; // Начальная громкость фоновой музыки
 
     this.menuMusic = new Audio('./audio/menu.mp3');
     this.menuMusic.loop = true;
-    this.menuMusic.volume = 0.1;
+    this.menuMusic.volume = 0.2;
 
     this.soundEffects = {
       jump: new Audio('./audio/Jump.mp3'),
@@ -16,9 +16,10 @@ class AudioManager {
       damage: new Audio('./audio/damage.mp3'),
       destruction: new Audio('./audio/destruction.mp3'),
       drowning: new Audio('./audio/drowning.mp3'),
+      victory: new Audio('./audio/victory.mp3'),
     };
     Object.values(this.soundEffects).forEach((sound) => {
-      sound.volume = 0.4; // Например, устанавливаем громкость на 50%
+      sound.volume = 0.5; // Например, устанавливаем громкость на 50%
     });
     // Объект для отслеживания времени последнего воспроизведения звука
     this.lastPlayedTimes = {};
@@ -70,5 +71,16 @@ class AudioManager {
   // Установка громкости для музыки меню
   setMenuMusicVolume(volume) {
     this.menuMusic.volume = volume;
+  }
+
+  setMusicVolume(volume) {
+    this.backgroundMusic.volume = volume;
+    this.menuMusic.volume = volume;
+  }
+
+  setSoundEffectsVolume(volume) {
+    Object.values(this.soundEffects).forEach((sound) => {
+      sound.volume = volume;
+    });
   }
 }
