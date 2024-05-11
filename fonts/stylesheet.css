@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'Press Start 2P';
+    src: url('PressStart2P-Regular.woff2') format('woff2'),
+        url('PressStart2P-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Russo One';
+    src: url('RussoOne-Regular.woff2') format('woff2'),
+        url('RussoOne-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('EBGaramond-Medium.woff2') format('woff2'),
+        url('EBGaramond-Medium.woff') format('woff');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+

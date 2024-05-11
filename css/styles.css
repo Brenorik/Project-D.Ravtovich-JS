@@ -100,43 +100,82 @@ body {
   transform: translate(-50%, -50%); /* Центрируем по горизонтали и вертикали */
   width: 90%; /* Задаем ширину окна (можно изменить по вашему усмотрению) */
   max-width: auto; /* Максимальная ширина окна */
-  /* background-color: hwb(327deg 12.55% 79.61% / 100%); Цвет фона */
-  background-color: white;
+  background-color: hwb(327deg 12.55% 79.61% / 100%);
+  /* background-color: white; */
   padding: 20px; /* Внутренний отступ */
   border-radius: 10px; /* Скругление углов */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Тень */
-}
-
-.modal-help .help-section h1 {
-  text-align: center;
+  font-family: 'EB Garamond';
+  font-size: 20px; /* Задаем размер шрифта */
+  color: #fffb09;
 }
 
 .modal-help .help-section h2 {
-  margin-top: 20px;
+  text-align: center;
+  font-size: 28px;
+  font-style: italic;
+}
+
+.modal-help .help-content {
+  height: 70vh; /* Высота окна помощи (70% высоты экрана) */
+  overflow-y: auto; /* Включаем вертикальный скролл при необходимости */
+}
+
+.help-section.control {
+  display: flex;
+  align-items: center;
+}
+
+.help-section.control .infoSlide img {
+  max-width: 600px; /* Увеличиваем максимальную ширину изображения */
+  margin-right: 20px;
 }
 
 .mechanics-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Первая колонка будет подстраиваться под размер картинки */
-  grid-gap: 20px; /* Отступ между элементами */
+  grid-template-columns: 1fr;
+  grid-gap: 20px;
 }
 
-.mechanics-grid .slide {
-  display: flex; /* Используем flexbox */
-  flex-direction: row; /* Элементы будут выравниваться в строку */
-  align-items: center; /* Центрируем элементы по вертикали */
+.slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.mechanics-grid .slide img {
-  max-width: 100%; /* Устанавливаем максимальную ширину для изображения */
+.slide h3 {
+  margin-top: 0;
+  font-size: 24px; /* Задаем размер шрифта */
 }
 
-.mechanics-grid .slide p {
-  margin-left: 20px; /* Отступ слева для текста */
+.infoSlide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20px; /* Отступы справа и слева по 20px */
 }
 
-.mechanics-grid .slide h3 {
-  margin-top: 0; /* Удаляем верхний отступ у заголовка */
+.infoSlide p {
+  font-size: 20px; /* Задаем размер шрифта */
+}
+
+.infoSlide img {
+  max-width: 300px;
+  margin-right: 20px;
+}
+
+.modal-help button {
+  background-color: #9d2525;
+  color: #fffb09;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 20px 30px 20px 0;
+  float: right; /* Расположение кнопки справа */
+}
+.modal-help button:hover {
+  background-color: #d80606;
 }
 
 /* Стили для кнопки */

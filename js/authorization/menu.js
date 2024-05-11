@@ -3,7 +3,7 @@ class Menu {
     this.playerName = '';
     this.menuContainer = document.createElement('div');
     this.menuContainer.classList.add('menu-container');
-    this.menuContainer.style.backgroundImage = "url('../../img/backgroundmenu.bmp')";
+    this.menuContainer.style.backgroundImage = "url('./img/backgroundmenu.bmp')";
     this.menuContainer.style.backgroundSize = 'cover'; // Растягиваем изображение на весь контейнер
     this.menuContainer.style.backgroundPosition = 'center'; // Выравниваем изображение по центру
     this.menuContainer.innerHTML = `
@@ -185,48 +185,66 @@ class Menu {
     helpContent.classList.add('help-content');
     helpContent.innerHTML = `
     <div class="help-content">
-    <div class="help-section">
-      <h1>Помощь</h1>
+        <div class="help-section control">
+            <div class="slide">
+            <h2>Управление</h2>
+            <div class="infoSlide">
+            <img src="./img/help/control.png" alt="control" />
+                <p>"А" и "D" служат для перемещения влево и вправо соответственно,<br>
+                в то время как "W" и клавиша "Пробел" позволяют совершить прыжок.<br>
+                Атака осуществляется нажатием клавиши "O".</p>
+            </div>
+            </div>
+        </div>
+        <div class="help-section">
+            <h2>Механики игры</h2>
+            <div class="mechanics-grid">
+                <div class="slide">
+                    <h3>Очки</h3>
+                    <div class="infoSlide">
+                        <img src="./img/help/score.png" alt="score" />
+                        <p>Ваша цель - собрать как можно больше яблок и одновременно уничтожить как можно больше врагов,
+                         чтобы набрать максимальное количество очков. </p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <h3>Противники</h3>
+                    <div class="infoSlide">
+                        <img src="./img/help/enemies.png" alt="enemies" />
+                        <p>
+                        Будьте осторожны в обращении с врагами и применяйте тактику - либо уклоняйтесь от них,
+                         чтобы сохранить свою жизнь, либо смело атакуйте,
+                         чтобы уничтожить их и заработать дополнительные очки.</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <h3>Урон</h3>
+                    <div class="infoSlide">
+                        <img src="./img/help/damage.png" alt="damage" />
+                        <p> У вас есть всего три жизни, что означает, что у вас два права на ошибку.
+                         Будьте внимательны и осторожны при прохождении уровней, чтобы не исчерпать все свои жизни.</p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <h3>Победа</h3>
+                    <div class="infoSlide">
+                        <img src="./img/help/victory.png" alt="victory" />
+                        <p>Пройдите уровень до конца и обратите внимание на знак. Найдите его, чтобы получить доступ к таблице
+                         лучших игроков и занять свое место среди лучших из лучших. </p>
+                    </div>
+                </div>
+                <div class="slide">
+                    <h3>Смерть</h3>
+                    <div class="infoSlide">
+                        <img src="./img/help/death.png" alt="death" />
+                        <p>Запомните: ходить по шипам нельзя, а персонаж не умеет плавать.
+                         У вас есть 3 минуты. Пройдите уровень до конца.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button id="closeHelpButton">Закрыть</button>
     </div>
-    <div class="help-section">
-      <h2>Управление</h2>
-      <div class="slide">
-        <p>Описание управления</p>
-        <img src="../../img/help/control.png" alt="control" />
-      </div>
-    </div>
-    <div class="help-section">
-      <h2>Механики игры</h2>
-      <div class="mechanics-grid">
-      <div class="slide">
-        <h3>Очки</h3>
-        <p>Описание очков</p>
-        <img src="../../img/help/score.png" alt="score" />
-      </div>
-      <div class="slide">
-        <h3>Противники</h3>
-        <p>Описание противников</p>
-        <img src="../../img/help/enemies.png" alt="enemies" />
-      </div>
-      <div class="slide">
-        <h3>Урон</h3>
-        <p>Описание урона</p>
-        <img src="../../img/help/damage.png" alt="damage" />
-      </div>
-      <div class="slide">
-        <h3>Победа</h3>
-        <p>Описание победы</p>
-        <img src="../../img/help/victory.png" alt="victory" />
-      </div>
-      <div class="slide">
-        <h3>Смерть</h3>
-        <p>Описание смерти</p>
-        <img src="../../img/help/death.png" alt="death" />
-      </div>
-    </div>
-    <button id="closeHelpButton">Закрыть</button>
-  </div>
-  </div>
 `;
 
     // Добавляем контент помощи к модальному окну помощи
