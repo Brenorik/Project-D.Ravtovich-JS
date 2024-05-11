@@ -294,6 +294,8 @@ class GameUI {
       // Если таймер достиг нуля, останавливаем его
       if (this.timerValue === 0) {
         clearInterval(this.timerInterval);
+        audioManager.playSoundEffect('gameOver');
+        this.checkForGameOverCondition();
         console.log('Время вышло!');
         return;
       }

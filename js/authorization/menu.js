@@ -3,6 +3,9 @@ class Menu {
     this.playerName = '';
     this.menuContainer = document.createElement('div');
     this.menuContainer.classList.add('menu-container');
+    this.menuContainer.style.backgroundImage = "url('../../img/backgroundmenu.bmp')";
+    this.menuContainer.style.backgroundSize = 'cover'; // Растягиваем изображение на весь контейнер
+    this.menuContainer.style.backgroundPosition = 'center'; // Выравниваем изображение по центру
     this.menuContainer.innerHTML = `
     <div id="menu" class="menu">
     <ul class="menu-items">
@@ -26,6 +29,7 @@ class Menu {
     this.retingMenuItem.addEventListener('click', this.showReting.bind(this));
     this.modal = null; // Поле для хранения ссылки на модальное окно
     this.settingsMenu = null; // Поле для хранения ссылки на меню настроек
+    this.helpModal = null; // Поле для хранения ссылки на модальное окно помощи
   }
 
   addMenuAfterClear(playerName) {
@@ -63,6 +67,7 @@ class Menu {
     gameUI.username = this.playerName;
     console.log('Игра началась!');
     this.menu.style.display = 'none';
+    this.menuContainer.style.display = 'none';
     isGameRunning = true;
 
     // Добавляем слушатели событий только после запуска игры
@@ -161,7 +166,80 @@ class Menu {
   }
 
   showHelp() {
-    console.log('История');
+    // Создаем модальное окно помощи, если оно еще не создано
+    if (!this.helpModal) {
+      this.createHelpModal();
+    }
+
+    // Отображаем модальное окно помощи
+    this.helpModal.style.display = 'block';
+  }
+
+  createHelpModal() {
+    // Создаем модальное окно для помощи
+    this.helpModal = document.createElement('div');
+    this.helpModal.classList.add('modal-help');
+
+    // Создаем контент модального окна
+    const helpContent = document.createElement('div');
+    helpContent.classList.add('help-content');
+    helpContent.innerHTML = `
+    <div class="help-content">
+    <div class="help-section">
+      <h1>Помощь</h1>
+    </div>
+    <div class="help-section">
+      <h2>Управление</h2>
+      <div class="slide">
+        <p>Описание управления</p>
+        <img src="../../img/help/control.png" alt="control" />
+      </div>
+    </div>
+    <div class="help-section">
+      <h2>Механики игры</h2>
+      <div class="mechanics-grid">
+      <div class="slide">
+        <h3>Очки</h3>
+        <p>Описание очков</p>
+        <img src="../../img/help/score.png" alt="score" />
+      </div>
+      <div class="slide">
+        <h3>Противники</h3>
+        <p>Описание противников</p>
+        <img src="../../img/help/enemies.png" alt="enemies" />
+      </div>
+      <div class="slide">
+        <h3>Урон</h3>
+        <p>Описание урона</p>
+        <img src="../../img/help/damage.png" alt="damage" />
+      </div>
+      <div class="slide">
+        <h3>Победа</h3>
+        <p>Описание победы</p>
+        <img src="../../img/help/victory.png" alt="victory" />
+      </div>
+      <div class="slide">
+        <h3>Смерть</h3>
+        <p>Описание смерти</p>
+        <img src="../../img/help/death.png" alt="death" />
+      </div>
+    </div>
+    <button id="closeHelpButton">Закрыть</button>
+  </div>
+  </div>
+`;
+
+    // Добавляем контент помощи к модальному окну помощи
+    this.helpModal.appendChild(helpContent);
+
+    // Добавляем модальное окно помощи к телу документа
+    document.body.appendChild(this.helpModal);
+
+    // Добавляем обработчик события для кнопки закрытия окна помощи
+    const closeHelpButton = helpContent.querySelector('#closeHelpButton');
+    closeHelpButton.addEventListener('click', () => {
+      this.helpModal.style.display = 'none';
+    });
   }
 
   showReting() {

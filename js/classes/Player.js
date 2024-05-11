@@ -244,15 +244,15 @@ class Player extends Sprite {
     // c.fillStyle = 'rgba(0, 0, 255, 0.2)';
     // c.fillRect(this.camerabox.position.x, this.camerabox.position.y, this.camerabox.width, this.camerabox.height);
     // создадим квадрат чтобы видить удао
-    c.fillStyle = 'rgba(0, 0, 255, 0.2)';
-    c.fillRect(this.position.x, this.position.y + 20, this.width + 3, 21);
+    // c.fillStyle = 'rgba(0, 0, 255, 0.2)';
+    // c.fillRect(this.position.x, this.position.y + 20, this.width + 3, 21);
     // создадим квадрат чтобы видить рамки изоброжения
-    c.fillStyle = 'rgba(0, 255, 0, 0.2)';
-    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+    // c.fillStyle = 'rgba(0, 255, 0, 0.2)';
+    // c.fillRect(this.position.x, this.position.y, this.width, this.height);
 
     // создадим квадрат чтобы видить ХИТБОКСА
-    c.fillStyle = 'rgba(255, 0, 0, 0.2)';
-    c.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
+    // c.fillStyle = 'rgba(255, 0, 0, 0.2)';
+    // c.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
 
     // создание игрока прям тут
     this.draw();

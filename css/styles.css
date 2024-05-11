@@ -1,7 +1,7 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: black;
+  background-color: hwb(327deg 12.55% 79.61% / 90%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -35,6 +35,16 @@ body {
   color: yellow;
 }
 
+.menu-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 999; /* Устанавливаем z-index, чтобы меню отображалось поверх других элементов */
+}
+
 /* Стили для модального окна */
 .modal {
   display: none;
@@ -66,7 +76,8 @@ body {
   margin-bottom: 20px;
 }
 
-.modal-content button {
+.modal-content button,
+.modal-help button {
   background-color: #4caf50;
   color: white;
   padding: 10px 20px;
@@ -75,8 +86,57 @@ body {
   cursor: pointer;
 }
 
-.modal-content button:hover {
+.modal-content button:hover,
+.modal-help button:hover {
   background-color: #45a049;
+}
+
+.modal-help {
+  display: none; /* Изначально скрываем модальное окно */
+  position: fixed; /* Позиционируем фиксированно относительно видимой области экрана */
+  z-index: 1000; /* Устанавливаем высокий уровень z-index, чтобы окно отображалось поверх других элементов */
+  left: 50%; /* Располагаем по горизонтали в середине экрана */
+  top: 50%; /* Располагаем по вертикали в середине экрана */
+  transform: translate(-50%, -50%); /* Центрируем по горизонтали и вертикали */
+  width: 90%; /* Задаем ширину окна (можно изменить по вашему усмотрению) */
+  max-width: auto; /* Максимальная ширина окна */
+  /* background-color: hwb(327deg 12.55% 79.61% / 100%); Цвет фона */
+  background-color: white;
+  padding: 20px; /* Внутренний отступ */
+  border-radius: 10px; /* Скругление углов */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Тень */
+}
+
+.modal-help .help-section h1 {
+  text-align: center;
+}
+
+.modal-help .help-section h2 {
+  margin-top: 20px;
+}
+
+.mechanics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Первая колонка будет подстраиваться под размер картинки */
+  grid-gap: 20px; /* Отступ между элементами */
+}
+
+.mechanics-grid .slide {
+  display: flex; /* Используем flexbox */
+  flex-direction: row; /* Элементы будут выравниваться в строку */
+  align-items: center; /* Центрируем элементы по вертикали */
+}
+
+.mechanics-grid .slide img {
+  max-width: 100%; /* Устанавливаем максимальную ширину для изображения */
+}
+
+.mechanics-grid .slide p {
+  margin-left: 20px; /* Отступ слева для текста */
+}
+
+.mechanics-grid .slide h3 {
+  margin-top: 0; /* Удаляем верхний отступ у заголовка */
 }
 
 /* Стили для кнопки */
