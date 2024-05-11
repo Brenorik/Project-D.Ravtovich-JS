@@ -35,7 +35,7 @@ class Menu {
   addMenuAfterClear(playerName) {
     this.playerName = playerName;
     const gameMenuPlayer = this.menuContainer.querySelector('#gameMenuPlayer');
-    gameMenuPlayer.textContent = `Привет ${this.playerName}`;
+    gameMenuPlayer.textContent = `Добро пожаловать, ${this.playerName}!`;
 
     // Создаем кнопку "Выйти"
     const logoutButton = document.createElement('a');
@@ -48,8 +48,9 @@ class Menu {
     logoutButton.addEventListener('click', (event) => {
       event.preventDefault(); // Предотвращаем действие по умолчанию для ссылки
       event.stopPropagation(); // Остановка распространения события
-      loginModule.logout();
-      audioManager.stopMenuMusic();
+      // loginModule.logout();
+      // audioManager.stopMenuMusic();
+      window.location.reload();
     });
 
     // Добавляем кнопку "Выйти" к элементу "gameMenuI"
@@ -69,7 +70,11 @@ class Menu {
     this.menu.style.display = 'none';
     this.menuContainer.style.display = 'none';
     isGameRunning = true;
+    // Остановить таймер перед открытием игры
+    gameUI.stopTimer();
 
+    // Запустить таймер
+    gameUI.startTimer();
     // Добавляем слушатели событий только после запуска игры
     window.addEventListener('keydown', keyDownHandler);
     window.addEventListener('keyup', keyUpHandler);
@@ -95,9 +100,9 @@ class Menu {
     modalContent.classList.add('modal-content');
 
     // Создаем кнопку закрытия модального окна
-    const closeButton = document.createElement('span');
-    closeButton.classList.add('close');
-    closeButton.textContent = '×';
+    const closeButton = document.createElement('button');
+    closeButton.classList.add('close-button');
+    closeButton.textContent = 'Закрыть';
     closeButton.addEventListener('click', () => {
       this.modal.style.display = 'none';
       audioManager.playMenuMusic();
@@ -107,8 +112,9 @@ class Menu {
     const settingsMenu = this.createSettingsMenu();
 
     // Добавляем кнопку закрытия и меню настроек в контент модального окна
-    modalContent.appendChild(closeButton);
+
     modalContent.appendChild(settingsMenu);
+    modalContent.appendChild(closeButton);
     this.modal.appendChild(modalContent);
 
     // Добавляем модальное окно к телу документа
@@ -128,7 +134,7 @@ class Menu {
     musicVolumeSlider.min = '0';
     musicVolumeSlider.max = '100';
     musicVolumeSlider.value = audioManager.backgroundMusic.volume * 100; // Устанавливаем текущую громкость музыки
-
+    musicVolumeSlider.classList.add('volume-slider'); // Добавляем класс для регулятора громкости звуков
     // Обработчик события для перемещения ползунка громкости музыки
     musicVolumeSlider.addEventListener('input', () => {
       const volume = parseFloat(musicVolumeSlider.value) / 100;
@@ -143,12 +149,13 @@ class Menu {
 
     // Элемент управления для настройки громкости звуковых эффектов
     const soundVolumeLabel = document.createElement('label');
-    soundVolumeLabel.textContent = 'Громкость звуков:';
+    soundVolumeLabel.textContent = 'Громкость  звуков:';
     const soundVolumeSlider = document.createElement('input');
     soundVolumeSlider.type = 'range';
     soundVolumeSlider.min = '0';
     soundVolumeSlider.max = '100';
-    soundVolumeSlider.value = audioManager.soundEffects['jump'].volume * 100; // Устанавливаем текущую громкость звуков (в данном случае берем один из звуковых эффектов)
+    soundVolumeSlider.value = audioManager.soundEffects['jump'].volume * 100;
+    soundVolumeSlider.classList.add('volume-slider'); // Устанавливаем текущую громкость звуков (в данном случае берем один из звуковых эффектов)
     soundVolumeSlider.addEventListener('input', () => {
       const volume = parseFloat(soundVolumeSlider.value) / 100;
       audioManager.setSoundEffectsVolume(volume);

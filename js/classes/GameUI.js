@@ -64,14 +64,14 @@ class GameUI {
       <div class="modal">
           <div class="modal-content">
               ${content}
+              <button id="closeButton">Закрыть</button>
           </div>
-          <button id="restartButton">Закрыть</button>
       </div>
     `;
 
     document.body.appendChild(modalContainer);
 
-    const closeBtn = modalContainer.querySelector('#restartButton');
+    const closeBtn = modalContainer.querySelector('#closeButton');
     closeBtn.addEventListener('click', () => {
       modalContainer.remove();
     });
@@ -130,6 +130,7 @@ class GameUI {
     player.position = { x: 30, y: 450 };
     player.velocity = { x: 0, y: 1 };
     this.modal.style.display = 'block';
+    this.removeMenuButton();
   }
 
   hideGameOverModal() {
@@ -336,8 +337,8 @@ class GameUI {
     camera.position = { x: 0, y: -backgroundImageHeight + scaledCanvas.height };
     // Очистка текущего изображения
     player.image = null;
-    this.startTimer();
-
+    // this.startTimer();
+    this.stopTimer();
     // Очистка массива яблок
     appleManager.apples = [];
 
@@ -357,11 +358,55 @@ class GameUI {
     // Сброс очков на 0
     this.scoreValue = 0;
     this.heartsCount = 3;
+    this.displayMenuButton();
   }
 
   update() {
     if (!this.hasWon) {
       this.checkForWinCondition();
+    }
+  }
+
+  displayMenuButton() {
+    // Проверяем, существует ли уже кнопка меню
+    if (!document.getElementById('menuContainer2')) {
+      // Создаем новый контейнер
+      const container = document.createElement('div');
+      container.id = 'menuContainer2'; // Присваиваем контейнеру уникальный id
+
+      // Создаем кнопку меню
+      this.menuButton = document.createElement('button');
+      this.menuButton.textContent = 'Меню';
+      this.menuButton.id = 'menuButtonDisplay'; // Присваиваем кнопке уникальный id
+
+      // Добавляем обработчик события для кнопки меню
+      this.menuButton.addEventListener('click', () => {
+        this.stopGame();
+        this.resetMenu();
+        audioManager.stopBackgroundMusic();
+        audioManager.playMenuMusic();
+        this.removeMenuButton();
+      });
+
+      // Добавляем кнопку в контейнер
+      container.appendChild(this.menuButton);
+
+      // Добавляем контейнер на страницу
+      document.body.appendChild(container);
+    }
+  }
+  removeMenuButton() {
+    // Проверяем, существует ли кнопка меню
+    if (this.menuButton) {
+      // Удаляем кнопку и контейнер из DOM
+      this.menuButton.parentNode.removeChild(this.menuButton);
+      this.menuButton = null; // Обнуляем ссылку на кнопку
+
+      // Удаляем контейнер из DOM
+      const container = document.getElementById('menuContainer2');
+      if (container) {
+        container.parentNode.removeChild(container);
+      }
     }
   }
 }

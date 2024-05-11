@@ -12,23 +12,24 @@ body {
 .menu {
   text-align: center;
   position: fixed;
-  top: 50%;
+  top: 35%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.menu-items {
+/* .menu-items {
   list-style-type: none;
   padding: 0;
-}
+} */
 
 .menu-item {
   cursor: pointer;
-  margin-bottom: 10px;
-  color: white;
-  font-size: 20px;
+  margin-bottom: 15px;
+  color: #a521ff;
+  font-size: 26px;
   transition: color 0.3s;
   position: relative;
+  font-family: 'Press Start 2P';
 }
 
 .menu-item:hover {
@@ -43,6 +44,17 @@ body {
   height: 100%;
   overflow: hidden;
   z-index: 999; /* Устанавливаем z-index, чтобы меню отображалось поверх других элементов */
+}
+
+#gameMenuPlayer {
+  font-family: 'Press Start 2P';
+  font-size: 16px;
+  color: #a521ff;
+}
+
+#gameMenuPlayer a {
+  padding: 5px;
+  font-size: 16px;
 }
 
 /* Стили для модального окна */
@@ -62,10 +74,13 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
+  background-color: hwb(327deg 12.55% 79.61% / 100%);
   padding: 20px;
   border-radius: 10px;
   text-align: center;
+  font-family: 'EB Garamond';
+  font-size: 24px; /* Задаем размер шрифта */
+  color: #fffb09;
 }
 
 .modal-content h2 {
@@ -76,19 +91,21 @@ body {
   margin-bottom: 20px;
 }
 
+/* .modal-content .settings-menu {
+  margin-bottom: 20px;
+} */
+
+.volume-slider {
+  margin-left: 25px;
+  width: 45%; /* Устанавливаем ширину регуляторов громкости на 100% */
+}
+
 .modal-content button,
 .modal-help button {
-  background-color: #4caf50;
-  color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
-
-.modal-content button:hover,
-.modal-help button:hover {
-  background-color: #45a049;
 }
 
 .modal-help {
@@ -164,35 +181,58 @@ body {
   margin-right: 20px;
 }
 
-.modal-help button {
+.modal-help button,
+.close-button,
+#closeButton {
   background-color: #9d2525;
   color: #fffb09;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin: 20px 30px 20px 0;
+  margin: 20px 30px 0 0;
   float: right; /* Расположение кнопки справа */
 }
-.modal-help button:hover {
+.modal-help button:hover,
+.close-button:hover,
+#closeButton:hover {
   background-color: #d80606;
+}
+
+.modal-content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  font-family: 'Russo One';
+}
+
+.modal-content th,
+.modal-content td {
+  padding: 10px;
+  border: 1px solid #000;
+}
+
+.modal-content th {
+  background-color: #ffcd00e6;
+  color: rgb(52 32 43);
 }
 
 /* Стили для кнопки */
 #restartButton,
 #menuButton,
 #retingButton {
-  padding: 10px 20px;
-  background-color: #4caf50;
-  color: white;
+  background-color: #9d2525;
+  color: #fffb09;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
 /* Стили для кнопки при наведении */
-#restartButton:hover {
-  background-color: #45a049;
+#restartButton:hover,
+#menuButton:hover,
+#retingButton:hover {
+  background-color: #d80606;
 }
 
 .logout {
@@ -205,26 +245,27 @@ body {
   font-size: small;
 }
 
-.users-list a {
-  margin-left: 10px;
-  text-decoration: none;
-  color: blue;
-  overflow: hidden;
-  vertical-align: middle;
+#menuContainer2 {
+  position: absolute;
+  top: 20px; /* Расположение кнопки от верхнего края страницы */
+  right: 20px; /* Расположение кнопки от правого края страницы */
 }
 
-.users-list a:hover {
-  text-decoration: none;
-  background-color: red;
-}
-
-.table thead th {
-  background-color: gray;
-  color: #fff;
-}
-
-.table td:last-child {
+#menuButtonDisplay {
+  background-color: #483640;
+  border: none;
+  color: white;
+  padding: 10px 20px;
   text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+#menuButtonDisplay:hover {
+  background-color: #45a049; /* Темно-зеленый при наведении */
 }
 
 #login,

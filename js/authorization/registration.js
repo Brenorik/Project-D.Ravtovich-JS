@@ -33,7 +33,6 @@ const registrationModule = (function () {
         <div class="container">
           <div class="columns">
             <div class="column">
-              <h1 class="is-size-2 has-text-centered">Приветствую в моем приложении</h1>
               <h2 class="is-size-4 has-text-centered">Зарегистрируйтесь, пожалуйста.</h2>
             </div>
           </div>

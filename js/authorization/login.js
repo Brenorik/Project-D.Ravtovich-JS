@@ -5,8 +5,8 @@ const loginModule = (function () {
     <div class="container">
       <div class="columns">
         <div class="column">
-          <h1 class="is-size-2 has-text-centered">Приветствую в моем приложении</h1>
-          <h2 class="is-size-4 has-text-centered">Залогиньтесь, пожалуйста.</h2>
+          <h1 class="is-size-2 has-text-centered">Доброго времени суток!</h1>
+          <h2 class="is-size-4 has-text-centered">Пожалуйста, выполните вход, чтобы начать игру.</h2>
         </div>
       </div>
       <div class="columns is-centered">

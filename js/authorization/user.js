@@ -8,9 +8,8 @@ const userModule = (function () {
     appContainer.innerHTML = `
       <section id="userForm" class="section">
         <div class="container">
-          <a href="#" id="logoutBtn" class="logout button is-primary">Выйти</a>
-          <h1 class="title">Hello from AppView!</h1>
-          <p class="subtitle">Test app created.</p>
+          <h1 class="title">Ага!?</h1>
+          <p class="subtitle">Какой псевдоним ты используешь сегодня?</p>
           <div id="users"></div>
         </div>
       </section>
@@ -18,7 +17,18 @@ const userModule = (function () {
   }
 
   function addUserForm(appContainer) {
-    document.getElementById('users').innerHTML += `
+    appContainer.innerHTML = `
+      <section id="userForm" class="section">
+        <div class="container">
+          <h1 class="title">Ага!?</h1>
+          <p class="subtitle">Какой псевдоним ты используешь сегодня?</p>
+          <div id="users"></div>
+        </div>
+      </section>
+    `;
+
+    const usersDiv = document.getElementById('users');
+    usersDiv.innerHTML = `
       <div class="columns">
         <div class="column">
           <form id="addNewUser">
@@ -34,7 +44,7 @@ const userModule = (function () {
               </div>
               <div class="field is-horizontal">
                 <div class="control">
-                  <button class="button is-link" id="addBtn">Добавить</button>
+                  <button class="button is-link" id="addBtn" disabled>Добавить</button>
                 </div>
               </div>
             </div>
@@ -42,24 +52,40 @@ const userModule = (function () {
         </div>
       </div>
     `;
+
+    const newUserNameInput = usersDiv.querySelector('#newUserName');
+    const addBtn = usersDiv.querySelector('#addBtn');
+
+    // Слушатель события для поля ввода имени пользователя
+    newUserNameInput.addEventListener('input', function () {
+      if (newUserNameInput.value.trim() !== '') {
+        addBtn.removeAttribute('disabled'); // Активируем кнопку, если поле не пустое
+      } else {
+        addBtn.setAttribute('disabled', 'disabled'); // Деактивируем кнопку, если поле пустое
+      }
+    });
   }
 
   function addUser(username) {
-    myAppDB
-      .ref('users/' + `user_${username.replace(/\s/g, '').toLowerCase()}`)
-      .set({
-        username: `${username}`,
-        score: 0,
-        timer: 0,
-      })
-      .then(function () {
-        console.log('Пользователь добавлен в коллецию users');
-        menu.addMenuAfterClear(username);
-        audioManager.playMenuMusic();
-      })
-      .catch(function (error) {
-        console.error('Ошибка добавления пользователя: ', error);
-      });
+    if (username) {
+      myAppDB
+        .ref('users/' + `user_${username.replace(/\s/g, '').toLowerCase()}`)
+        .set({
+          username: `${username}`,
+          score: 0,
+          timer: 0,
+        })
+        .then(function () {
+          console.log('Пользователь добавлен в коллецию users');
+          menu.addMenuAfterClear(username);
+          audioManager.playMenuMusic();
+        })
+        .catch(function (error) {
+          console.error('Ошибка добавления пользователя: ', error);
+        });
+    } else {
+      console.error('Ошибка: имя пользователя не указано.');
+    }
   }
 
   function addEventListeners() {
