@@ -54,11 +54,9 @@ class AppleManager {
 
         gameUI.updateScore(50);
         audioManager.playSoundEffect('apple');
-        // Вернуть true, чтобы указать, что столкновение произошло
         return true;
       }
     }
-    // Если столкновение не произошло, вернуть false
     return false;
   }
 }

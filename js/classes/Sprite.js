@@ -1,11 +1,10 @@
-// создаем клас изоброжения
+// Клас изоброжения
 class Sprite {
   // построение спрайта
   constructor({ position, imageSrc, frameRate = 1, frameBuffer = 3, scale = 1 }) {
     this.position = position;
     // настраиваем изоброжение спрайта игрока сами размеры
     this.scale = scale;
-
     // намнужно удостовериться что слайд загружен
     this.loaded = false;
 

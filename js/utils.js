@@ -1,7 +1,6 @@
 // функция столкновения персонажа
 // обноружение столкновения
 // нижгяя позиция + высота блока
-// меняем  this на  object1, а collisions на  object2
 function collision({ object1, object2 }) {
   return (
     object1.position.y + object1.height >= object2.position.y &&
@@ -13,7 +12,6 @@ function collision({ object1, object2 }) {
 }
 
 // платформы
-
 function platformCollision({ object1, object2 }) {
   return (
     object1.position.y + object1.height >= object2.position.y &&

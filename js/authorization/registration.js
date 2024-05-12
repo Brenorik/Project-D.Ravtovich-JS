@@ -1,4 +1,3 @@
-// registration.js
 const registrationModule = (function () {
   function register(userEmail, userPass) {
     if (userEmail && userPass) {

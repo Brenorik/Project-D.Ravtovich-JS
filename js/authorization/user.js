@@ -56,12 +56,12 @@ const userModule = (function () {
     const newUserNameInput = usersDiv.querySelector('#newUserName');
     const addBtn = usersDiv.querySelector('#addBtn');
 
-    // Слушатель события для поля ввода имени пользователя
+    //  поля ввода имени пользователя
     newUserNameInput.addEventListener('input', function () {
       if (newUserNameInput.value.trim() !== '') {
-        addBtn.removeAttribute('disabled'); // Активируем кнопку, если поле не пустое
+        addBtn.removeAttribute('disabled');
       } else {
-        addBtn.setAttribute('disabled', 'disabled'); // Деактивируем кнопку, если поле пустое
+        addBtn.setAttribute('disabled', 'disabled');
       }
     });
   }
@@ -113,8 +113,7 @@ const userModule = (function () {
         event.stopPropagation();
         addUser(form.newUserName.value);
         form.newUserName.value = '';
-        clearScreen(); // Очищаем экран
-        // menuModule.addMenuAfterClear(); // Добавляем меню после очистки экрана
+        clearScreen();
       }
 
       if (event.target && event.target.classList.contains('delete')) {
@@ -125,7 +124,7 @@ const userModule = (function () {
       if (event.target && event.target.id === 'registerBtn') {
         event.preventDefault();
         event.stopPropagation();
-        registrationModule.showRegistrationForm(appContainer); // Показываем форму регистрации
+        registrationModule.showRegistrationForm(appContainer);
       }
 
       if (event.target && event.target.id === 'registerBtnForm') {
@@ -139,14 +138,13 @@ const userModule = (function () {
 
       function clearScreen() {
         const appContainer = document.getElementById('app');
-        appContainer.innerHTML = ''; // Очищаем содержимое контейнера
+        appContainer.innerHTML = '';
       }
     });
   }
 
   return {
     showForm,
-
     printTestData,
     addUserForm,
     addUser,

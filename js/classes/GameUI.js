@@ -2,14 +2,14 @@ class GameUI {
   constructor() {
     this.timerValue = 180;
     this.scoreValue = 0;
-    this.heartsCount = 3; // Начальное количество сердец
+    this.heartsCount = 3;
     this.winPosition = { x: 2784, y: 336 }; // Координаты для победного местоположения
-    this.modal = null; // Объявляем modal, но не создаем его в конструкторе
-    this.restartButton = null; // Также объявляем restartButton, чтобы избежать ошибок при обращении к нему
+    this.modal = null;
+    this.restartButton = null;
     this.initModal();
     this.hasWon = false;
     this.username = '';
-    this.menu = null; // добавляем свойство для хранения экземпляра Menu
+    this.menu = null;
   }
   stopGame() {
     window.cancelAnimationFrame(menu.animationFrameId);
@@ -79,7 +79,7 @@ class GameUI {
     modalContainer.querySelector('.modal').style.display = 'block';
   }
   handleMenuButtonClick() {
-    this.menu.addMenuAfterClear(this.username); // вызываем метод addMenuAfterClear из Menu
+    this.menu.addMenuAfterClear(this.username);
   }
 
   resetMenu() {
@@ -92,7 +92,6 @@ class GameUI {
     this.menu = new Menu();
     // Добавляем меню на страницу
     this.menu.addMenuAfterClear(this.username);
-    // Скрываем текстовое содержимое gameMenuI
   }
 
   initModal() {
@@ -110,7 +109,6 @@ class GameUI {
 </div>`;
     document.body.appendChild(this.modal);
 
-    // Назначаем обработчик для кнопки перезапуска игры
     this.restartButton = this.modal.querySelector('#restartButton');
     this.retingButton = this.modal.querySelector('#retingButton');
     this.menuButton = this.modal.querySelector('#menuButton');
@@ -118,7 +116,7 @@ class GameUI {
     this.retingButton.addEventListener('click', () => this.showReting());
     this.menuButton.addEventListener('click', () => {
       this.stopGame();
-      this.resetMenu(); // вызываем метод resetMenu при нажатии кнопки меню
+      this.resetMenu();
       audioManager.stopBackgroundMusic();
       audioManager.playMenuMusic();
     });
@@ -141,12 +139,11 @@ class GameUI {
     // Дополнительные действия при нажатии на кнопку перезапуска игры
     this.hideGameOverModal();
     this.resetGame();
-    // Вызов метода для перезапуска игры или другой логики
+    this.startTimer();
   }
   updateUser(username, newScore, newTimer) {
     // Формируем ссылку на пользователя в базе данных
     const userRef = myAppDB.ref('users/' + `user_${username.replace(/\s/g, '').toLowerCase()}`);
-
     // Обновляем данные пользователя
     userRef
       .update({
@@ -163,9 +160,8 @@ class GameUI {
 
   checkForWinCondition() {
     if (this.hasWon) {
-      return false; // Если уже победили, выходим из метода
+      return false;
     }
-    // используем this.username вместо просто username
     if (player.hitbox.position.x >= this.winPosition.x && player.hitbox.position.y <= this.winPosition.y) {
       this.hasWon = true;
       this.modal.querySelector('.modal-content h2').innerText = 'Поздравляем!' + this.username;
@@ -200,7 +196,6 @@ class GameUI {
     // Расстояние между сердцами
     const heartSpacing = 5;
 
-    // Проверяем, существует ли камера, прежде чем использовать ее свойство
     const cameraX = camera ? camera.position.x : 0;
     const cameraY = camera ? camera.position.y : 0;
 
@@ -209,7 +204,7 @@ class GameUI {
       const heartOffset = i * (heartSize * 2 + heartSpacing);
       heartsX += heartOffset;
 
-      c.fillStyle = 'red'; // Цвет сердца
+      c.fillStyle = 'red';
       c.beginPath();
       c.moveTo(heartsX - cameraX, heartsY + heartSize / 2 - cameraY);
       c.bezierCurveTo(
@@ -260,15 +255,14 @@ class GameUI {
       c.fillStyle = gradient;
 
       // Применяем эффект размытия
-      c.filter = 'blur(1px)'; // Размытие в 3 пикселя
+      c.filter = 'blur(1px)';
       c.fill();
-      c.filter = 'none'; // Сбрасываем эффект размытия
+      c.filter = 'none';
       heartsX -= heartOffset;
     }
   }
 
   // Метод для отображения таймера
-
   drawTimer() {
     // Получаем минуты и секунды из значения таймера
     const minutes = Math.floor(this.timerValue / 60);
@@ -292,28 +286,26 @@ class GameUI {
       // Уменьшаем значение таймера на 1
       this.timerValue--;
 
-      // Если таймер достиг нуля, останавливаем его
       if (this.timerValue === 0) {
         clearInterval(this.timerInterval);
         audioManager.playSoundEffect('gameOver');
         this.checkForGameOverCondition();
-        console.log('Время вышло!');
+        // console.log('Время вышло!');
         return;
       }
 
       // Отображаем обновленное значение таймера
       this.drawTimer();
-    }, 1000); // 1000 миллисекунд = 1 секунда
+    }, 1000);
   }
   stopTimer() {
-    clearInterval(this.timerInterval); // Останавливаем интервал таймера
+    clearInterval(this.timerInterval);
   }
 
   // Метод для отображения очков
   drawScore(camera) {
     c.fillStyle = 'black';
     c.font = '6px Arial';
-    // Проверяем, существует ли камера, прежде чем использовать ее свойство
     const cameraX = camera ? camera.position.x : 0;
     const cameraY = camera ? camera.position.y : 0;
     // Отображаем очки в правом верхнем углу, учитывая положение камеры
@@ -324,7 +316,7 @@ class GameUI {
 
   // Метод для обновления счета (добавляет указанное количество очков)
   updateScore(points) {
-    this.scoreValue += points; // Добавляем указанное количество очков к текущему счету
+    this.scoreValue += points;
   }
   // Метод для сброса игры
   resetGame() {
@@ -337,7 +329,6 @@ class GameUI {
     camera.position = { x: 0, y: -backgroundImageHeight + scaledCanvas.height };
     // Очистка текущего изображения
     player.image = null;
-    // this.startTimer();
     this.stopTimer();
     // Очистка массива яблок
     appleManager.apples = [];
@@ -349,13 +340,12 @@ class GameUI {
     // Пересоздаем всех врагов
     for (let i = 0; i < enemies.length; i++) {
       const enemy = enemies[i];
-      enemy.position = { x: enemy.startX, y: enemy.position.y }; // Возвращаем врага на начальную позицию
-      enemy.direction = 1; // Устанавливаем начальное направление движения
-      enemy.setImageSrc(enemy.imageSrcRight); // Устанавливаем изображение врага в правильное направление
+      enemy.position = { x: enemy.startX, y: enemy.position.y };
+      enemy.direction = 1;
+      enemy.setImageSrc(enemy.imageSrcRight);
     }
 
     this.timerValue = 180;
-    // Сброс очков на 0
     this.scoreValue = 0;
     this.heartsCount = 3;
     this.displayMenuButton();
@@ -366,20 +356,16 @@ class GameUI {
       this.checkForWinCondition();
     }
   }
-
+  // Добавляем кнопку меню
   displayMenuButton() {
-    // Проверяем, существует ли уже кнопка меню
     if (!document.getElementById('menuContainer2')) {
-      // Создаем новый контейнер
       const container = document.createElement('div');
-      container.id = 'menuContainer2'; // Присваиваем контейнеру уникальный id
+      container.id = 'menuContainer2';
 
-      // Создаем кнопку меню
       this.menuButton = document.createElement('button');
       this.menuButton.textContent = 'Меню';
-      this.menuButton.id = 'menuButtonDisplay'; // Присваиваем кнопке уникальный id
+      this.menuButton.id = 'menuButtonDisplay';
 
-      // Добавляем обработчик события для кнопки меню
       this.menuButton.addEventListener('click', () => {
         this.stopGame();
         this.resetMenu();
@@ -388,21 +374,17 @@ class GameUI {
         this.removeMenuButton();
       });
 
-      // Добавляем кнопку в контейнер
       container.appendChild(this.menuButton);
 
-      // Добавляем контейнер на страницу
       document.body.appendChild(container);
     }
   }
+  // Удаляем кнопку
   removeMenuButton() {
-    // Проверяем, существует ли кнопка меню
     if (this.menuButton) {
-      // Удаляем кнопку и контейнер из DOM
       this.menuButton.parentNode.removeChild(this.menuButton);
-      this.menuButton = null; // Обнуляем ссылку на кнопку
+      this.menuButton = null;
 
-      // Удаляем контейнер из DOM
       const container = document.getElementById('menuContainer2');
       if (container) {
         container.parentNode.removeChild(container);

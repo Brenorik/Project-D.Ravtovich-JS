@@ -1,5 +1,4 @@
-// конструктор для создания играков
-// расширяем клас. чтобы он брал днные из Sprite
+// конструктор для создания играков с расширением в Sprite (для забора данных)
 class Player extends Sprite {
   constructor({
     position,
@@ -19,9 +18,6 @@ class Player extends Sprite {
       x: 0,
       y: 1,
     };
-    // высота и ширина прямоугольника. которого нет
-    // this.width = 25;
-    // this.height = 25;
     this.collisionBlocks = collisionBlocks;
     this.platformCollisionBlocks = platformCollisionBlocks;
     this.thornsBlocks = thornsBlocks;
@@ -40,15 +36,12 @@ class Player extends Sprite {
     this.animations = animations;
     // по умолчанию герой смотрит на право
     this.lastDirection = 'right';
-
     // Добавим флаг для отслеживания прыжка
     this.isJumping = false;
-
     // анимации разные нужно зациклить с помощью ключей
     for (let key in this.animations) {
       const image = new Image();
       image.src = this.animations[key].imageSrc;
-
       this.animations[key].image = image;
     }
     this.deathAnimationPlayed = false;
@@ -60,10 +53,9 @@ class Player extends Sprite {
   attack() {
     if (!this.isAttacking) {
       // Проверяем, не проигрывается ли уже атака
-      this.isAttacking = true; // Устанавливаем переменную состояния атаки
+      this.isAttacking = true;
       if (this.lastDirection === 'right') this.switchSprite('Attack3Right');
       else this.switchSprite('Attack3Left');
-
       // Проверяем столкновение с врагами при атаке
       for (let i = 0; i < enemies.length; i++) {
         const enemy = enemies[i];
@@ -81,11 +73,7 @@ class Player extends Sprite {
             object2: enemy.hitbox,
           })
         ) {
-          // Обнаружено столкновение с врагом
-          console.log('Столкновение при атаке!');
           gameUI.updateScore(100);
-          // Уничтожаем врага
-          audioManager.playSoundEffect('attack');
           enemy.destroy();
         }
       }
@@ -93,7 +81,7 @@ class Player extends Sprite {
   }
   // Метод для завершения атаки
   finishAttack() {
-    this.isAttacking = false; // Сбрасываем переменную состояния атаки
+    this.isAttacking = false;
   }
 
   checkForEnemyCollisions(enemies) {
@@ -121,11 +109,8 @@ class Player extends Sprite {
             return;
           }
         } else {
-          // Если столкновение произошло слишком быстро после предыдущего, перезапускаем игру
-          // gameUI.showGameOverModal();
           return;
         }
-
         // Обновляем время последнего столкновения
         this.lastCollisionTime = currentTime;
       }
@@ -142,8 +127,7 @@ class Player extends Sprite {
     }
   }
 
-  // метод обновления(другого слайда)dd
-
+  // метод обновления(другого слайда)
   switchSprite(key) {
     if (
       (this.image === this.animations.Attack3Left.image &&
@@ -154,13 +138,12 @@ class Player extends Sprite {
       return;
     if (this.image === this.animations.Death.image) {
       if (this.currentFrame === this.animations.Death.frameRate - 1) {
-        this.deathAnimationPlayed = true; // Устанавливаем флаг, указывающий, что анимация смерти была воспроизведена
-        gameUI.checkForGameOverCondition(); // Показываем модальное окно при смерти персонажа; // Вызываем метод resetGame() после завершения анимации смерти
+        this.deathAnimationPlayed = true;
+        gameUI.checkForGameOverCondition();
       }
       return;
     }
     if (this.image === this.animations[key].image || !this.loaded) return;
-
     this.currentFrame = 0;
     this.image = this.animations[key].image;
     this.frameBuffer = this.animations[key].frameBuffer;
@@ -193,7 +176,6 @@ class Player extends Sprite {
   shouldPanCameraToTheLeft({ canvas, camera }) {
     const cameraboxRightSide = this.camerabox.position.x + this.camerabox.width;
     const scaledDownCanvasWidth = canvas.width / 4;
-
     if (cameraboxRightSide >= 2816) return;
 
     if (cameraboxRightSide >= scaledDownCanvasWidth + Math.abs(camera.position.x)) {
@@ -202,7 +184,7 @@ class Player extends Sprite {
     }
   }
 
-  // метод двежения камеры в право
+  // метод двежения камеры вправо
   shouldPanCameraToTheRight({ canvas, camera }) {
     if (this.camerabox.position.x <= 0) return;
 
@@ -249,14 +231,12 @@ class Player extends Sprite {
     // создадим квадрат чтобы видить рамки изоброжения
     // c.fillStyle = 'rgba(0, 255, 0, 0.2)';
     // c.fillRect(this.position.x, this.position.y, this.width, this.height);
-
     // создадим квадрат чтобы видить ХИТБОКСА
     // c.fillStyle = 'rgba(255, 0, 0, 0.2)';
     // c.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
 
     // создание игрока прям тут
     this.draw();
-
     // добавим скорость по оси х
     this.position.x += this.velocity.x;
     this.updateHitbox();
@@ -266,17 +246,13 @@ class Player extends Sprite {
     this.updateHitbox();
     // проверка на сталкновение
     this.checkForVerticalCollisions();
-
     this.checkForEnemyCollisions(enemies);
-
     // Если персонаж касается земли, сбрасываем флаг прыжка
     if (this.isOnGround()) {
       this.isJumping = false;
     }
-
     // Проверка на падение за нижнюю рамку канваса
     if (this.position.y > canvas.height) {
-      // Вызов метода resetGame() при падении за нижнюю рамку канваса
       gameUI.checkForGameOverCondition();
       audioManager.playSoundEffect('drowning');
       return; // Прерываем выполнение метода, чтобы избежать дальнейших операций
@@ -347,20 +323,15 @@ class Player extends Sprite {
 
   // метод гравитации
   applyGravity() {
-    // // добовляем логику стоп при дохождении до края (добавили блоки скрываем)
-    // if (this.position.y + this.height + this.velocity.y < canvas.height) this.velocity.y += gravity;
-    // else this.velocity.y = 0;
     this.velocity.y += gravity;
     // добавим сюда скорость при паденииdd
     this.position.y += this.velocity.y;
   }
   // метод проверки сталкновение под воздействием гравитации
   checkForVerticalCollisions() {
-    // for (let i = 0; i < this.collisionBlocks.lenght; i++) { БАЛБЕС
     for (let i = 0; i < this.collisionBlocks.length; i++) {
       const collisionBlock = this.collisionBlocks[i];
       // обноружение столкновения
-
       if (
         collision({
           object1: this.hitbox,

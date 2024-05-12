@@ -4,8 +4,8 @@ class Menu {
     this.menuContainer = document.createElement('div');
     this.menuContainer.classList.add('menu-container');
     this.menuContainer.style.backgroundImage = "url('./img/backgroundmenu.bmp')";
-    this.menuContainer.style.backgroundSize = 'cover'; // Растягиваем изображение на весь контейнер
-    this.menuContainer.style.backgroundPosition = 'center'; // Выравниваем изображение по центру
+    this.menuContainer.style.backgroundSize = 'cover';
+    this.menuContainer.style.backgroundPosition = 'center';
     this.menuContainer.innerHTML = `
     <div id="menu" class="menu">
     <ul class="menu-items">
@@ -27,9 +27,9 @@ class Menu {
     this.settingsMenuItem.addEventListener('click', this.showSettings.bind(this));
     this.helpMenuItem.addEventListener('click', this.showHelp.bind(this));
     this.retingMenuItem.addEventListener('click', this.showReting.bind(this));
-    this.modal = null; // Поле для хранения ссылки на модальное окно
-    this.settingsMenu = null; // Поле для хранения ссылки на меню настроек
-    this.helpModal = null; // Поле для хранения ссылки на модальное окно помощи
+    this.modal = null;
+    this.settingsMenu = null;
+    this.helpModal = null;
   }
 
   addMenuAfterClear(playerName) {
@@ -37,26 +37,22 @@ class Menu {
     const gameMenuPlayer = this.menuContainer.querySelector('#gameMenuPlayer');
     gameMenuPlayer.textContent = `Добро пожаловать, ${this.playerName}!`;
 
-    // Создаем кнопку "Выйти"
     const logoutButton = document.createElement('a');
     logoutButton.href = '#';
     logoutButton.textContent = 'Выйти';
-    logoutButton.id = 'logoutBtn'; // Устанавливаем id кнопки
-    logoutButton.classList.add('logout-button'); // Добавляем класс стиля для кнопки
+    logoutButton.id = 'logoutBtn';
+    logoutButton.classList.add('logout-button');
 
-    // Добавляем обработчик события клика на кнопку "Выйти"
     logoutButton.addEventListener('click', (event) => {
-      event.preventDefault(); // Предотвращаем действие по умолчанию для ссылки
-      event.stopPropagation(); // Остановка распространения события
+      event.preventDefault();
+      event.stopPropagation();
       // loginModule.logout();
       // audioManager.stopMenuMusic();
       window.location.reload();
     });
 
-    // Добавляем кнопку "Выйти" к элементу "gameMenuI"
     gameMenuPlayer.appendChild(logoutButton);
 
-    // Добавляем контейнер меню к телу документа
     document.body.appendChild(this.menuContainer);
   }
 
@@ -67,39 +63,35 @@ class Menu {
     this.animationFrameId = window.requestAnimationFrame(animate);
     gameUI.username = this.playerName;
     console.log('Игра началась!');
-    this.menu.style.display = 'none';
-    this.menuContainer.style.display = 'none';
+
+    if (this.menuContainer) {
+      this.menuContainer.remove();
+    }
+
     isGameRunning = true;
-    // Остановить таймер перед открытием игры
     gameUI.stopTimer();
 
     // Запустить таймер
     gameUI.startTimer();
-    // Добавляем слушатели событий только после запуска игры
     window.addEventListener('keydown', keyDownHandler);
     window.addEventListener('keyup', keyUpHandler);
   }
 
   showSettings() {
-    // Создаем модальное окно, если оно еще не создано
     if (!this.modal) {
       this.createModal();
     }
 
-    // Отображаем модальное окно
     this.modal.style.display = 'block';
     audioManager.stopMenuMusic();
   }
   createModal() {
-    // Создаем модальное окно
     this.modal = document.createElement('div');
     this.modal.classList.add('modal');
 
-    // Создаем контент модального окна
     const modalContent = document.createElement('div');
     modalContent.classList.add('modal-content');
 
-    // Создаем кнопку закрытия модального окна
     const closeButton = document.createElement('button');
     closeButton.classList.add('close-button');
     closeButton.textContent = 'Закрыть';
@@ -108,21 +100,15 @@ class Menu {
       audioManager.playMenuMusic();
     });
 
-    // Создаем меню настроек
     const settingsMenu = this.createSettingsMenu();
-
-    // Добавляем кнопку закрытия и меню настроек в контент модального окна
 
     modalContent.appendChild(settingsMenu);
     modalContent.appendChild(closeButton);
     this.modal.appendChild(modalContent);
-
-    // Добавляем модальное окно к телу документа
     document.body.appendChild(this.modal);
   }
 
   createSettingsMenu() {
-    // Создаем элементы меню настроек
     const settingsMenu = document.createElement('div');
     settingsMenu.classList.add('settings-menu');
 
@@ -133,18 +119,16 @@ class Menu {
     musicVolumeSlider.type = 'range';
     musicVolumeSlider.min = '0';
     musicVolumeSlider.max = '100';
-    musicVolumeSlider.value = audioManager.backgroundMusic.volume * 100; // Устанавливаем текущую громкость музыки
-    musicVolumeSlider.classList.add('volume-slider'); // Добавляем класс для регулятора громкости звуков
-    // Обработчик события для перемещения ползунка громкости музыки
+    musicVolumeSlider.value = audioManager.backgroundMusic.volume * 100;
+    musicVolumeSlider.classList.add('volume-slider');
     musicVolumeSlider.addEventListener('input', () => {
       const volume = parseFloat(musicVolumeSlider.value) / 100;
       audioManager.setMusicVolume(volume);
-      audioManager.playMenuMusic(); // Начинаем воспроизведение музыки при перемещении ползунка
+      audioManager.playMenuMusic();
     });
 
-    // Обработчик события для отпускания ползунка громкости музыки
     musicVolumeSlider.addEventListener('change', () => {
-      audioManager.stopMenuMusic(); // Останавливаем воспроизведение музыки при отпускании ползунка
+      audioManager.stopMenuMusic();
     });
 
     // Элемент управления для настройки громкости звуковых эффектов
@@ -155,14 +139,13 @@ class Menu {
     soundVolumeSlider.min = '0';
     soundVolumeSlider.max = '100';
     soundVolumeSlider.value = audioManager.soundEffects['jump'].volume * 100;
-    soundVolumeSlider.classList.add('volume-slider'); // Устанавливаем текущую громкость звуков (в данном случае берем один из звуковых эффектов)
+    soundVolumeSlider.classList.add('volume-slider');
     soundVolumeSlider.addEventListener('input', () => {
       const volume = parseFloat(soundVolumeSlider.value) / 100;
       audioManager.setSoundEffectsVolume(volume);
-      audioManager.playSoundEffect('victory'); // Проигрываем звуковой эффект при изменении громкости звуков
+      audioManager.playSoundEffect('victory');
     });
 
-    // Добавляем элементы управления в меню настроек
     settingsMenu.appendChild(musicVolumeLabel);
     settingsMenu.appendChild(musicVolumeSlider);
     settingsMenu.appendChild(document.createElement('br'));
@@ -173,21 +156,17 @@ class Menu {
   }
 
   showHelp() {
-    // Создаем модальное окно помощи, если оно еще не создано
     if (!this.helpModal) {
       this.createHelpModal();
     }
 
-    // Отображаем модальное окно помощи
     this.helpModal.style.display = 'block';
   }
 
   createHelpModal() {
-    // Создаем модальное окно для помощи
     this.helpModal = document.createElement('div');
     this.helpModal.classList.add('modal-help');
 
-    // Создаем контент модального окна
     const helpContent = document.createElement('div');
     helpContent.classList.add('help-content');
     helpContent.innerHTML = `
@@ -254,13 +233,10 @@ class Menu {
     </div>
 `;
 
-    // Добавляем контент помощи к модальному окну помощи
     this.helpModal.appendChild(helpContent);
 
-    // Добавляем модальное окно помощи к телу документа
     document.body.appendChild(this.helpModal);
 
-    // Добавляем обработчик события для кнопки закрытия окна помощи
     const closeHelpButton = helpContent.querySelector('#closeHelpButton');
     closeHelpButton.addEventListener('click', () => {
       this.helpModal.style.display = 'none';

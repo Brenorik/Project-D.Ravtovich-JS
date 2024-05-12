@@ -25,7 +25,7 @@ class Enemy extends Sprite {
     this.direction = 1;
     this.imageSrcRight = imageSrcRight;
     this.imageSrcLeft = imageSrcLeft;
-    this.startX = x; // Начальная позиция врага
+    this.startX = x;
     this.hitbox = {
       position: { x: this.position.x, y: this.position.y },
       width: hitboxWidth,
@@ -77,12 +77,11 @@ class Enemy extends Sprite {
   }
   destroy() {
     audioManager.playSoundEffect('destruction');
-    // Убрать врага из игры, например:
-    this.position.x = -3000; // Переместить врага за пределы экрана
+    this.position.x = -3000;
   }
 }
 
-// Создаем экземпляр врага с использованием нового класса Enemy
+// Создаем экземпляр врага
 const enemyBeeOne = new Enemy({
   x: 144,
   y: 448,
@@ -93,8 +92,8 @@ const enemyBeeOne = new Enemy({
   scale: 0.5,
   targetX: 352,
   speed: 1,
-  hitboxWidth: 20, // Ширина хитбокса
-  hitboxHeight: 20, // Высота хитбокса
+  hitboxWidth: 20,
+  hitboxHeight: 20,
 });
 
 const enemyBeeTwo = new Enemy({

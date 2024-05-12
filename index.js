@@ -2,13 +2,11 @@ const menu = new Menu();
 const audioManager = new AudioManager();
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
-// console.log(c);
 
-// Размеры поля canvas
 canvas.width = 1024;
 canvas.height = 576;
 
-// нужно опустить изоброжение
+// Изображение вниз
 const scaledCanvas = {
   width: canvas.width / 4,
   height: canvas.height / 4,
@@ -21,19 +19,13 @@ for (let i = 0; i < floor.length; i += 176) {
   // создаем под масив  и вырезаем нужные блоки (каждый ряд и+1 и и+176)
   floor2D.push(floor.slice(i, i + 176));
 }
-// console.log(floor2D);
 
-// тут будут столкновения
 const collisionBlocks = [];
 // определились с точками столкновения теперь их нужно извлечь (  каждую строку! - row)
 //  (y -ссылка на наш индекс . где находиться припядствие)
 floor2D.forEach((row, y) => {
   row.forEach((symbol, x) => {
-    // console.log(symbol);
     if (symbol === 3773) {
-      // мы нашли эти блоки теперь нужно написать что делаем с ними
-      // console.log('блоки тута');
-
       // вот столкновение создаем
       collisionBlocks.push(
         new CollisionBlock({
@@ -46,26 +38,15 @@ floor2D.forEach((row, y) => {
     }
   });
 });
-// console.log(collisionBlocks);
 
-// Столкновение с gkjoflrfvb
 const platform2D = [];
 for (let i = 0; i < platformCollisions.length; i += 176) {
   platform2D.push(platformCollisions.slice(i, i + 176));
 }
-// console.log(platform2D);
-
 const platformCollisionBlocks = [];
-// определились с точками столкновения теперь их нужно извлечь (  каждую строку! - row)
-//  (y -ссылка на наш индекс . где находиться припядствие)
 platform2D.forEach((row, y) => {
   row.forEach((symbol, x) => {
-    // console.log(symbol);
     if (symbol === 3666) {
-      // мы нашли эти блоки теперь нужно написать что делаем с ними
-      // console.log('блоки тута');
-
-      // вот столкновение создаем
       platformCollisionBlocks.push(
         new CollisionBlock({
           position: {
@@ -79,20 +60,14 @@ platform2D.forEach((row, y) => {
   });
 });
 
-// шипы
-
 const thorns2D = [];
 for (let i = 0; i < thorns.length; i += 176) {
   thorns2D.push(thorns.slice(i, i + 176));
 }
-// console.log(Thorns2D);
 const thornsBlocks = [];
 thorns2D.forEach((row, y) => {
   row.forEach((symbol, x) => {
-    // console.log(symbol);
     if (symbol === 453) {
-      // console.log('блоки тута');
-
       thornsBlocks.push(
         new CollisionBlock({
           position: {
@@ -104,13 +79,12 @@ thorns2D.forEach((row, y) => {
     }
   });
 });
-// console.log(thornsBlocks);
 
 const apple2D = [];
 for (let i = 0; i < apple.length; i += 176) {
   apple2D.push(apple.slice(i, i + 176));
 }
-// console.log(apple2D);
+
 const gravity = 0.1;
 
 // начальная точко появления игрока
@@ -123,11 +97,8 @@ const player = new Player({
   collisionBlocks: collisionBlocks,
   platformCollisionBlocks: platformCollisionBlocks,
   thornsBlocks: thornsBlocks,
-
-  // вставляем картинку игрока
   imageSrc: './img/Martial Hero 3/Sprite/Idle.png',
   frameRate: 10,
-  // создаем различные анимации
   animations: {
     Idle: {
       imageSrc: './img/Martial Hero 3/Sprite/Idle.png',
@@ -191,10 +162,6 @@ const gameUI = new GameUI();
 
 const appleManager = new AppleManager(apple2D);
 
-// создаем еременную для изменяющтхся координат квадрата
-let y = 100;
-let y2 = 100;
-
 // создаем ключи упровления
 
 const keys = {
@@ -238,19 +205,15 @@ function animate() {
   if (!isGameRunning) return;
   window.requestAnimationFrame(animate);
 
-  // console.log('Go');
   // добовляем поле на canvas чтобы при каждом тики обновлять поле канвас
   c.fillStyle = 'white';
   c.fillRect(0, 0, canvas.width, canvas.height);
-
   // нужно массштабировать только бэк граун
   c.save();
-
   // увеличиваем масштаб бэкграунда
   c.scale(4, 4);
   // опускаем камеру
   c.translate(camera.position.x, camera.position.y);
-
   // рисуем фон до создания игроков
   background.update();
 
@@ -268,7 +231,6 @@ function animate() {
   player.checkForHorizontalCanvasCollision();
 
   // запуск игрока
-  // player.draw();
   player.update();
 
   enemyBeeOne.update();
@@ -286,10 +248,9 @@ function animate() {
   gameUI.drawScore(camera);
   gameUI.drawHearts(camera);
   gameUI.update();
+  // Проверка взял ли персонаж яблоко
   if (appleManager.checkApple(player)) {
-    console.log('яблочко');
-    // Действия, которые нужно выполнить после столкновения с яблоком
-    // Например, увеличить счетчик яблок или выполнить другие действия
+    // console.log('яблочко');
   }
 
   // перемещение на кнопку (можем скорость поставить)
@@ -333,10 +294,6 @@ function animate() {
 
 // это я добавиль чтобы отжать клавишу
 let isJumping = false;
-// Нажатие клавиш
-// При нажатии клавиш
-// Добавляем обработчики для клавиш
-// При нажатии клавиш
 function keyDownHandler(event) {
   switch (event.code) {
     case 'KeyD':
